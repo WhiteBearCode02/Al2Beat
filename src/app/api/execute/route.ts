@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { concepts } from "../../../lib/content.ts";
 import { getPrivateTests } from "../../../server/private-tests.ts";
-import { createPythonSandbox, EXECUTION_LIMITS, runPython, writePythonSource, type SandboxRun } from "../../../server/sandbox-runner.ts";
+import { createPythonSandbox, EXECUTION_LIMITS, isSandboxSubmissionAvailable, runPython, writePythonSource, type SandboxRun } from "../../../server/sandbox-runner.ts";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -61,6 +61,9 @@ export async function POST(request: Request) {
   }
   if (parsed.data.language !== "python") {
     return errorResponse(422, "LANGUAGE_NOT_READY", "이 언어는 편집만 지원합니다. 현재 실제 실행·채점이 검증된 언어는 Python입니다.", requestId);
+  }
+  if (!isSandboxSubmissionAvailable()) {
+    return errorResponse(503, "SANDBOX_NOT_CONFIGURED", "서버 전용 제출 채점은 Vercel Sandbox 인증 환경에서만 실행됩니다. 예제 실행은 이 브라우저의 Python 런타임을 사용하세요.", requestId, false);
   }
 
   const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();

@@ -5,6 +5,7 @@ import { Check, CircleAlert, CircleCheck, Download, Expand, FileCode2, FlaskConi
 import { useCallback, useEffect, useState } from "react";
 import { languageLabels, monacoLanguages } from "@/lib/content";
 import { getWorkspace, saveWorkspace } from "@/lib/storage";
+import { runBrowserPython } from "@/lib/browser-python";
 import type { Concept, LanguageId } from "@/types/content";
 
 const CodeEditor = dynamic(() => import("./code-editor").then((module) => module.CodeEditor), {
@@ -38,6 +39,18 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
   const [resultTab, setResultTab] = useState<"result" | "guide">("result");
   const [running, setRunning] = useState<"run" | "submit" | null>(null);
   const [result, setResult] = useState<ExecutionResult | null>(null);
+  const [submissionAvailable, setSubmissionAvailable] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/capabilities", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((body: { execution?: { languages?: { python?: { judge?: boolean } } } }) => {
+        if (active) setSubmissionAvailable(Boolean(body.execution?.languages?.python?.judge));
+      })
+      .catch(() => { if (active) setSubmissionAvailable(false); });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -76,6 +89,26 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
     setResultTab("result");
     setResult(null);
     try {
+      const input = inputMode === "example" ? concept.problem.examples[0].input : customInput;
+      if (action === "run") {
+        const local = await runBrowserPython(code, input);
+        const publicCase = inputMode === "example" ? concept.problem.examples[0] : undefined;
+        const normalize = (value: string) => value.replace(/\r\n/g, "\n").trimEnd();
+        const matches = local.status === "completed" && publicCase ? normalize(local.stdout) === normalize(publicCase.output) : null;
+        const labels = {
+          completed: matches === true ? "예제 통과" : matches === false ? "예제 불일치" : "실행 완료",
+          compile_error: "구문 오류", runtime_error: "런타임 오류", time_limit: "시간 초과", output_limit: "출력 초과", system_error: "시스템 장애",
+        } as const;
+        const status = local.status === "completed" ? (matches === true ? "accepted" : matches === false ? "wrong_answer" : "completed") : local.status;
+        const confirmed = local.status === "completed"
+          ? matches === true ? "이 브라우저에서 실행한 공개 예제의 실제 출력이 기대 출력과 일치했습니다." : matches === false ? "이 브라우저에서 실행한 공개 예제의 실제 출력이 기대 출력과 다릅니다." : "이 브라우저에서 직접 입력을 정상 실행했습니다. 정답 여부는 판정하지 않습니다."
+          : local.status === "time_limit" ? "이 브라우저의 Python 작업자를 3초 후 종료했습니다."
+          : local.status === "output_limit" ? "실제 출력 또는 오류 출력이 64KB 제한을 넘었습니다."
+          : local.status === "system_error" ? "브라우저 Python 런타임을 준비하지 못했습니다. 저장된 코드는 유지됩니다."
+          : local.stderr || "실제 Python 실행 중 오류가 발생했습니다.";
+        setResult({ status, label: labels[local.status], action: "run", stdout: local.stdout, stderr: local.stderr, input: publicCase?.input, expected: publicCase?.output, durationMs: local.durationMs, confirmed });
+        return;
+      }
       const response = await fetch("/api/execute", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -84,7 +117,7 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
           problemId: concept.id,
           language,
           source: code,
-          input: inputMode === "example" ? concept.problem.examples[0].input : customInput,
+          input,
           idempotencyKey: crypto.randomUUID(),
         }),
       });
@@ -121,11 +154,11 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
           </button>
         </div>
       </header>
-      <div className="runtime-notice" role="status"><Orbit size={16} /><strong>격리 실행</strong><span>Python 3.14 실행·채점 가능 · 요청마다 네트워크 차단 microVM 사용 · 나머지 언어는 준비 중</span></div>
+      <div className="runtime-notice" role="status"><Orbit size={16} /><strong>Python 실행</strong><span>예제는 이 브라우저의 로컬 Python 작업자에서 실행 · {submissionAvailable ? "제출은 네트워크 차단 microVM에서 채점" : "제출 채점은 Vercel Sandbox 연결 후 사용 가능"} · 나머지 언어는 준비 중</span></div>
       <div className="ide-language-tabs" role="tablist" aria-label="프로그래밍 언어">
         {languages.map((item) => (
           <button key={item} role="tab" aria-selected={language === item} className={language === item ? "active" : ""} onClick={() => setLanguage(item)}>
-            {languageLabels[item]}<small>{item === "python" ? "실행 가능" : "편집 가능"}</small>
+            {languageLabels[item]}<small>{item === "python" ? submissionAvailable ? "실행·채점 가능" : "예제 실행 가능" : "편집 가능"}</small>
           </button>
         ))}
       </div>
@@ -140,10 +173,10 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
             <textarea value={customInput} maxLength={10_000} onChange={(event) => { setSaveState("saving"); setCustomInput(event.target.value); }} aria-label="사용자 입력" />
           )}
           <div className="run-buttons">
-            <button className="run-button" disabled={language !== "python" || running !== null} title={language === "python" ? "현재 입력을 격리 환경에서 실행합니다." : "이 언어는 런타임 검증 전이라 편집만 지원합니다."} onClick={() => execute("run")}>
+            <button className="run-button" disabled={language !== "python" || running !== null} title={language === "python" ? "현재 입력을 이 브라우저의 Python 작업자에서 실제 실행합니다." : "이 언어는 런타임 검증 전이라 편집만 지원합니다."} onClick={() => execute("run")}>
               {running === "run" ? <LoaderCircle className="spin" size={15} /> : <Play size={15} />}{running === "run" ? "실행 중" : "예제 실행"}
             </button>
-            <button className="submit-button" disabled={language !== "python" || running !== null} title={language === "python" ? "서버 전용 테스트로 채점합니다." : "이 언어는 런타임 검증 전이라 편집만 지원합니다."} onClick={() => execute("submit")}>
+            <button className="submit-button" disabled={language !== "python" || running !== null || !submissionAvailable} title={language !== "python" ? "이 언어는 런타임 검증 전이라 편집만 지원합니다." : submissionAvailable ? "서버 전용 테스트로 채점합니다." : "비공개 테스트를 안전하게 지키기 위해 Vercel Sandbox 연결 전에는 제출을 사용할 수 없습니다."} onClick={() => execute("submit")}>
               {running === "submit" ? <LoaderCircle className="spin" size={15} /> : <Send size={15} />}{running === "submit" ? "채점 중" : "제출"}
             </button>
           </div>

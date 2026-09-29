@@ -1,16 +1,21 @@
 export const dynamic = "force-dynamic";
 
+import { isSandboxSubmissionAvailable } from "../../../server/sandbox-runner.ts";
+
 export async function GET() {
+  const submissionAvailable = isSandboxSubmissionAvailable();
   return Response.json({
     ok: true,
     execution: {
       enabled: true,
-      reason: "Python은 요청마다 네트워크가 차단된 Vercel Sandbox microVM에서 실행합니다. 나머지 언어는 런타임 실측 후 순차 지원합니다.",
+      reason: submissionAvailable
+        ? "Python 예제 실행은 이 브라우저에서, 서버 전용 제출 채점은 네트워크가 차단된 Vercel Sandbox microVM에서 처리합니다."
+        : "Python 예제 실행은 이 브라우저에서 처리합니다. 이 환경은 Vercel Sandbox에 연결되지 않아 서버 전용 제출 채점은 비활성화됩니다.",
       languages: {
         c: { edit: true, run: false, judge: false, verifiedVersion: null },
         cpp: { edit: true, run: false, judge: false, verifiedVersion: null },
         java: { edit: true, run: false, judge: false, verifiedVersion: null },
-        python: { edit: true, run: true, judge: true, verifiedVersion: "3.14 (Vercel managed image)" },
+        python: { edit: true, run: true, judge: submissionAvailable, verifiedVersion: "3.14 (Pyodide local runtime / Vercel managed image for submissions)" },
         csharp: { edit: true, run: false, judge: false, verifiedVersion: null },
       },
       limits: {

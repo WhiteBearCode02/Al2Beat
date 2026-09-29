@@ -8,6 +8,7 @@ coverage/
 browser-check*.png
 tsconfig.tsbuildinfo
 tmp-backup.json
+public/vendor/pyodide/
 experiments/**/bin/
 experiments/**/obj/
 experiments/**/.dotnet-cli/

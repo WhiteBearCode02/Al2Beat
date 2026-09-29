@@ -11,6 +11,11 @@ export const EXECUTION_LIMITS = {
   memoryMb: 256,
 } as const;
 
+/** Server-only submission is available only inside an authenticated Vercel project. */
+export function isSandboxSubmissionAvailable() {
+  return Boolean(process.env.VERCEL || process.env.VERCEL_OIDC_TOKEN);
+}
+
 export type SandboxRun = {
   stdout: string;
   stderr: string;

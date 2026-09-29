@@ -12,6 +12,7 @@
 | Lucide React | 1.47.0 | ISC | 인터페이스 아이콘 |
 | Zod | 4.6.5 | MIT | API 요청 스키마 검증 |
 | `@vercel/sandbox` | 3.5.1 | Apache-2.0 | Python 사용자 코드의 격리 microVM 실행 |
+| Pyodide (`pyodide`) | 314.0.7 | MPL-2.0 | 브라우저 전용 Python WebAssembly 런타임 |
 | `server-only` | 0.0.1 | MIT | 서버 전용 테스트·실행 모듈의 클라이언트 import 방지 |
 | TypeScript | 5.9.3 | Apache-2.0 | 정적 타입과 빌드 도구 |
 | ESLint | 9.39.5 | MIT | 정적 분석 |
@@ -22,7 +23,8 @@ Monaco는 코드 실행기가 아니다. al2beat에서는 편집 및 문법 강�
 
 버전과 라이선스 확인 출처:
 
-- npm 패키지 메타데이터: <https://www.npmjs.com/package/next>, <https://www.npmjs.com/package/react>, <https://www.npmjs.com/package/monaco-editor>, <https://www.npmjs.com/package/%40monaco-editor/react>, <https://www.npmjs.com/package/idb>, <https://www.npmjs.com/package/lucide-react>, <https://www.npmjs.com/package/zod>, <https://www.npmjs.com/package/%40vercel/sandbox>, <https://www.npmjs.com/package/server-only>, <https://www.npmjs.com/package/typescript>
+- npm 패키지 메타데이터: <https://www.npmjs.com/package/next>, <https://www.npmjs.com/package/react>, <https://www.npmjs.com/package/monaco-editor>, <https://www.npmjs.com/package/%40monaco-editor/react>, <https://www.npmjs.com/package/idb>, <https://www.npmjs.com/package/lucide-react>, <https://www.npmjs.com/package/zod>, <https://www.npmjs.com/package/%40vercel/sandbox>, <https://www.npmjs.com/package/pyodide>, <https://www.npmjs.com/package/server-only>, <https://www.npmjs.com/package/typescript>
+- Pyodide 라이선스 원문: <https://github.com/pyodide/pyodide/blob/main/LICENSE>
 - 설치된 패키지별 라이선스 원문: 각 `node_modules/<package>/LICENSE*`
 
 이 고지는 법률 자문이 아니며 권리 위험이 없음을 보증하지 않는다.

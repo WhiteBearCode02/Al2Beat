@@ -3,7 +3,7 @@ import test from "node:test";
 import { GET as capabilities } from "../src/app/api/capabilities/route.ts";
 import { POST as execute } from "../src/app/api/execute/route.ts";
 
-test("capabilities가 Python만 실행·채점 가능으로 정확히 표시한다", async () => {
+test("capabilities가 Python 예제 실행과 제출 가능 여부를 분리해 표시한다", async () => {
   const response = await capabilities();
   const body = await response.json();
   assert.equal(body.ok, true);
@@ -12,7 +12,7 @@ test("capabilities가 Python만 실행·채점 가능으로 정확히 표시한�
   for (const [language, status] of Object.entries(body.execution.languages) as Array<[string, { edit: boolean; run: boolean; judge: boolean }]>) {
     assert.equal(status.edit, true);
     assert.equal(status.run, language === "python");
-    assert.equal(status.judge, language === "python");
+    assert.equal(status.judge, false);
   }
 });
 
@@ -56,4 +56,24 @@ test("바이트 기준 소스 제한을 적용한다", async () => {
   }));
   assert.equal(response.status, 413);
   assert.equal((await response.json()).error.code, "PAYLOAD_TOO_LARGE");
+});
+
+test("Sandbox 인증이 없는 환경에서는 비공개 제출을 시작하지 않는다", async () => {
+  if (process.env.VERCEL || process.env.VERCEL_OIDC_TOKEN) return;
+  const response = await execute(new Request("http://localhost/api/execute", {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-forwarded-for": "127.0.0.45" },
+    body: JSON.stringify({
+      action: "submit",
+      problemId: "stack",
+      language: "python",
+      source: "print('YES')",
+      input: "{[()]}",
+      idempotencyKey: "sandbox-unavailable-0000000001",
+    }),
+  }));
+  const body = await response.json();
+  assert.equal(response.status, 503);
+  assert.equal(body.error.code, "SANDBOX_NOT_CONFIGURED");
+  assert.equal(body.error.retryable, false);
 });
