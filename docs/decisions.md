@@ -8,6 +8,7 @@
 - 가입과 서버 DB 없이 시작하며 코드, 사용자 입력, 진도, 북마크, 설정은 IndexedDB `al2beat` v1에 저장한다.
 - 브라우저 데이터 삭제나 기기 변경 시 기록이 사라질 수 있음을 화면에 상시 알리고, 버전이 붙은 JSON 내보내기/가져오기를 제공한다.
 - 공개 콘텐츠는 `content/concepts.json`과 `content/glossary.json`에 둔다. 비공개 테스트는 `src/server/private-tests.ts`에 두고 클라이언트 코드에서 가져오지 않는다.
+- 자체 작성 기준 풀이는 `src/server/reference-solutions.ts`에 두고 확인 안내 이후 공개 API로 요청한다. 이는 공개 학습 콘텐츠이며 비공개 테스트 입력·기대 출력과 연결하지 않는다.
 
 ## Vercel Hobby와 Sandbox 조사
 

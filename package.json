@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --conditions=react-server --test --experimental-strip-types tests/content.test.ts tests/api.test.ts"
+    "test": "node --conditions=react-server --test --experimental-strip-types tests/content.test.ts tests/api.test.ts tests/solutions.test.ts"
   },
   "dependencies": {
     "@monaco-editor/react": "4.7.0",

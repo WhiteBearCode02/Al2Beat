@@ -1,12 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Check, CircleAlert, CircleCheck, Download, Expand, FileCode2, FlaskConical, LoaderCircle, Minimize2, Orbit, Play, Send, ShieldAlert } from "lucide-react";
+import { Check, CircleAlert, CircleCheck, Download, Expand, Eye, FileCode2, FlaskConical, LoaderCircle, Minimize2, Orbit, Play, Send, ShieldAlert } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { languageLabels, monacoLanguages } from "@/lib/content";
 import { getWorkspace, saveWorkspace } from "@/lib/storage";
 import { runBrowserPython } from "@/lib/browser-python";
 import type { Concept, LanguageId } from "@/types/content";
+import { ReferenceSolutionPanel, SolutionConfirmation } from "./reference-solution-panel";
 
 const CodeEditor = dynamic(() => import("./code-editor").then((module) => module.CodeEditor), {
   ssr: false,
@@ -40,6 +41,11 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
   const [resultTab, setResultTab] = useState<"result" | "guide">("result");
   const [running, setRunning] = useState<"run" | "submit" | null>(null);
   const [result, setResult] = useState<ExecutionResult | null>(null);
+  const [solutionPromptFor, setSolutionPromptFor] = useState<string>();
+  const [solutionVisibleFor, setSolutionVisibleFor] = useState<string>();
+  const [solutionLoading, setSolutionLoading] = useState(false);
+  const [solutionSource, setSolutionSource] = useState<string>();
+  const [solutionError, setSolutionError] = useState<string>();
   const [capabilities, setCapabilities] = useState<Partial<Record<LanguageId, LanguageCapability>>>({
     python: { edit: true, run: true, judge: false, verifiedVersion: "Python 3.14 (Pyodide)", executionTarget: "browser-worker" },
   });
@@ -145,6 +151,24 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
 
   const selectedCapability = capabilities[language];
   const enabledServerLanguages = languages.filter((item) => capabilities[item]?.judge).length;
+  const solutionContextKey = `${concept.id}:${language}`;
+  const revealSolution = useCallback(async () => {
+    const contextKey = `${concept.id}:${language}`;
+    setSolutionPromptFor(undefined);
+    setSolutionVisibleFor(contextKey);
+    setSolutionLoading(true);
+    setSolutionError(undefined);
+    try {
+      const response = await fetch(`/api/solutions/${encodeURIComponent(concept.id)}?language=${encodeURIComponent(language)}`);
+      const body = await response.json() as { ok: boolean; solution?: { source: string }; error?: { message?: string } };
+      if (!response.ok || !body.ok || !body.solution) throw new Error(body.error?.message ?? "기준 풀이를 불러오지 못했습니다.");
+      setSolutionSource(body.solution.source);
+    } catch (error) {
+      setSolutionError(error instanceof Error ? error.message : "기준 풀이를 불러오지 못했습니다.");
+    } finally {
+      setSolutionLoading(false);
+    }
+  }, [concept.id, language]);
 
   return (
     <section className={`ide-panel panel ${focus ? "focus-mode" : ""}`} aria-labelledby="ide-heading">
@@ -155,6 +179,7 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
             {saveState === "saved" ? <Check size={14} /> : null}
             {saveState === "saved" ? "이 기기에 저장됨" : saveState === "saving" ? "저장 중…" : "저장 실패"}
           </span>
+          <button className="icon-text-button solution-button" onClick={() => setSolutionPromptFor(solutionContextKey)}><Eye size={15} />정답 보기</button>
           <button className="icon-text-button" onClick={download}><Download size={15} />코드 다운로드</button>
           <button className="icon-button" onClick={() => onFocusChange(!focus)} aria-label={focus ? "집중 모드 종료" : "IDE 집중 모드"}>
             {focus ? <Minimize2 size={17} /> : <Expand size={17} />}
@@ -216,6 +241,8 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
           </div>
         </aside>
       </div>
+      {solutionVisibleFor === solutionContextKey ? <ReferenceSolutionPanel language={language} userCode={code} source={solutionSource} loading={solutionLoading} error={solutionError} onClose={() => setSolutionVisibleFor(undefined)} /> : null}
+      {solutionPromptFor === solutionContextKey ? <SolutionConfirmation onCancel={() => setSolutionPromptFor(undefined)} onConfirm={revealSolution} /> : null}
     </section>
   );
 }
