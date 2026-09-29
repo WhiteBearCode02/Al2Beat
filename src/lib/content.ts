@@ -1,5 +1,5 @@
-import conceptsData from "../../content/concepts.json";
-import glossaryData from "../../content/glossary.json";
+import conceptsData from "../../content/concepts.json" with { type: "json" };
+import glossaryData from "../../content/glossary.json" with { type: "json" };
 import type { Concept, GlossaryTerm, LanguageId } from "@/types/content";
 
 type PublicConcept = Omit<Concept, "templates">;

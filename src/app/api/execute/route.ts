@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
-import { concepts } from "@/lib/content";
-import { getPrivateTests } from "@/server/private-tests";
-import { createPythonSandbox, EXECUTION_LIMITS, runPython, writePythonSource, type SandboxRun } from "@/server/sandbox-runner";
+import { concepts } from "../../../lib/content.ts";
+import { getPrivateTests } from "../../../server/private-tests.ts";
+import { createPythonSandbox, EXECUTION_LIMITS, runPython, writePythonSource, type SandboxRun } from "../../../server/sandbox-runner.ts";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
