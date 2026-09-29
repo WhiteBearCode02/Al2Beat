@@ -30,8 +30,13 @@ export function CodeEditor({ language, value, onChange }: { language: string; va
       beforeMount={(instance) => instance.editor.defineTheme("al2beat-dark", {
         base: "vs-dark",
         inherit: true,
-        rules: [{ token: "comment", foreground: "8AAE78" }],
-        colors: { "editor.background": "#1e1e1e" },
+        rules: [{ token: "comment", foreground: "8292C9" }],
+        colors: {
+          "editor.background": "#080B20",
+          "editor.lineHighlightBackground": "#111735",
+          "editorCursor.foreground": "#A78BFA",
+          "editor.selectionBackground": "#514AA266",
+        },
       })}
       theme="al2beat-dark"
       loading={<div className="editor-loading">편집기 악보를 준비하는 중…</div>}

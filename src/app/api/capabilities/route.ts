@@ -4,13 +4,13 @@ export async function GET() {
   return Response.json({
     ok: true,
     execution: {
-      enabled: false,
-      reason: "Vercel Sandbox에서 다섯 언어의 격리·런타임·무료 한도 실측을 완료하지 않았습니다.",
+      enabled: true,
+      reason: "Python은 요청마다 네트워크가 차단된 Vercel Sandbox microVM에서 실행합니다. 나머지 언어는 런타임 실측 후 순차 지원합니다.",
       languages: {
         c: { edit: true, run: false, judge: false, verifiedVersion: null },
         cpp: { edit: true, run: false, judge: false, verifiedVersion: null },
         java: { edit: true, run: false, judge: false, verifiedVersion: null },
-        python: { edit: true, run: false, judge: false, verifiedVersion: null },
+        python: { edit: true, run: true, judge: true, verifiedVersion: "3.14 (Vercel managed image)" },
         csharp: { edit: true, run: false, judge: false, verifiedVersion: null },
       },
       limits: {
