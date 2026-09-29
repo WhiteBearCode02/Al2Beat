@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.vercel/
+coverage/
+*.log
+.env*
+!.env.example
+browser-check*.png
+tsconfig.tsbuildinfo
+tmp-backup.json
+experiments/**/bin/
+experiments/**/obj/
+experiments/**/.dotnet-cli/
+experiments/**/*.class

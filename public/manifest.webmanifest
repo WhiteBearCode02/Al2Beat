@@ -1,0 +1,9 @@
+{
+  "name": "al2beat — 알고리즘을 박자로 익히기",
+  "short_name": "al2beat",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07110f",
+  "theme_color": "#b9f36b",
+  "lang": "ko"
+}
