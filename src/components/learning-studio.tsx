@@ -103,7 +103,7 @@ export function LearningStudio({ concepts, glossary }: { concepts: Concept[]; gl
             {sidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
           </button>
           <div className="brand-mark" aria-hidden="true"><span /><span /><span /></div>
-          <div className="brand"><strong>al2beat</strong><span>LEARN THE LOGIC. FEEL THE FLOW.</span></div>
+          <div className="brand"><strong>Al2Beat</strong><span>LEARN THE LOGIC. FEEL THE FLOW.</span></div>
         </div>
         <div className="topbar-meta">
           <label className="panel-size-control"><Settings2 size={15} /><span>화면 크기</span><input type="range" min="1" max="3" step="1" value={panelSize} onChange={(event) => setPanelSize(Number(event.target.value))} /></label>
