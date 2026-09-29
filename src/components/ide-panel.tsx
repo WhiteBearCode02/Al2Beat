@@ -14,6 +14,7 @@ const CodeEditor = dynamic(() => import("./code-editor").then((module) => module
 });
 
 const languages = Object.keys(languageLabels) as LanguageId[];
+type LanguageCapability = { edit: boolean; run: boolean; judge: boolean; verifiedVersion: string | null; executionTarget: string };
 
 type ExecutionResult = {
   status: "accepted" | "completed" | "wrong_answer" | "compile_error" | "runtime_error" | "time_limit" | "output_limit" | "system_error";
@@ -39,16 +40,18 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
   const [resultTab, setResultTab] = useState<"result" | "guide">("result");
   const [running, setRunning] = useState<"run" | "submit" | null>(null);
   const [result, setResult] = useState<ExecutionResult | null>(null);
-  const [submissionAvailable, setSubmissionAvailable] = useState(false);
+  const [capabilities, setCapabilities] = useState<Partial<Record<LanguageId, LanguageCapability>>>({
+    python: { edit: true, run: true, judge: false, verifiedVersion: "Python 3.14 (Pyodide)", executionTarget: "browser-worker" },
+  });
 
   useEffect(() => {
     let active = true;
     fetch("/api/capabilities", { cache: "no-store" })
       .then((response) => response.json())
-      .then((body: { execution?: { languages?: { python?: { judge?: boolean } } } }) => {
-        if (active) setSubmissionAvailable(Boolean(body.execution?.languages?.python?.judge));
+      .then((body: { execution?: { languages?: Record<LanguageId, LanguageCapability> } }) => {
+        if (active && body.execution?.languages) setCapabilities(body.execution.languages);
       })
-      .catch(() => { if (active) setSubmissionAvailable(false); });
+      .catch(() => undefined);
     return () => { active = false; };
   }, []);
 
@@ -84,7 +87,8 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
   }, [code, concept.id, language]);
 
   const execute = useCallback(async (action: "run" | "submit") => {
-    if (language !== "python" || running) return;
+    const capability = capabilities[language];
+    if (running || (action === "run" ? !capability?.run : !capability?.judge)) return;
     setRunning(action);
     setResultTab("result");
     setResult(null);
@@ -137,7 +141,10 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
     } finally {
       setRunning(null);
     }
-  }, [code, concept.id, concept.problem.examples, customInput, inputMode, language, running]);
+  }, [capabilities, code, concept.id, concept.problem.examples, customInput, inputMode, language, running]);
+
+  const selectedCapability = capabilities[language];
+  const enabledServerLanguages = languages.filter((item) => capabilities[item]?.judge).length;
 
   return (
     <section className={`ide-panel panel ${focus ? "focus-mode" : ""}`} aria-labelledby="ide-heading">
@@ -154,11 +161,11 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
           </button>
         </div>
       </header>
-      <div className="runtime-notice" role="status"><Orbit size={16} /><strong>Python 실행</strong><span>예제는 이 브라우저의 로컬 Python 작업자에서 실행 · {submissionAvailable ? "제출은 네트워크 차단 microVM에서 채점" : "제출 채점은 Vercel Sandbox 연결 후 사용 가능"} · 나머지 언어는 준비 중</span></div>
+      <div className="runtime-notice" role="status"><Orbit size={16} /><strong>다국어 실행</strong><span>Python 예제는 브라우저에서 실행 · {enabledServerLanguages === 5 ? "다섯 언어의 실행·제출 Sandbox 연결됨" : `서버 채점 ${enabledServerLanguages}/5 연결 · 도구 모음 스냅샷 연결 시 나머지 언어 활성화`}</span></div>
       <div className="ide-language-tabs" role="tablist" aria-label="프로그래밍 언어">
         {languages.map((item) => (
           <button key={item} role="tab" aria-selected={language === item} className={language === item ? "active" : ""} onClick={() => setLanguage(item)}>
-            {languageLabels[item]}<small>{item === "python" ? submissionAvailable ? "실행·채점 가능" : "예제 실행 가능" : "편집 가능"}</small>
+            {languageLabels[item]}<small>{capabilities[item]?.judge ? "실행·채점 가능" : capabilities[item]?.run ? "예제 실행 가능" : "편집 가능"}</small>
           </button>
         ))}
       </div>
@@ -173,10 +180,10 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
             <textarea value={customInput} maxLength={10_000} onChange={(event) => { setSaveState("saving"); setCustomInput(event.target.value); }} aria-label="사용자 입력" />
           )}
           <div className="run-buttons">
-            <button className="run-button" disabled={language !== "python" || running !== null} title={language === "python" ? "현재 입력을 이 브라우저의 Python 작업자에서 실제 실행합니다." : "이 언어는 런타임 검증 전이라 편집만 지원합니다."} onClick={() => execute("run")}>
+            <button className="run-button" disabled={!selectedCapability?.run || running !== null} title={selectedCapability?.run ? language === "python" ? "현재 입력을 이 브라우저의 Python 작업자에서 실제 실행합니다." : "현재 입력을 네트워크 차단 Sandbox에서 컴파일·실행합니다." : "Vercel Sandbox 도구 모음 스냅샷을 연결하면 실행할 수 있습니다."} onClick={() => execute("run")}>
               {running === "run" ? <LoaderCircle className="spin" size={15} /> : <Play size={15} />}{running === "run" ? "실행 중" : "예제 실행"}
             </button>
-            <button className="submit-button" disabled={language !== "python" || running !== null || !submissionAvailable} title={language !== "python" ? "이 언어는 런타임 검증 전이라 편집만 지원합니다." : submissionAvailable ? "서버 전용 테스트로 채점합니다." : "비공개 테스트를 안전하게 지키기 위해 Vercel Sandbox 연결 전에는 제출을 사용할 수 없습니다."} onClick={() => execute("submit")}>
+            <button className="submit-button" disabled={!selectedCapability?.judge || running !== null} title={selectedCapability?.judge ? "네트워크 차단 Sandbox에서 서버 전용 테스트로 채점합니다." : "비공개 테스트 보호를 위해 검증된 Vercel Sandbox 연결 전에는 제출을 사용할 수 없습니다."} onClick={() => execute("submit")}>
               {running === "submit" ? <LoaderCircle className="spin" size={15} /> : <Send size={15} />}{running === "submit" ? "채점 중" : "제출"}
             </button>
           </div>

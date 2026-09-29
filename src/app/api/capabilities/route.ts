@@ -1,23 +1,21 @@
 export const dynamic = "force-dynamic";
 
-import { isSandboxSubmissionAvailable } from "../../../server/sandbox-runner.ts";
+import { languageCapabilities } from "../../../server/language-runtimes.ts";
 
 export async function GET() {
-  const submissionAvailable = isSandboxSubmissionAvailable();
+  const languages = {
+    c: languageCapabilities("c"), cpp: languageCapabilities("cpp"), java: languageCapabilities("java"),
+    python: languageCapabilities("python"), csharp: languageCapabilities("csharp"),
+  };
+  const serverLanguageCount = Object.values(languages).filter((item) => item.judge).length;
   return Response.json({
     ok: true,
     execution: {
       enabled: true,
-      reason: submissionAvailable
-        ? "Python 예제 실행은 이 브라우저에서, 서버 전용 제출 채점은 네트워크가 차단된 Vercel Sandbox microVM에서 처리합니다."
-        : "Python 예제 실행은 이 브라우저에서 처리합니다. 이 환경은 Vercel Sandbox에 연결되지 않아 서버 전용 제출 채점은 비활성화됩니다.",
-      languages: {
-        c: { edit: true, run: false, judge: false, verifiedVersion: null },
-        cpp: { edit: true, run: false, judge: false, verifiedVersion: null },
-        java: { edit: true, run: false, judge: false, verifiedVersion: null },
-        python: { edit: true, run: true, judge: submissionAvailable, verifiedVersion: "3.14 (Pyodide local runtime / Vercel managed image for submissions)" },
-        csharp: { edit: true, run: false, judge: false, verifiedVersion: null },
-      },
+      reason: serverLanguageCount === 5
+        ? "다섯 언어의 서버 실행·제출은 네트워크가 차단된 Vercel Sandbox에서 처리하며, Python 예제는 브라우저에서도 실행합니다."
+        : "Python 예제는 브라우저에서 실행합니다. 다른 언어와 서버 제출은 Sandbox 인증 및 도구 모음 스냅샷이 연결되면 활성화됩니다.",
+      languages,
       limits: {
         sourceBytes: 20_000,
         inputBytes: 10_000,

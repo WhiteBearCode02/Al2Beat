@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { concepts } from "../../../lib/content.ts";
 import { getPrivateTests } from "../../../server/private-tests.ts";
-import { createPythonSandbox, EXECUTION_LIMITS, isSandboxSubmissionAvailable, runPython, writePythonSource, type SandboxRun } from "../../../server/sandbox-runner.ts";
+import { compileLanguage, createLanguageSandbox, EXECUTION_LIMITS, isSandboxSubmissionAvailable, runLanguage, writeLanguageSource, type SandboxRun } from "../../../server/sandbox-runner.ts";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,11 +29,11 @@ export function normalizeOutput(value: string) {
   return value.replace(/\r\n/g, "\n").trimEnd();
 }
 
-export function runtimeFailure(run: SandboxRun) {
+export function runtimeFailure(run: SandboxRun, stage: "compile" | "execute" = "execute") {
   if (run.outputExceeded) return { status: "output_limit" as const, label: "출력 초과", message: "출력이 64KB 제한을 넘었습니다." };
-  if (run.timedOut) return { status: "time_limit" as const, label: "시간 초과", message: "실행 시간이 3초 제한을 넘었습니다." };
+  if (run.timedOut) return { status: "time_limit" as const, label: stage === "compile" ? "컴파일 시간 초과" : "시간 초과", message: stage === "compile" ? "컴파일 시간이 제한을 넘었습니다." : "실행 시간이 3초 제한을 넘었습니다." };
   if (run.exitCode !== 0) {
-    const syntaxError = /SyntaxError|IndentationError|TabError/.test(run.stderr);
+    const syntaxError = stage === "compile" || /SyntaxError|IndentationError|TabError/.test(run.stderr);
     return {
       status: syntaxError ? "compile_error" as const : "runtime_error" as const,
       label: syntaxError ? "구문 오류" : "런타임 오류",
@@ -59,11 +59,10 @@ export async function POST(request: Request) {
   if (Buffer.byteLength(parsed.data.source, "utf8") > EXECUTION_LIMITS.sourceBytes || Buffer.byteLength(parsed.data.input, "utf8") > EXECUTION_LIMITS.inputBytes) {
     return errorResponse(413, "PAYLOAD_TOO_LARGE", "소스 또는 입력의 바이트 제한을 넘었습니다.", requestId);
   }
-  if (parsed.data.language !== "python") {
-    return errorResponse(422, "LANGUAGE_NOT_READY", "이 언어는 편집만 지원합니다. 현재 실제 실행·채점이 검증된 언어는 Python입니다.", requestId);
-  }
-  if (!isSandboxSubmissionAvailable()) {
-    return errorResponse(503, "SANDBOX_NOT_CONFIGURED", "서버 전용 제출 채점은 Vercel Sandbox 인증 환경에서만 실행됩니다. 예제 실행은 이 브라우저의 Python 런타임을 사용하세요.", requestId, false);
+  if (!isSandboxSubmissionAvailable(parsed.data.language)) {
+    return errorResponse(503, "SANDBOX_NOT_CONFIGURED", parsed.data.language === "python"
+      ? "서버 전용 제출 채점은 Vercel Sandbox 인증 환경에서만 실행됩니다. 예제 실행은 이 브라우저의 Python 런타임을 사용하세요."
+      : "이 언어의 격리 실행에는 Vercel Sandbox 인증과 검증된 다국어 도구 모음 스냅샷이 필요합니다.", requestId, false);
   }
 
   const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
@@ -86,13 +85,20 @@ export async function POST(request: Request) {
   const concept = concepts.find((item) => item.id === parsed.data.problemId);
   if (!concept) return errorResponse(404, "PROBLEM_NOT_FOUND", "문제를 찾을 수 없습니다.", requestId);
 
-  let sandbox: Awaited<ReturnType<typeof createPythonSandbox>> | undefined;
+  let sandbox: Awaited<ReturnType<typeof createLanguageSandbox>> | undefined;
   try {
-    sandbox = await createPythonSandbox();
-    await writePythonSource(sandbox, parsed.data.source);
+    sandbox = await createLanguageSandbox(parsed.data.language);
+    await writeLanguageSource(sandbox, parsed.data.language, parsed.data.source);
+    const compilation = await compileLanguage(sandbox, parsed.data.language);
+    if (compilation) {
+      const failure = runtimeFailure(compilation, "compile");
+      if (failure) {
+        return Response.json({ ok: true, result: { ...failure, action: parsed.data.action, stdout: compilation.stdout, stderr: compilation.stderr, durationMs: compilation.durationMs, confirmed: failure.message } }, { headers: { "Cache-Control": "no-store" } });
+      }
+    }
 
     if (parsed.data.action === "run") {
-      const run = await runPython(sandbox, parsed.data.input);
+      const run = await runLanguage(sandbox, parsed.data.language, parsed.data.input);
       const failure = runtimeFailure(run);
       if (failure) {
         return Response.json({ ok: true, result: { ...failure, action: "run", stdout: run.stdout, stderr: run.stderr, durationMs: run.durationMs, confirmed: failure.message } }, { headers: { "Cache-Control": "no-store" } });
@@ -122,7 +128,7 @@ export async function POST(request: Request) {
 
     for (let index = 0; index < cases.length; index++) {
       const testCase = cases[index];
-      const run = await runPython(sandbox, testCase.input);
+      const run = await runLanguage(sandbox, parsed.data.language, testCase.input);
       const failure = runtimeFailure(run);
       if (failure) {
         return Response.json({ ok: true, result: { ...failure, action: "submit", stdout: testCase.public ? run.stdout : undefined, stderr: run.stderr, durationMs: run.durationMs, passed: index, total: cases.length, confirmed: failure.message } }, { headers: { "Cache-Control": "no-store" } });

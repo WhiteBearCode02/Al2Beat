@@ -11,8 +11,11 @@
 | `idb` | 8.0.3 | ISC | IndexedDB Promise 래퍼 |
 | Lucide React | 1.47.0 | ISC | 인터페이스 아이콘 |
 | Zod | 4.6.5 | MIT | API 요청 스키마 검증 |
-| `@vercel/sandbox` | 3.5.1 | Apache-2.0 | Python 사용자 코드의 격리 microVM 실행 |
+| `@vercel/sandbox` | 3.5.1 | Apache-2.0 | 다섯 언어 사용자 코드의 격리 microVM 실행 |
 | Pyodide (`pyodide`) | 314.0.7 | MPL-2.0 | 브라우저 전용 Python WebAssembly 런타임 |
+| GNU GCC / G++ | Amazon Linux 2023 제공 버전 | GPL-3.0-or-later, GCC Runtime Library Exception | 선택적 Sandbox C/C++ 컴파일 도구 모음 |
+| Amazon Corretto 또는 OpenJDK | 21 | GPL-2.0-only with Classpath Exception | Sandbox 베이스 이미지에 따른 선택적 Java 도구 모음 |
+| .NET SDK | 8 | MIT 및 구성요소별 고지 | 선택적 Sandbox C# 컴파일·실행 도구 모음 |
 | `server-only` | 0.0.1 | MIT | 서버 전용 테스트·실행 모듈의 클라이언트 import 방지 |
 | TypeScript | 5.9.3 | Apache-2.0 | 정적 타입과 빌드 도구 |
 | ESLint | 9.39.5 | MIT | 정적 분석 |

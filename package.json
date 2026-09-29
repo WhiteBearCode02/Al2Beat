@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "prepare:pyodide": "node scripts/sync-pyodide-assets.mjs",
+    "sandbox:create-toolchain": "node --env-file-if-exists=.env.local scripts/create-toolchain-snapshot.mjs",
     "dev": "npm run prepare:pyodide && next dev",
     "build": "npm run prepare:pyodide && next build",
     "start": "next start",

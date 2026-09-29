@@ -67,17 +67,26 @@
 - 공개 테스트에서는 입력·기대 출력·실제 출력 비교
 - 비공개 테스트에서는 입력과 기대 출력을 숨기고 작성자가 정한 실패 범주만 안내
 
-Python **예제 실행**은 Pyodide 기반의 전용 Web Worker에서 실제로 실행됩니다. 따라서 로컬 개발 환경에서도 Vercel 인증 없이 공개 예제와 직접 입력을 실행할 수 있습니다. 비공개 테스트를 사용하는 **제출 채점**은 Vercel Sandbox가 연결된 배포 환경에서만 활성화됩니다. 나머지 네 언어는 편집과 자동 저장을 지원하지만, 격리 런타임 실측이 끝날 때까지 실행 가능으로 표시하지 않습니다.
+Python **예제 실행**은 Pyodide 기반의 전용 Web Worker에서 실제로 실행됩니다. C, C++, Java, C#은 Vercel Sandbox의 검증된 다국어 도구 모음 스냅샷이 연결되면 예제 실행과 제출 채점이 활성화됩니다. 스냅샷이 없는 환경에서는 편집과 자동 저장만 제공하고 실행 가능으로 표시하지 않습니다.
 
 | 언어 | 편집 | 예제 실행 | 제출 채점 | 현재 표시 |
 |---|:---:|:---:|:---:|---|
 | Python | ✅ | ✅ (브라우저 로컬 Worker) | Vercel Sandbox 연결 시 ✅ | 예제 실행 가능 |
-| C | ✅ | — | — | 편집 가능 |
-| C++ | ✅ | — | — | 편집 가능 |
-| Java | ✅ | — | — | 편집 가능 |
-| C# | ✅ | — | — | 편집 가능 |
+| C | ✅ | Sandbox 연결 시 ✅ | Sandbox 연결 시 ✅ | GCC 스냅샷 / C17 |
+| C++ | ✅ | Sandbox 연결 시 ✅ | Sandbox 연결 시 ✅ | G++ 스냅샷 / C++20 |
+| Java | ✅ | Sandbox 연결 시 ✅ | Sandbox 연결 시 ✅ | OpenJDK 21 스냅샷 |
+| C# | ✅ | Sandbox 연결 시 ✅ | Sandbox 연결 시 ✅ | .NET SDK 8 |
 
 > 브라우저 실행은 서버나 Function에서 사용자 코드를 실행하지 않습니다. Vercel 연결이 없으면 제출 버튼은 비활성화되며, 비공개 테스트를 브라우저로 보내거나 가짜 정답 판정을 하지 않습니다. Monaco의 문법 강조만으로 실행 가능하다고 표시하지 않습니다.
+
+다국어 도구 모음 스냅샷 생성은 Vercel Sandbox 무료 한도를 소비하므로 자동 실행하지 않습니다. Hobby 사용량과 개인·비상업 조건을 확인한 뒤 명시적 확인값을 설정해야 합니다.
+
+```powershell
+$env:AL2BEAT_CONFIRM_SANDBOX_USAGE="CREATE_FREE_TIER_SNAPSHOT"
+npm run sandbox:create-toolchain
+```
+
+출력된 `AL2BEAT_TOOLCHAIN_SNAPSHOT_ID`를 커밋하지 말고 `.env.local` 또는 Vercel 프로젝트 환경 변수에 저장합니다. 스냅샷은 기본적으로 30일 후 만료되며, 생성·CPU·메모리·저장소 무료 한도를 사용합니다.
 
 ### 모바일 학습
 
@@ -135,7 +144,7 @@ Python **예제 실행**은 Pyodide 기반의 전용 Web Worker에서 실제로 
 
 ## 사용자 코드 실행 보안
 
-사용자 코드를 Next.js Function이나 일반 앱 프로세스에서 직접 실행하지 않습니다. 공개 예제·직접 입력은 사용자의 브라우저 안 전용 Web Worker의 Pyodide Python 런타임에서 실행하며, 서버 전용 비공개 테스트 제출만 `@vercel/sandbox`의 요청별 Firecracker microVM을 사용하도록 구현되어 있습니다.
+사용자 코드를 Next.js Function이나 일반 앱 프로세스에서 직접 실행하지 않습니다. Python 공개 예제·직접 입력은 사용자의 브라우저 안 전용 Web Worker에서 실행하며, 다른 언어의 예제 실행과 다섯 언어의 비공개 테스트 제출은 `@vercel/sandbox`의 요청별 Firecracker microVM을 사용합니다.
 
 | 제한 | 값 |
 |---|---:|
@@ -143,7 +152,7 @@ Python **예제 실행**은 Pyodide 기반의 전용 Web Worker에서 실제로 
 | 입력 크기 | 10,000 bytes |
 | 출력 크기 | 64,000 bytes |
 | 실행 시간 | 3초 |
-| 프로세스 메모리 | 256MB |
+| 메모리 | C/C++/Python 256MB 가상 메모리, Java/C# 256MB 관리 힙 |
 | 제출 테스트 | 최대 12개 |
 | 실행 빈도 | IP별 분당 10회 |
 | 제출 빈도 | IP별 분당 3회 |
@@ -170,7 +179,7 @@ Python **예제 실행**은 Pyodide 기반의 전용 Web Worker에서 실제로 
 | 로컬 저장 | IndexedDB, `idb` |
 | 검증 | Zod, Node test runner, ESLint |
 | 브라우저 예제 실행 | Pyodide 3.14, 전용 Web Worker, 로컬 정적 런타임 |
-| 서버 전용 제출 | Vercel Sandbox SDK, Python 3.14 managed image |
+| 서버 실행·제출 | Vercel Sandbox SDK, Python 3.14 managed image, GCC, OpenJDK 21, .NET 8 도구 모음 스냅샷 |
 | 아이콘 | Lucide React |
 | 콘텐츠 | 버전 관리되는 JSON과 Markdown |
 
@@ -260,8 +269,8 @@ npm run build
 - [x] 반응형 UI, 키보드 포커스, 대본, 동작 줄이기
 - [x] 브라우저 Python 예제 실행과 Sandbox 기반 서버 전용 테스트 채점 경로 구현
 - [ ] Vercel 인증 환경에서 Python 런타임·한도 운영 실측 완료
-- [ ] C와 C++ 격리 컴파일·실행 검증
-- [ ] Java와 C# 이미지 크기·시작 시간·메모리 실측
+- [x] C, C++, Java, C# 공통 격리 컴파일·실행 어댑터 구현
+- [ ] 인증된 Hobby 환경에서 다국어 스냅샷 생성 및 런타임·이미지 크기·시작 시간·메모리 실측
 - [ ] 전역 사용량 선차단 방식 검증
 - [ ] 복습 간격과 오답 노트를 사용자가 직접 조절하는 기능
 

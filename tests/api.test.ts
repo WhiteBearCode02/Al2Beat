@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { GET as capabilities } from "../src/app/api/capabilities/route.ts";
 import { POST as execute } from "../src/app/api/execute/route.ts";
+import { getToolchainSnapshotId, hasSandboxCredentials } from "../src/server/language-runtimes.ts";
 
 test("capabilities가 Python 예제 실행과 제출 가능 여부를 분리해 표시한다", async () => {
   const response = await capabilities();
@@ -10,9 +11,10 @@ test("capabilities가 Python 예제 실행과 제출 가능 여부를 분리해 
   assert.equal(body.execution.enabled, true);
   assert.deepEqual(Object.keys(body.execution.languages), ["c", "cpp", "java", "python", "csharp"]);
   for (const [language, status] of Object.entries(body.execution.languages) as Array<[string, { edit: boolean; run: boolean; judge: boolean }]>) {
+    const serverAvailable = hasSandboxCredentials() && (language === "python" || Boolean(getToolchainSnapshotId()));
     assert.equal(status.edit, true);
-    assert.equal(status.run, language === "python");
-    assert.equal(status.judge, false);
+    assert.equal(status.run, language === "python" || serverAvailable);
+    assert.equal(status.judge, serverAvailable);
   }
 });
 
@@ -29,7 +31,8 @@ test("execute API가 잘못된 요청을 일관된 오류로 거부한다", asyn
   assert.equal(typeof body.error.requestId, "string");
 });
 
-test("미검증 언어 요청은 Sandbox를 만들기 전에 거부한다", async () => {
+test("도구 모음 스냅샷이 없는 언어 요청은 Sandbox를 만들기 전에 거부한다", async () => {
+  if (hasSandboxCredentials() && getToolchainSnapshotId()) return;
   const response = await execute(new Request("http://localhost/api/execute", {
     method: "POST",
     headers: { "content-type": "application/json", "x-forwarded-for": "127.0.0.44" },
@@ -43,8 +46,8 @@ test("미검증 언어 요청은 Sandbox를 만들기 전에 거부한다", asyn
     }),
   }));
   const body = await response.json();
-  assert.equal(response.status, 422);
-  assert.equal(body.error.code, "LANGUAGE_NOT_READY");
+  assert.equal(response.status, 503);
+  assert.equal(body.error.code, "SANDBOX_NOT_CONFIGURED");
   assert.equal(body.error.retryable, false);
 });
 
@@ -59,7 +62,7 @@ test("바이트 기준 소스 제한을 적용한다", async () => {
 });
 
 test("Sandbox 인증이 없는 환경에서는 비공개 제출을 시작하지 않는다", async () => {
-  if (process.env.VERCEL || process.env.VERCEL_OIDC_TOKEN) return;
+  if (hasSandboxCredentials()) return;
   const response = await execute(new Request("http://localhost/api/execute", {
     method: "POST",
     headers: { "content-type": "application/json", "x-forwarded-for": "127.0.0.45" },
