@@ -3,6 +3,8 @@
 > **Learn the logic. Feel the flow.**<br>
 > 알고리즘을 속도 경쟁이 아니라, 개념의 상태 변화를 보고 직접 반복하며 익히는 개인 학습 스튜디오입니다.
 
+### [🚀 al2beat 바로 체험하기](https://al2-beat.vercel.app/)
+
 `al2beat`는 **algorithm to beat**와 **algorithm + beat**를 함께 담은 이름입니다. 여기서 beat는 순위를 가르는 속도가 아니라, 자료구조가 변하고 탐색이 진행되는 한 단계의 박자입니다. 학습자는 선수 개념부터 영상, 문제, 코드, 복습까지 이어지는 하나의 트랙을 자기 속도로 완주합니다.
 
 ![al2beat의 알고리즘 트랙, 모션 설명, 체크포인트 문제 화면](docs/images/al2beat-learning-track.png)
@@ -57,7 +59,7 @@
 
 ### Monaco 기반 Practice Studio
 
-![Python 실행과 제출을 제공하는 al2beat Practice Studio](docs/images/al2beat-practice-studio.png)
+![다국어 실행과 제출을 제공하는 al2beat Practice Studio](docs/images/al2beat-practice-studio.png)
 
 - C, C++, Java, Python, C# 문법 강조와 언어별 시작 템플릿
 - 문제별·언어별 코드와 사용자 입력 자동 저장
@@ -128,9 +130,9 @@ npm run sandbox:verify-production
 - 직접 제작 모션 8개, 장면 48개
 - 직접 작성 문제 8개
 - 자체 작성 용어 52개
-- 자체 작성 기준 풀이 16개: Python 8개, C++ 8개
+- 자체 작성 기준 풀이 40개: C, C++, Java, Python, C# 각 8개
 
-기준 풀이는 정답을 하나로 고정하기 위한 것이 아니라 풀이 구조와 상태 변화를 비교하기 위한 예시입니다. C, Java, C# 기준 풀이는 검수를 마치기 전까지 `준비 중`으로 표시하며 가짜 변환 코드를 제공하지 않습니다.
+기준 풀이는 정답을 하나로 고정하기 위한 것이 아니라 풀이 구조와 상태 변화를 비교하기 위한 예시입니다. 선택한 언어의 `정답 보기` 안내를 확인하면 현재 코드 아래에서 기준 풀이를 나란히 비교할 수 있습니다.
 
 ## 개발자 용어 사전
 
@@ -213,7 +215,8 @@ al2beat/
 │  ├─ app/                      # App Router 페이지와 API
 │  ├─ components/               # 트랙, 모션, 문제, IDE, 사전 UI
 │  ├─ lib/                      # 콘텐츠 조립과 IndexedDB
-│  ├─ server/                   # 기준 풀이, 비공개 테스트, Sandbox 실행기
+│  ├─ server/                   # 기준 풀이 API, 비공개 테스트, Sandbox 실행기
+│  │  └─ reference-solutions/   # 언어별 자체 작성 기준 풀이
 │  └─ types/                    # 콘텐츠 타입
 ├─ tests/                       # 콘텐츠·API 기능 테스트
 └─ THIRD_PARTY_NOTICES.md       # 버전·라이선스 고지
@@ -246,10 +249,11 @@ OIDC 토큰은 만료될 수 있습니다. 토큰이나 프로젝트 식별자�
 npm run typecheck
 npm run lint
 npm test
+npm run solutions:verify-local
 npm run build
 ```
 
-검증 항목에는 콘텐츠 수와 필수 필드, 서버 전용 테스트의 클라이언트 import 방지, 기준 풀이 API 입력 검증, 언어별 기능 표시, 바이트 제한이 포함됩니다. 브라우저 검수에서는 데스크톱·390px 모바일 레이아웃, 정답 확인 안내와 비교 패널, 키보드 접근, 자막·대본, IndexedDB 복구, 콘솔 오류를 확인합니다.
+검증 항목에는 콘텐츠 수와 필수 필드, 서버 전용 테스트의 클라이언트 import 방지, 5개 언어 × 8개 기준 풀이의 완전성과 API 입력 검증, 언어별 기능 표시, 바이트 제한이 포함됩니다. `solutions:verify-local`은 PC에 설치된 컴파일러만 사용해 기준 풀이를 공개·비공개 테스트로 확인하며, 없는 컴파일러는 건너뛴 사실을 출력합니다. 브라우저 검수에서는 데스크톱·390px 모바일 레이아웃, 정답 확인 안내와 비교 패널, 키보드 접근, 자막·대본, IndexedDB 복구, 콘솔 오류를 확인합니다.
 
 ## 콘텐츠 편집
 
@@ -269,7 +273,7 @@ npm run build
 - Hobby 포함량을 넘으면 Sandbox 실행이 실패할 수 있으며, UI는 이를 시스템 장애로 처리합니다.
 - 배포 전 현재 약관과 한도는 [Vercel Hobby](https://vercel.com/docs/plans/hobby), [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines), [Sandbox 문서](https://vercel.com/docs/sandbox)에서 다시 확인해야 합니다.
 
-현재 저장소에는 Vercel 인증과 연결 프로젝트 정보가 포함되어 있지 않습니다. 따라서 공개 운영 URL은 별도 인증·배포 절차를 마친 뒤 생깁니다.
+현재 운영 사이트는 [https://al2-beat.vercel.app/](https://al2-beat.vercel.app/)에서 확인할 수 있습니다. Vercel 인증 정보와 프로젝트 식별자는 저장소에 포함하지 않습니다.
 
 ## 콘텐츠 권리와 오픈소스
 
@@ -283,7 +287,7 @@ npm run build
 - [x] IndexedDB 자동 저장과 JSON 백업·복구
 - [x] 반응형 UI, 키보드 포커스, 대본, 동작 줄이기
 - [x] 브라우저 Python 예제 실행과 Sandbox 기반 서버 전용 테스트 채점 경로 구현
-- [x] 정답 확인 안내와 Python/C++ 기준 풀이 비교 패널
+- [x] 정답 확인 안내와 C/C++/Java/Python/C# 기준 풀이 비교 패널
 - [x] Vercel Hobby 운영 환경에서 다섯 언어 실행·채점 종단 검증
 - [x] C, C++, Java, C# 공통 격리 컴파일·실행 어댑터 구현
 - [x] 인증된 Hobby 환경에서 다국어 스냅샷 생성과 런타임 버전 실측

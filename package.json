@@ -7,6 +7,7 @@
     "prepare:pyodide": "node scripts/sync-pyodide-assets.mjs",
     "sandbox:create-toolchain": "node --env-file-if-exists=.env.local scripts/create-toolchain-snapshot.mjs",
     "sandbox:verify-production": "node scripts/verify-production-runtimes.mjs",
+    "solutions:verify-local": "node --conditions=react-server --experimental-strip-types scripts/verify-reference-solutions-local.mjs",
     "dev": "npm run prepare:pyodide && next dev",
     "build": "npm run prepare:pyodide && next build",
     "start": "next start",
