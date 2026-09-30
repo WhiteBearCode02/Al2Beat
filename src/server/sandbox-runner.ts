@@ -2,7 +2,7 @@ import "server-only";
 
 import { Sandbox } from "@vercel/sandbox";
 import type { LanguageId } from "@/types/content";
-import { getToolchainSnapshotId, hasSandboxCredentials, isServerRuntimeAvailable, RUNTIME_SPECS } from "./language-runtimes.ts";
+import { getSandboxRegion, getToolchainSnapshotId, hasSandboxCredentials, isServerRuntimeAvailable, RUNTIME_SPECS } from "./language-runtimes.ts";
 
 export const EXECUTION_LIMITS = {
   sourceBytes: 20_000, inputBytes: 10_000, outputBytes: 64_000,
@@ -19,6 +19,8 @@ export type SandboxRun = {
 };
 
 const WORKDIR = "/tmp/al2beat";
+const EXECUTION_FILE_LIMIT_BLOCKS = 128;
+const COMPILATION_FILE_LIMIT_BLOCKS = 32_768;
 const CSHARP_PROJECT = `<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -28,6 +30,13 @@ const CSHARP_PROJECT = `<Project Sdk="Microsoft.NET.Sdk">
     <RestoreIgnoreFailedSources>true</RestoreIgnoreFailedSources>
   </PropertyGroup>
 </Project>
+`;
+const CSHARP_NUGET_CONFIG = `<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <clear />
+  </packageSources>
+</configuration>
 `;
 
 export function isSandboxSubmissionAvailable(language: LanguageId = "python") {
@@ -61,7 +70,7 @@ export async function createLanguageSandbox(language: LanguageId) {
     persistent: false,
     resources: { vcpus: 1 },
     timeout: 30_000,
-    region: "hnd1",
+    region: getSandboxRegion(),
   });
   await sandbox.mkDir(WORKDIR);
   return sandbox;
@@ -69,7 +78,12 @@ export async function createLanguageSandbox(language: LanguageId) {
 
 export async function writeLanguageSource(sandbox: Sandbox, language: LanguageId, source: string) {
   const files = [{ path: `${WORKDIR}/${RUNTIME_SPECS[language].sourceFile}`, content: Buffer.from(source, "utf8") }];
-  if (language === "csharp") files.push({ path: `${WORKDIR}/Main.csproj`, content: Buffer.from(CSHARP_PROJECT, "utf8") });
+  if (language === "csharp") {
+    files.push(
+      { path: `${WORKDIR}/Main.csproj`, content: Buffer.from(CSHARP_PROJECT, "utf8") },
+      { path: `${WORKDIR}/NuGet.Config`, content: Buffer.from(CSHARP_NUGET_CONFIG, "utf8") },
+    );
+  }
   await sandbox.writeFiles(files);
 }
 
@@ -86,23 +100,36 @@ async function collectRun(sandbox: Sandbox, prefix: string, durationMs: number):
     exitCode: Number.isFinite(exitCode) ? exitCode : 1,
     durationMs,
     timedOut: exitCode === 124 || exitCode === 137,
-    outputExceeded: stdout.exceeded || stderr.exceeded || exitCode === 153,
+    outputExceeded: stdout.exceeded || stderr.exceeded,
   };
 }
 
-async function runCapturedCommand(sandbox: Sandbox, language: LanguageId, prefix: string, command: string, args: string[], timeoutMs: number, input = false) {
+async function runCapturedCommand(
+  sandbox: Sandbox,
+  language: LanguageId,
+  prefix: string,
+  command: string,
+  args: string[],
+  timeoutMs: number,
+  input = false,
+  stage: "compile" | "execute" = "execute",
+) {
   const invocation = [shellQuote(command), ...args.map(shellQuote)].join(" ");
   const memoryGuard = language === "java"
     ? "export JAVA_TOOL_OPTIONS='-Xmx256m -Xss1m'"
     : language === "csharp"
-      ? "export DOTNET_GCHeapHardLimit=0x10000000 DOTNET_CLI_TELEMETRY_OPTOUT=1"
+      ? `export DOTNET_GCHeapHardLimit=0x10000000 DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1 DOTNET_NOLOGO=1 DOTNET_CLI_HOME=${shellQuote(`${WORKDIR}/.dotnet`)}`
       : `ulimit -v ${EXECUTION_LIMITS.memoryMb * 1024}`;
+  const fileLimit = language === "csharp"
+    ? "unlimited"
+    : String(stage === "compile" ? COMPILATION_FILE_LIMIT_BLOCKS : EXECUTION_FILE_LIMIT_BLOCKS);
   const script = [
     `cd ${shellQuote(WORKDIR)}`,
     memoryGuard,
-    "ulimit -f 128",
-    `timeout --signal=KILL ${Math.ceil(timeoutMs / 1000)}s ${invocation}${input ? " < input.txt" : ""} > ${prefix}-stdout.txt 2> ${prefix}-stderr.txt`,
+    `ulimit -f ${fileLimit}`,
+    `timeout --signal=KILL ${Math.ceil(timeoutMs / 1000)}s ${invocation}${input ? " < input.txt" : ""} > >(head -c ${EXECUTION_LIMITS.outputBytes + 1} > ${prefix}-stdout.txt) 2> >(head -c ${EXECUTION_LIMITS.outputBytes + 1} > ${prefix}-stderr.txt)`,
     "status=$?",
+    "wait",
     `printf '%s' "$status" > ${prefix}-exit.txt`,
     "exit 0",
   ].join("; ");
@@ -118,7 +145,7 @@ async function runCapturedCommand(sandbox: Sandbox, language: LanguageId, prefix
 export async function compileLanguage(sandbox: Sandbox, language: LanguageId): Promise<SandboxRun | null> {
   const compile = RUNTIME_SPECS[language].compile;
   if (!compile) return null;
-  return runCapturedCommand(sandbox, language, "compile", compile.command, compile.args, compile.timeoutMs);
+  return runCapturedCommand(sandbox, language, "compile", compile.command, compile.args, compile.timeoutMs, false, "compile");
 }
 
 export async function runLanguage(sandbox: Sandbox, language: LanguageId, input: string): Promise<SandboxRun> {

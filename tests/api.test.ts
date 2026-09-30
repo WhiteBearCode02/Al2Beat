@@ -2,7 +2,19 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { GET as capabilities } from "../src/app/api/capabilities/route.ts";
 import { POST as execute } from "../src/app/api/execute/route.ts";
-import { getToolchainSnapshotId, hasSandboxCredentials } from "../src/server/language-runtimes.ts";
+import { getSandboxRegion, getToolchainSnapshotId, hasSandboxCredentials } from "../src/server/language-runtimes.ts";
+
+test("Sandbox region defaults to the snapshot creation region", () => {
+  const previous = process.env.AL2BEAT_SANDBOX_REGION;
+  delete process.env.AL2BEAT_SANDBOX_REGION;
+  assert.equal(getSandboxRegion(), "iad1");
+  process.env.AL2BEAT_SANDBOX_REGION = "hnd1";
+  assert.equal(getSandboxRegion(), "hnd1");
+  process.env.AL2BEAT_SANDBOX_REGION = "unsupported";
+  assert.equal(getSandboxRegion(), "iad1");
+  if (previous === undefined) delete process.env.AL2BEAT_SANDBOX_REGION;
+  else process.env.AL2BEAT_SANDBOX_REGION = previous;
+});
 
 test("capabilities가 Python 예제 실행과 제출 가능 여부를 분리해 표시한다", async () => {
   const response = await capabilities();

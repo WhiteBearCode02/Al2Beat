@@ -7,8 +7,9 @@ if (process.env.AL2BEAT_CONFIRM_SANDBOX_USAGE !== "CREATE_FREE_TIER_SNAPSHOT") {
 const credentials = process.env.VERCEL_TOKEN && process.env.VERCEL_TEAM_ID && process.env.VERCEL_PROJECT_ID
   ? { token: process.env.VERCEL_TOKEN, teamId: process.env.VERCEL_TEAM_ID, projectId: process.env.VERCEL_PROJECT_ID }
   : {};
+const region = process.env.AL2BEAT_SANDBOX_REGION === "hnd1" ? "hnd1" : "iad1";
 
-const sandbox = await Sandbox.create({ ...credentials, runtime: "node24", timeout: 10 * 60 * 1000 });
+const sandbox = await Sandbox.create({ ...credentials, runtime: "node24", region, timeout: 10 * 60 * 1000 });
 let snapshotted = false;
 try {
   const install = await sandbox.runCommand({
@@ -41,6 +42,7 @@ try {
   const snapshot = await sandbox.snapshot();
   snapshotted = true;
   console.log(`Verified toolchains: ${versions.join(" | ")}`);
+  console.log(`Sandbox region: ${region}`);
   console.log(`AL2BEAT_TOOLCHAIN_SNAPSHOT_ID=${snapshot.snapshotId}`);
   console.log("Store this value only in Vercel environment settings or an uncommitted .env.local file.");
 } finally {

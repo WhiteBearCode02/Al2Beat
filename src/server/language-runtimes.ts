@@ -10,6 +10,9 @@ export type RuntimeSpec = {
   requiresToolchainSnapshot: boolean;
 };
 
+export type SandboxRegion = "iad1" | "hnd1";
+export const DEFAULT_SANDBOX_REGION: SandboxRegion = "iad1";
+
 export const RUNTIME_SPECS: Record<LanguageId, RuntimeSpec> = {
   c: {
     sourceFile: "main.c", version: "GCC snapshot / C17",
@@ -32,8 +35,12 @@ export const RUNTIME_SPECS: Record<LanguageId, RuntimeSpec> = {
   },
   csharp: {
     sourceFile: "Program.cs", version: ".NET SDK 8 / C#",
-    compile: { command: "dotnet", args: ["build", "Main.csproj", "-c", "Release", "--nologo", "--verbosity", "quiet", "--ignore-failed-sources"], timeoutMs: 12_000 },
-    execute: { command: "dotnet", args: ["bin/Release/net8.0/Main.dll"] }, requiresToolchainSnapshot: true,
+    compile: {
+      command: "bash",
+      args: ["-lc", "dotnet restore Main.csproj --configfile NuGet.Config --ignore-failed-sources --nologo --verbosity quiet && dotnet build Main.csproj -c Release --no-restore --nologo --verbosity quiet -p:UseSharedCompilation=false"],
+      timeoutMs: 12_000,
+    },
+    execute: { command: "./bin/Release/net8.0/Main", args: [] }, requiresToolchainSnapshot: true,
   },
 };
 
@@ -44,6 +51,10 @@ export function hasSandboxCredentials() {
 
 export function getToolchainSnapshotId() {
   return process.env.AL2BEAT_TOOLCHAIN_SNAPSHOT_ID?.trim() || undefined;
+}
+
+export function getSandboxRegion(): SandboxRegion {
+  return process.env.AL2BEAT_SANDBOX_REGION === "hnd1" ? "hnd1" : DEFAULT_SANDBOX_REGION;
 }
 
 export function isServerRuntimeAvailable(language: LanguageId) {

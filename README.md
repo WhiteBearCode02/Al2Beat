@@ -69,15 +69,15 @@
 - 비공개 테스트에서는 입력과 기대 출력을 숨기고 작성자가 정한 실패 범주만 안내
 - `정답 보기` 확인 안내 후 내 코드와 자체 작성 기준 풀이를 나란히 비교
 
-Python **예제 실행**은 Pyodide 기반의 전용 Web Worker에서 실제로 실행됩니다. C, C++, Java, C#은 Vercel Sandbox의 검증된 다국어 도구 모음 스냅샷이 연결되면 예제 실행과 제출 채점이 활성화됩니다. 스냅샷이 없는 환경에서는 편집과 자동 저장만 제공하고 실행 가능으로 표시하지 않습니다.
+Python **예제 실행**은 Pyodide 기반의 전용 Web Worker에서 실제로 실행됩니다. C, C++, Java, C#은 Vercel Sandbox의 검증된 다국어 도구 모음 스냅샷에서 컴파일·실행·채점합니다. 현재 운영 배포에는 `iad1` 스냅샷이 연결되어 다섯 언어가 모두 활성화되어 있습니다. 스냅샷 ID가 없는 환경에서는 편집과 자동 저장만 제공합니다. 연결된 스냅샷이 만료되면 실행 요청이 시스템 장애로 중단되므로 새 스냅샷으로 교체해야 합니다.
 
 | 언어 | 편집 | 예제 실행 | 제출 채점 | 현재 표시 |
 |---|:---:|:---:|:---:|---|
-| Python | ✅ | ✅ (브라우저 로컬 Worker) | Vercel Sandbox 연결 시 ✅ | 예제 실행 가능 |
-| C | ✅ | Sandbox 연결 시 ✅ | Sandbox 연결 시 ✅ | GCC 스냅샷 / C17 |
-| C++ | ✅ | Sandbox 연결 시 ✅ | Sandbox 연결 시 ✅ | G++ 스냅샷 / C++20 |
-| Java | ✅ | Sandbox 연결 시 ✅ | Sandbox 연결 시 ✅ | OpenJDK 21 스냅샷 |
-| C# | ✅ | Sandbox 연결 시 ✅ | Sandbox 연결 시 ✅ | .NET SDK 8 |
+| Python | ✅ | ✅ (브라우저 로컬 Worker) | ✅ (Sandbox) | Python 3.14 |
+| C | ✅ | ✅ | ✅ | GCC 11.5 / C17 |
+| C++ | ✅ | ✅ | ✅ | G++ 11.5 / C++20 |
+| Java | ✅ | ✅ | ✅ | OpenJDK 21.0.12 |
+| C# | ✅ | ✅ | ✅ | .NET SDK 8.0.129 |
 
 > 브라우저 실행은 서버나 Function에서 사용자 코드를 실행하지 않습니다. Vercel 연결이 없으면 제출 버튼은 비활성화되며, 비공개 테스트를 브라우저로 보내거나 가짜 정답 판정을 하지 않습니다. Monaco의 문법 강조만으로 실행 가능하다고 표시하지 않습니다.
 
@@ -85,10 +85,19 @@ Python **예제 실행**은 Pyodide 기반의 전용 Web Worker에서 실제로 
 
 ```powershell
 $env:AL2BEAT_CONFIRM_SANDBOX_USAGE="CREATE_FREE_TIER_SNAPSHOT"
+$env:AL2BEAT_SANDBOX_REGION="iad1"
 npm run sandbox:create-toolchain
 ```
 
 출력된 `AL2BEAT_TOOLCHAIN_SNAPSHOT_ID`를 커밋하지 말고 `.env.local` 또는 Vercel 프로젝트 환경 변수에 저장합니다. 스냅샷은 기본적으로 30일 후 만료되며, 생성·CPU·메모리·저장소 무료 한도를 사용합니다.
+
+운영 배포의 C/C++/Java/C# 컴파일과 비공개 채점을 다시 확인할 때만 명시적 확인값과 대상 URL을 지정합니다. 기본 실행은 네 언어를 21초 간격으로 제출해 분당 제출 제한을 지킵니다. `AL2BEAT_VERIFY_LANGUAGES=csharp`처럼 일부 언어만 선택할 수도 있습니다.
+
+```powershell
+$env:AL2BEAT_CONFIRM_PRODUCTION_USAGE="VERIFY_FOUR_SERVER_LANGUAGES"
+$env:AL2BEAT_PRODUCTION_URL="https://al2-beat.vercel.app"
+npm run sandbox:verify-production
+```
 
 ### 모바일 학습
 
@@ -275,9 +284,10 @@ npm run build
 - [x] 반응형 UI, 키보드 포커스, 대본, 동작 줄이기
 - [x] 브라우저 Python 예제 실행과 Sandbox 기반 서버 전용 테스트 채점 경로 구현
 - [x] 정답 확인 안내와 Python/C++ 기준 풀이 비교 패널
-- [ ] Vercel 인증 환경에서 Python 런타임·한도 운영 실측 완료
+- [x] Vercel Hobby 운영 환경에서 다섯 언어 실행·채점 종단 검증
 - [x] C, C++, Java, C# 공통 격리 컴파일·실행 어댑터 구현
-- [ ] 인증된 Hobby 환경에서 다국어 스냅샷 생성 및 런타임·이미지 크기·시작 시간·메모리 실측
+- [x] 인증된 Hobby 환경에서 다국어 스냅샷 생성과 런타임 버전 실측
+- [ ] Sandbox 이미지 크기·언어별 시작 시간·전체 네이티브 메모리 정밀 실측
 - [ ] 전역 사용량 선차단 방식 검증
 - [ ] 복습 간격과 오답 노트를 사용자가 직접 조절하는 기능
 

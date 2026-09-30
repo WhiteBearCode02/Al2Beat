@@ -13,3 +13,7 @@ experiments/**/bin/
 experiments/**/obj/
 experiments/**/.dotnet-cli/
 experiments/**/*.class
+
+.vercel/
+.env.local
+.env.*.local
