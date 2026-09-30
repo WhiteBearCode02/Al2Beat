@@ -103,6 +103,99 @@ public static class Program
         Console.Write(best + " " + top);
     }
 }`,
+  deque: String.raw`using System;
+using System.Text;
+
+${scanner}
+
+public static class Program
+{
+    public static void Main()
+    {
+        var input = new FastScanner();
+        int q = input.NextInt();
+        int[] values = new int[q * 2 + 1];
+        int left = q, right = q;
+        while (q-- > 0)
+        {
+            string command = input.Next();
+            if (command == "LF") values[--left] = input.NextInt();
+            else if (command == "LB") values[right++] = input.NextInt();
+            else if (command == "PF") { if (left < right) left++; }
+            else if (left < right) right--;
+        }
+        if (left == right) Console.Write("EMPTY");
+        else
+        {
+            var answer = new StringBuilder();
+            for (int i = left; i < right; i++) { if (i > left) answer.Append(' '); answer.Append(values[i]); }
+            Console.Write(answer);
+        }
+    }
+}`,
+  "linked-list": String.raw`using System;
+using System.Collections.Generic;
+using System.Text;
+
+${scanner}
+
+public static class Program
+{
+    public static void Main()
+    {
+        var input = new FastScanner();
+        var text = new LinkedList<char>();
+        foreach (char value in input.Next()) text.AddLast(value);
+        LinkedListNode<char> cursor = null;
+        int q = input.NextInt();
+        while (q-- > 0)
+        {
+            char command = input.Next()[0];
+            if (command == 'L')
+            {
+                LinkedListNode<char> target = cursor == null ? text.Last : cursor.Previous;
+                if (target != null) cursor = target;
+            }
+            else if (command == 'R') { if (cursor != null) cursor = cursor.Next; }
+            else if (command == 'D')
+            {
+                LinkedListNode<char> target = cursor == null ? text.Last : cursor.Previous;
+                if (target != null) text.Remove(target);
+            }
+            else
+            {
+                char value = input.Next()[0];
+                if (cursor == null) text.AddLast(value); else text.AddBefore(cursor, value);
+            }
+        }
+        var answer = new StringBuilder(text.Count);
+        foreach (char value in text) answer.Append(value);
+        Console.Write(answer);
+    }
+}`,
+  "min-heap": String.raw`using System;
+using System.Collections.Generic;
+using System.Text;
+
+${scanner}
+
+public static class Program
+{
+    public static void Main()
+    {
+        var input = new FastScanner();
+        int q = input.NextInt();
+        var heap = new PriorityQueue<long, long>();
+        var answer = new StringBuilder();
+        while (q-- > 0)
+        {
+            char command = input.Next()[0];
+            if (command == 'P') { long value = input.NextLong(); heap.Enqueue(value, value); }
+            else answer.Append(heap.Count == 0 ? "EMPTY" : heap.Dequeue().ToString()).Append('\n');
+        }
+        Console.Write(answer);
+    }
+}`,
   "binary-search": String.raw`using System;
 using System.Text;
 
@@ -235,6 +328,46 @@ public static class Program
                 foreach (int next in graph[node])
                     if (!seen[next]) { seen[next] = true; stack.Push(next); }
             }
+        }
+        Console.Write(answer);
+    }
+}`,
+  "union-find": String.raw`using System;
+using System.Text;
+
+${scanner}
+
+public static class Program
+{
+    static int[] parent, size;
+    static int Find(int node)
+    {
+        int root = node;
+        while (parent[root] != root) root = parent[root];
+        while (parent[node] != node) { int next = parent[node]; parent[node] = root; node = next; }
+        return root;
+    }
+    static void Union(int a, int b)
+    {
+        int rootA = Find(a), rootB = Find(b);
+        if (rootA == rootB) return;
+        if (size[rootA] < size[rootB]) { int temp = rootA; rootA = rootB; rootB = temp; }
+        parent[rootB] = rootA;
+        size[rootA] += size[rootB];
+    }
+    public static void Main()
+    {
+        var input = new FastScanner();
+        int n = input.NextInt(), q = input.NextInt();
+        parent = new int[n + 1]; size = new int[n + 1];
+        for (int i = 1; i <= n; i++) { parent[i] = i; size[i] = 1; }
+        var answer = new StringBuilder();
+        while (q-- > 0)
+        {
+            char command = input.Next()[0];
+            int a = input.NextInt(), b = input.NextInt();
+            if (command == 'U') Union(a, b);
+            else answer.Append(Find(a) == Find(b) ? "YES" : "NO").Append('\n');
         }
         Console.Write(answer);
     }

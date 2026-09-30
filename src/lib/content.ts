@@ -8,10 +8,14 @@ const slugs: Record<string, string> = {
   stack: "괄호 비트 맞추기",
   queue: "연습실 버퍼",
   "hash-map": "오늘의 최다 비트",
+  deque: "양방향 셔틀",
+  "linked-list": "커서 사이에 비트 넣기",
+  "min-heap": "가장 가벼운 비트부터",
   "binary-search": "첫 임계 비트",
   "merge-sort": "입장 순서를 지키는 믹스",
   bfs: "최소 박자로 출구까지",
   dfs: "분리된 리듬 섬",
+  "union-find": "같은 무대인지 확인하기",
   "basic-dp": "최소 에너지 트랙",
 };
 

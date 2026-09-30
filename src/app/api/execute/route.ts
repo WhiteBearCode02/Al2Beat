@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { concepts } from "../../../lib/content.ts";
+import { PROBLEM_IDS } from "../../../lib/problem-ids.ts";
 import { getPrivateTests } from "../../../server/private-tests.ts";
 import { compileLanguage, createLanguageSandbox, EXECUTION_LIMITS, isSandboxSubmissionAvailable, runLanguage, writeLanguageSource, type SandboxRun } from "../../../server/sandbox-runner.ts";
 
@@ -10,7 +11,7 @@ export const maxDuration = 60;
 
 const requestSchema = z.object({
   action: z.enum(["run", "submit"]),
-  problemId: z.enum(["stack", "queue", "hash-map", "binary-search", "merge-sort", "bfs", "dfs", "basic-dp"]),
+  problemId: z.enum(PROBLEM_IDS),
   language: z.enum(["c", "cpp", "java", "python", "csharp"]),
   source: z.string().min(1).max(20_000),
   input: z.string().max(10_000).default(""),

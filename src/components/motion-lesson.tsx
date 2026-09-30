@@ -5,6 +5,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Concept } from "@/types/content";
 
 const ITEMS = [0, 1, 2, 3, 4];
+const VISUAL_LABELS: Partial<Record<Concept["scenes"][number]["visual"], string[]>> = {
+  stack: ["(", "[", "{", "}", "]"],
+  deque: ["L", "2", "3", "4", "R"],
+  "linked-list": ["b", "e", "a", "t", "→"],
+  heap: ["1", "3", "2", "8", "5"],
+  "union-find": ["1", "1", "3", "1", "5"],
+};
 
 function SceneVisual({ concept, scene }: { concept: Concept; scene: number }) {
   const kind = concept.scenes[scene].visual;
@@ -17,7 +24,7 @@ function SceneVisual({ concept, scene }: { concept: Concept; scene: number }) {
           key={item}
           aria-hidden="true"
         >
-          {kind === "stack" ? ["(", "[", "{", "}", "]"][item] : item + 1}
+          {VISUAL_LABELS[kind]?.[item] ?? item + 1}
         </span>
       ))}
       <svg viewBox="0 0 560 220" aria-hidden="true" className="visual-path">

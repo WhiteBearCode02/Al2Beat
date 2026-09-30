@@ -1,7 +1,8 @@
 import { z } from "zod";
+import { PROBLEM_IDS } from "../../../../lib/problem-ids.ts";
 import { getReferenceSolution } from "../../../../server/reference-solutions.ts";
 
-const paramsSchema = z.object({ conceptId: z.enum(["stack", "queue", "hash-map", "binary-search", "merge-sort", "bfs", "dfs", "basic-dp"]) });
+const paramsSchema = z.object({ conceptId: z.enum(PROBLEM_IDS) });
 const languageSchema = z.enum(["c", "cpp", "java", "python", "csharp"]);
 
 export async function GET(request: Request, context: { params: Promise<{ conceptId: string }> }) {

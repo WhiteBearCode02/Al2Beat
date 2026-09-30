@@ -34,6 +34,55 @@ for _ in range(int(input())):
     counts[name] = counts.get(name, 0) + 1
 name, count = min(counts.items(), key=lambda item: (-item[1], item[0]))
 print(name, count)`,
+  deque: String.raw`import sys
+from collections import deque
+
+input = sys.stdin.readline
+values = deque()
+for _ in range(int(input())):
+    command = input().split()
+    if command[0] == 'LF':
+        values.appendleft(int(command[1]))
+    elif command[0] == 'LB':
+        values.append(int(command[1]))
+    elif command[0] == 'PF':
+        if values:
+            values.popleft()
+    elif values:
+        values.pop()
+print(*values) if values else print('EMPTY')`,
+  "linked-list": String.raw`import sys
+
+input = sys.stdin.readline
+left = list(input().strip())
+right = []
+for _ in range(int(input())):
+    command = input().split()
+    if command[0] == 'L':
+        if left:
+            right.append(left.pop())
+    elif command[0] == 'R':
+        if right:
+            left.append(right.pop())
+    elif command[0] == 'D':
+        if left:
+            left.pop()
+    else:
+        left.append(command[1])
+print(''.join(left + right[::-1]))`,
+  "min-heap": String.raw`import sys
+import heapq
+
+input = sys.stdin.readline
+heap = []
+answer = []
+for _ in range(int(input())):
+    command = input().split()
+    if command[0] == 'P':
+        heapq.heappush(heap, int(command[1]))
+    else:
+        answer.append(str(heapq.heappop(heap)) if heap else 'EMPTY')
+print('\n'.join(answer))`,
   "binary-search": String.raw`import sys
 
 n, target = map(int, sys.stdin.readline().split())
@@ -93,6 +142,36 @@ for start in range(1, vertex_count + 1):
                 seen[next_node] = True
                 stack.append(next_node)
 print(answer)`,
+  "union-find": String.raw`import sys
+
+input = sys.stdin.readline
+n, q = map(int, input().split())
+parent = list(range(n + 1))
+size = [1] * (n + 1)
+
+def find(node):
+    root = node
+    while parent[root] != root:
+        root = parent[root]
+    while parent[node] != node:
+        next_node = parent[node]
+        parent[node] = root
+        node = next_node
+    return root
+
+answer = []
+for _ in range(q):
+    command, a, b = input().split()
+    a, b = int(a), int(b)
+    root_a, root_b = find(a), find(b)
+    if command == 'Q':
+        answer.append('YES' if root_a == root_b else 'NO')
+    elif root_a != root_b:
+        if size[root_a] < size[root_b]:
+            root_a, root_b = root_b, root_a
+        parent[root_b] = root_a
+        size[root_a] += size[root_b]
+print('\n'.join(answer))`,
   "basic-dp": String.raw`import sys
 
 n = int(sys.stdin.readline())

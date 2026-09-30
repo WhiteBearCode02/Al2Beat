@@ -86,6 +86,71 @@ public class Main {
         System.out.print(best + " " + top);
     }
 }`,
+  deque: String.raw`import java.io.*;
+import java.util.*;
+
+public class Main {
+    ${scanner}
+    public static void main(String[] args) throws Exception {
+        FastScanner input = new FastScanner();
+        int q = input.nextInt();
+        Deque<Integer> values = new ArrayDeque<>();
+        while (q-- > 0) {
+            String command = input.next();
+            if (command.equals("LF")) values.addFirst(input.nextInt());
+            else if (command.equals("LB")) values.addLast(input.nextInt());
+            else if (command.equals("PF")) { if (!values.isEmpty()) values.removeFirst(); }
+            else if (!values.isEmpty()) values.removeLast();
+        }
+        if (values.isEmpty()) System.out.print("EMPTY");
+        else {
+            StringBuilder answer = new StringBuilder();
+            for (int value : values) { if (answer.length() > 0) answer.append(' '); answer.append(value); }
+            System.out.print(answer);
+        }
+    }
+}`,
+  "linked-list": String.raw`import java.io.*;
+import java.util.*;
+
+public class Main {
+    ${scanner}
+    public static void main(String[] args) throws Exception {
+        FastScanner input = new FastScanner();
+        LinkedList<Character> text = new LinkedList<>();
+        for (char value : input.next().toCharArray()) text.add(value);
+        ListIterator<Character> cursor = text.listIterator(text.size());
+        int q = input.nextInt();
+        while (q-- > 0) {
+            char command = input.next().charAt(0);
+            if (command == 'L') { if (cursor.hasPrevious()) cursor.previous(); }
+            else if (command == 'R') { if (cursor.hasNext()) cursor.next(); }
+            else if (command == 'D') { if (cursor.hasPrevious()) { cursor.previous(); cursor.remove(); } }
+            else cursor.add(input.next().charAt(0));
+        }
+        StringBuilder answer = new StringBuilder(text.size());
+        for (char value : text) answer.append(value);
+        System.out.print(answer);
+    }
+}`,
+  "min-heap": String.raw`import java.io.*;
+import java.util.*;
+
+public class Main {
+    ${scanner}
+    public static void main(String[] args) throws Exception {
+        FastScanner input = new FastScanner();
+        int q = input.nextInt();
+        PriorityQueue<Long> heap = new PriorityQueue<>();
+        StringBuilder answer = new StringBuilder();
+        while (q-- > 0) {
+            char command = input.next().charAt(0);
+            if (command == 'P') heap.add(input.nextLong());
+            else answer.append(heap.isEmpty() ? "EMPTY" : heap.remove()).append('\n');
+        }
+        System.out.print(answer);
+    }
+}`,
   "binary-search": String.raw`import java.io.*;
 
 public class Main {
@@ -191,6 +256,39 @@ public class Main {
                 int node = stack.pop();
                 for (int next : graph[node]) if (!seen[next]) { seen[next] = true; stack.push(next); }
             }
+        }
+        System.out.print(answer);
+    }
+}`,
+  "union-find": String.raw`import java.io.*;
+
+public class Main {
+    ${scanner}
+    static int[] parent, size;
+    static int find(int node) {
+        int root = node;
+        while (parent[root] != root) root = parent[root];
+        while (parent[node] != node) { int next = parent[node]; parent[node] = root; node = next; }
+        return root;
+    }
+    static void union(int a, int b) {
+        int rootA = find(a), rootB = find(b);
+        if (rootA == rootB) return;
+        if (size[rootA] < size[rootB]) { int temp = rootA; rootA = rootB; rootB = temp; }
+        parent[rootB] = rootA;
+        size[rootA] += size[rootB];
+    }
+    public static void main(String[] args) throws Exception {
+        FastScanner input = new FastScanner();
+        int n = input.nextInt(), q = input.nextInt();
+        parent = new int[n + 1]; size = new int[n + 1];
+        for (int i = 1; i <= n; i++) { parent[i] = i; size[i] = 1; }
+        StringBuilder answer = new StringBuilder();
+        while (q-- > 0) {
+            char command = input.next().charAt(0);
+            int a = input.nextInt(), b = input.nextInt();
+            if (command == 'U') union(a, b);
+            else answer.append(find(a) == find(b) ? "YES" : "NO").append('\n');
         }
         System.out.print(answer);
     }

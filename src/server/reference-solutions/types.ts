@@ -1,13 +1,5 @@
-export const SOLUTION_CONCEPT_IDS = [
-  "stack",
-  "queue",
-  "hash-map",
-  "binary-search",
-  "merge-sort",
-  "bfs",
-  "dfs",
-  "basic-dp",
-] as const;
+import { PROBLEM_IDS, type ProblemId } from "../../lib/problem-ids.ts";
 
-export type SolutionConceptId = (typeof SOLUTION_CONCEPT_IDS)[number];
+export const SOLUTION_CONCEPT_IDS = PROBLEM_IDS;
+export type SolutionConceptId = ProblemId;
 export type ReferenceSolutionSet = Record<SolutionConceptId, string>;

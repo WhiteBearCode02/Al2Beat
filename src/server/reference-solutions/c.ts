@@ -86,6 +86,98 @@ int main(void) {
     free(names);
     return 0;
 }`,
+  deque: String.raw`#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    int q;
+    if (scanf("%d", &q) != 1) return 0;
+    int *values = malloc((size_t)(2 * q + 1) * sizeof(*values));
+    int left = q, right = q;
+    while (q--) {
+        char command[3];
+        scanf("%2s", command);
+        if (command[0] == 'L' && command[1] == 'F') scanf("%d", &values[--left]);
+        else if (command[0] == 'L') scanf("%d", &values[right++]);
+        else if (command[1] == 'F') { if (left < right) ++left; }
+        else if (left < right) --right;
+    }
+    if (left == right) printf("EMPTY");
+    else for (int i = left; i < right; ++i) printf("%s%d", i == left ? "" : " ", values[i]);
+    free(values);
+    return 0;
+}`,
+  "linked-list": String.raw`#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void) {
+    static char initial[200001];
+    int q;
+    if (scanf("%200000s", initial) != 1 || scanf("%d", &q) != 1) return 0;
+    int capacity = (int)strlen(initial) + q + 2;
+    char *value = malloc((size_t)capacity);
+    int *previous = malloc((size_t)capacity * sizeof(*previous));
+    int *next = malloc((size_t)capacity * sizeof(*next));
+    int nodes = 2, cursor = 1;
+    next[0] = 1; previous[1] = 0;
+    for (int i = 0; initial[i]; ++i) {
+        int node = nodes++, left = previous[cursor];
+        value[node] = initial[i]; previous[node] = left; next[node] = cursor;
+        next[left] = node; previous[cursor] = node;
+    }
+    while (q--) {
+        char command;
+        scanf(" %c", &command);
+        if (command == 'L') {
+            if (previous[cursor] != 0) cursor = previous[cursor];
+        } else if (command == 'R') {
+            if (cursor != 1) cursor = next[cursor];
+        } else if (command == 'D') {
+            int target = previous[cursor];
+            if (target != 0) { int left = previous[target]; next[left] = cursor; previous[cursor] = left; }
+        } else {
+            char inserted; scanf(" %c", &inserted);
+            int node = nodes++, left = previous[cursor];
+            value[node] = inserted; previous[node] = left; next[node] = cursor;
+            next[left] = node; previous[cursor] = node;
+        }
+    }
+    for (int node = next[0]; node != 1; node = next[node]) putchar(value[node]);
+    free(value); free(previous); free(next);
+    return 0;
+}`,
+  "min-heap": String.raw`#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    int q, size = 0;
+    if (scanf("%d", &q) != 1) return 0;
+    long long *heap = malloc((size_t)(q + 1) * sizeof(*heap));
+    while (q--) {
+        char command; scanf(" %c", &command);
+        if (command == 'P') {
+            long long value; scanf("%lld", &value);
+            int child = ++size;
+            while (child > 1 && heap[child / 2] > value) { heap[child] = heap[child / 2]; child /= 2; }
+            heap[child] = value;
+        } else if (size == 0) printf("EMPTY\n");
+        else {
+            printf("%lld\n", heap[1]);
+            long long last = heap[size--];
+            int parent = 1;
+            while (parent * 2 <= size) {
+                int child = parent * 2;
+                if (child < size && heap[child + 1] < heap[child]) ++child;
+                if (heap[child] >= last) break;
+                heap[parent] = heap[child]; parent = child;
+            }
+            if (size > 0) heap[parent] = last;
+        }
+    }
+    free(heap);
+    return 0;
+}`,
   "binary-search": String.raw`#include <stdio.h>
 #include <stdlib.h>
 
@@ -203,6 +295,35 @@ int main(void) {
     }
     printf("%d", answer);
     free(head); free(to); free(next); free(stack); free(seen);
+    return 0;
+}`,
+  "union-find": String.raw`#include <stdio.h>
+#include <stdlib.h>
+
+static int find_root(int *parent, int node) {
+    int root = node;
+    while (parent[root] != root) root = parent[root];
+    while (parent[node] != node) { int next = parent[node]; parent[node] = root; node = next; }
+    return root;
+}
+
+int main(void) {
+    int n, q;
+    if (scanf("%d %d", &n, &q) != 2) return 0;
+    int *parent = malloc((size_t)(n + 1) * sizeof(*parent));
+    int *size = malloc((size_t)(n + 1) * sizeof(*size));
+    for (int i = 1; i <= n; ++i) { parent[i] = i; size[i] = 1; }
+    while (q--) {
+        char command; int a, b;
+        scanf(" %c %d %d", &command, &a, &b);
+        int root_a = find_root(parent, a), root_b = find_root(parent, b);
+        if (command == 'Q') puts(root_a == root_b ? "YES" : "NO");
+        else if (root_a != root_b) {
+            if (size[root_a] < size[root_b]) { int temp = root_a; root_a = root_b; root_b = temp; }
+            parent[root_b] = root_a; size[root_a] += size[root_b];
+        }
+    }
+    free(parent); free(size);
     return 0;
 }`,
   "basic-dp": String.raw`#include <stdio.h>

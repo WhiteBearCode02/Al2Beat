@@ -3,7 +3,7 @@ export type LanguageId = "c" | "cpp" | "java" | "python" | "csharp";
 export type Scene = {
   title: string;
   caption: string;
-  visual: "stack" | "queue" | "hash" | "search" | "merge" | "bfs" | "dfs" | "dp";
+  visual: "stack" | "queue" | "hash" | "deque" | "linked-list" | "heap" | "search" | "merge" | "bfs" | "dfs" | "union-find" | "dp";
 };
 
 export type Concept = {

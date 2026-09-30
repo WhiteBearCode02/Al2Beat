@@ -100,7 +100,7 @@ try {
       }
       verified++;
     }
-    console.log(`PASS ${runtime.language}: 8개 기준 풀이 컴파일·실행`);
+    console.log(`PASS ${runtime.language}: ${concepts.length}개 기준 풀이 컴파일·실행`);
   }
   console.log(`로컬 검증 완료: ${verified}개 풀이`);
 } finally {

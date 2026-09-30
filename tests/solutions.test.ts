@@ -1,13 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { GET as getSolution } from "../src/app/api/solutions/[conceptId]/route.ts";
+import { PROBLEM_IDS } from "../src/lib/problem-ids.ts";
 import { getReferenceSolution } from "../src/server/reference-solutions.ts";
 import type { LanguageId } from "../src/types/content.ts";
 
-const conceptIds = ["stack", "queue", "hash-map", "binary-search", "merge-sort", "bfs", "dfs", "basic-dp"];
+const conceptIds = PROBLEM_IDS;
 const languages: LanguageId[] = ["c", "cpp", "java", "python", "csharp"];
 
-test("8개 문제에 다섯 언어 기준 풀이가 모두 있다", () => {
+test("12개 문제에 다섯 언어 기준 풀이가 모두 있다", () => {
   for (const conceptId of conceptIds) {
     for (const language of languages) {
       const source = getReferenceSolution(conceptId, language);
@@ -18,17 +19,20 @@ test("8개 문제에 다섯 언어 기준 풀이가 모두 있다", () => {
   }
 });
 
-test("기준 풀이 API가 다섯 언어의 코드만 반환한다", async () => {
-  for (const language of languages) {
-    const response = await getSolution(new Request(`http://localhost/api/solutions/stack?language=${language}`), {
-      params: Promise.resolve({ conceptId: "stack" }),
-    });
-    const body = await response.json();
-    assert.equal(response.status, 200);
-    assert.equal(body.ok, true);
-    assert.equal(body.solution.language, language);
-    assert.equal(typeof body.solution.source, "string");
-    assert.equal(body.solution.source.includes("privateTests"), false);
+test("기준 풀이 API가 12개 문제의 다섯 언어 코드를 반환한다", async () => {
+  for (const conceptId of conceptIds) {
+    for (const language of languages) {
+      const response = await getSolution(new Request(`http://localhost/api/solutions/${conceptId}?language=${language}`), {
+        params: Promise.resolve({ conceptId }),
+      });
+      const body = await response.json();
+      assert.equal(response.status, 200);
+      assert.equal(body.ok, true);
+      assert.equal(body.solution.conceptId, conceptId);
+      assert.equal(body.solution.language, language);
+      assert.equal(typeof body.solution.source, "string");
+      assert.equal(body.solution.source.includes("privateTests"), false);
+    }
   }
 });
 
