@@ -4,6 +4,7 @@ import { concepts } from "../../../lib/content.ts";
 import { PROBLEM_IDS } from "../../../lib/problem-ids.ts";
 import { getPrivateTests } from "../../../server/private-tests.ts";
 import { compileLanguage, createLanguageSandbox, EXECUTION_LIMITS, isSandboxSubmissionAvailable, runLanguage, writeLanguageSource, type SandboxRun } from "../../../server/sandbox-runner.ts";
+import { getExecutionPolicy } from "../../../server/execution-policy.ts";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -59,6 +60,10 @@ export async function POST(request: Request) {
   if (!parsed.success) return errorResponse(400, "INVALID_REQUEST", "요청 필드 또는 크기 제한을 확인해 주세요.", requestId);
   if (Buffer.byteLength(parsed.data.source, "utf8") > EXECUTION_LIMITS.sourceBytes || Buffer.byteLength(parsed.data.input, "utf8") > EXECUTION_LIMITS.inputBytes) {
     return errorResponse(413, "PAYLOAD_TOO_LARGE", "소스 또는 입력의 바이트 제한을 넘었습니다.", requestId);
+  }
+  const executionPolicy = getExecutionPolicy();
+  if (!executionPolicy.enabled) {
+    return errorResponse(503, "EXECUTION_GUARD_DISABLED", executionPolicy.reason, requestId, false);
   }
   if (!isSandboxSubmissionAvailable(parsed.data.language)) {
     return errorResponse(503, "SANDBOX_NOT_CONFIGURED", parsed.data.language === "python"

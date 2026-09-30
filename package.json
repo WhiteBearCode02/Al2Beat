@@ -7,13 +7,14 @@
     "prepare:pyodide": "node scripts/sync-pyodide-assets.mjs",
     "sandbox:create-toolchain": "node --env-file-if-exists=.env.local scripts/create-toolchain-snapshot.mjs",
     "sandbox:verify-production": "node scripts/verify-production-runtimes.mjs",
+    "sandbox:measure": "node --env-file-if-exists=.env.local scripts/measure-sandbox-runtimes.mjs",
     "solutions:verify-local": "node --conditions=react-server --experimental-strip-types scripts/verify-reference-solutions-local.mjs",
     "dev": "npm run prepare:pyodide && next dev",
     "build": "npm run prepare:pyodide && next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --conditions=react-server --test --experimental-strip-types tests/content.test.ts tests/api.test.ts tests/solutions.test.ts"
+    "test": "node --conditions=react-server --test --experimental-strip-types tests/content.test.ts tests/api.test.ts tests/review.test.ts tests/solutions.test.ts"
   },
   "dependencies": {
     "@monaco-editor/react": "4.7.0",

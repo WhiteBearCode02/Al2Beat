@@ -6,6 +6,8 @@ import { GlossaryDialog } from "./glossary-dialog";
 import { IdePanel } from "./ide-panel";
 import { MotionLesson } from "./motion-lesson";
 import { ProblemPanel } from "./problem-panel";
+import { ReviewPlanner } from "./review-planner";
+import { DEFAULT_REVIEW_INTERVAL_DAYS, scheduleReview } from "@/lib/review";
 import { exportBackup, getAllProgress, importBackup, saveProgress, type ProgressState, type SavedProgress } from "@/lib/storage";
 import type { Concept, GlossaryTerm } from "@/types/content";
 
@@ -47,7 +49,7 @@ export function LearningStudio({ concepts, glossary }: { concepts: Concept[]; gl
     setProgress((current) => {
       const previous = current[conceptId] ?? { conceptId, state: "not-started" as ProgressState, bookmarked: false, watchedScene: 0, updatedAt: new Date().toISOString() };
       const next = { ...previous, ...updates, updatedAt: new Date().toISOString() };
-      void saveProgress({ conceptId, state: next.state, bookmarked: next.bookmarked, watchedScene: next.watchedScene });
+      void saveProgress(next);
       return { ...current, [conceptId]: next };
     });
   }, []);
@@ -59,6 +61,17 @@ export function LearningStudio({ concepts, glossary }: { concepts: Concept[]; gl
       updateProgress(selectedId, { watchedScene: Math.max(scene, current?.watchedScene ?? 0), state: current?.state === "complete" ? "complete" : "learning" });
     }
   }, [progress, progressLoaded, selectedId, updateProgress]);
+
+  const recordPracticeIssue = useCallback((issue: { summary: string }) => {
+    const current = progress[selectedId];
+    updateProgress(selectedId, {
+      state: "review",
+      lastWrongAt: new Date().toISOString(),
+      lastWrongSummary: issue.summary.slice(0, 500),
+      reviewIntervalDays: current?.reviewIntervalDays ?? DEFAULT_REVIEW_INTERVAL_DAYS,
+      nextReviewAt: current?.nextReviewAt ?? scheduleReview(current?.reviewIntervalDays ?? DEFAULT_REVIEW_INTERVAL_DAYS),
+    });
+  }, [progress, selectedId, updateProgress]);
 
   const openTerm = (id: string) => {
     setSelectedTerm(id);
@@ -173,7 +186,13 @@ export function LearningStudio({ concepts, glossary }: { concepts: Concept[]; gl
           </section>
         </div>
 
-        <IdePanel concept={selected} focus={focus} onFocusChange={setFocus} />
+        <ReviewPlanner key={`${selected.id}:${progress[selected.id]?.updatedAt ?? "loading"}`} progress={progress[selected.id]} onChange={(updates) => updateProgress(selected.id, updates)} />
+        <IdePanel
+          concept={selected}
+          focus={focus}
+          onFocusChange={setFocus}
+          onPracticeIssue={recordPracticeIssue}
+        />
       </main>
       {focus ? <button className="focus-exit" onClick={() => setFocus(false)}><X size={16} />집중 모드 종료</button> : null}
       <GlossaryDialog terms={glossary} selectedId={selectedTerm} open={glossaryOpen} onClose={() => setGlossaryOpen(false)} onSelect={setSelectedTerm} />

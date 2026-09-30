@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { LanguageId } from "@/types/content";
+import { getExecutionPolicy } from "./execution-policy.ts";
 
 export type RuntimeSpec = {
   sourceFile: string;
@@ -63,7 +64,7 @@ export function isServerRuntimeAvailable(language: LanguageId) {
 }
 
 export function languageCapabilities(language: LanguageId) {
-  const serverAvailable = isServerRuntimeAvailable(language);
+  const serverAvailable = getExecutionPolicy().enabled && isServerRuntimeAvailable(language);
   return {
     edit: true,
     run: language === "python" || serverAvailable,

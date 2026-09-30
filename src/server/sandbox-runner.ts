@@ -2,6 +2,7 @@ import "server-only";
 
 import { Sandbox } from "@vercel/sandbox";
 import type { LanguageId } from "@/types/content";
+import { getExecutionPolicy } from "./execution-policy.ts";
 import { getSandboxRegion, getToolchainSnapshotId, hasSandboxCredentials, isServerRuntimeAvailable, RUNTIME_SPECS } from "./language-runtimes.ts";
 
 export const EXECUTION_LIMITS = {
@@ -40,7 +41,7 @@ const CSHARP_NUGET_CONFIG = `<?xml version="1.0" encoding="utf-8"?>
 `;
 
 export function isSandboxSubmissionAvailable(language: LanguageId = "python") {
-  return isServerRuntimeAvailable(language);
+  return getExecutionPolicy().enabled && isServerRuntimeAvailable(language);
 }
 
 function shellQuote(value: string) {
@@ -54,6 +55,8 @@ async function readCapped(sandbox: Sandbox, file: string): Promise<{ text: strin
 }
 
 export async function createLanguageSandbox(language: LanguageId) {
+  const policy = getExecutionPolicy();
+  if (!policy.enabled) throw new Error(`Sandbox execution policy is disabled: ${policy.code}.`);
   if (!hasSandboxCredentials()) throw new Error("Vercel Sandbox credentials are not configured.");
   if (!isServerRuntimeAvailable(language)) throw new Error(`Sandbox toolchain snapshot is not configured for ${language}.`);
 

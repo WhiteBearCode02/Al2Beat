@@ -17,6 +17,12 @@ export type SavedProgress = {
   state: ProgressState;
   bookmarked: boolean;
   watchedScene: number;
+  reviewIntervalDays?: number;
+  nextReviewAt?: string;
+  lastReviewedAt?: string;
+  wrongNote?: string;
+  lastWrongAt?: string;
+  lastWrongSummary?: string;
   updatedAt: string;
 };
 

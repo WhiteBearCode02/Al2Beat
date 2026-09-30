@@ -32,7 +32,17 @@ type ExecutionResult = {
   requestId?: string;
 };
 
-export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; focus: boolean; onFocusChange: (value: boolean) => void }) {
+type PracticeIssue = { status: ExecutionResult["status"]; summary: string };
+type IdePanelProps = {
+  concept: Concept;
+  focus: boolean;
+  onFocusChange: (value: boolean) => void;
+  onPracticeIssue?: (issue: PracticeIssue) => void;
+};
+
+const issueStatuses = new Set<ExecutionResult["status"]>(["wrong_answer", "compile_error", "runtime_error", "time_limit", "output_limit"]);
+
+export function IdePanel({ concept, focus, onFocusChange, onPracticeIssue }: IdePanelProps) {
   const [language, setLanguage] = useState<LanguageId>("python");
   const [code, setCode] = useState(concept.templates.python);
   const [customInput, setCustomInput] = useState(concept.problem.examples[0].input);
@@ -49,6 +59,11 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
   const [capabilities, setCapabilities] = useState<Partial<Record<LanguageId, LanguageCapability>>>({
     python: { edit: true, run: true, judge: false, verifiedVersion: "Python 3.14 (Pyodide)", executionTarget: "browser-worker" },
   });
+
+  const applyExecutionResult = useCallback((next: ExecutionResult) => {
+    setResult(next);
+    if (issueStatuses.has(next.status)) onPracticeIssue?.({ status: next.status, summary: next.confirmed });
+  }, [onPracticeIssue]);
 
   useEffect(() => {
     let active = true;
@@ -116,7 +131,7 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
           : local.status === "output_limit" ? "실제 출력 또는 오류 출력이 64KB 제한을 넘었습니다."
           : local.status === "system_error" ? "브라우저 Python 런타임을 준비하지 못했습니다. 저장된 코드는 유지됩니다."
           : local.stderr || "실제 Python 실행 중 오류가 발생했습니다.";
-        setResult({ status, label: labels[local.status], action: "run", stdout: local.stdout, stderr: local.stderr, input: publicCase?.input, expected: publicCase?.output, durationMs: local.durationMs, confirmed });
+        applyExecutionResult({ status, label: labels[local.status], action: "run", stdout: local.stdout, stderr: local.stderr, input: publicCase?.input, expected: publicCase?.output, durationMs: local.durationMs, confirmed });
         return;
       }
       const response = await fetch("/api/execute", {
@@ -133,7 +148,7 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
       });
       const body = await response.json() as { ok: boolean; result?: ExecutionResult; error?: { message: string; requestId?: string } };
       if (!response.ok || !body.ok || !body.result) {
-        setResult({
+        applyExecutionResult({
           status: "system_error",
           label: "시스템 장애",
           confirmed: body.error?.message ?? "실행 결과를 읽지 못했습니다. 저장된 코드는 그대로 유지됩니다.",
@@ -141,13 +156,13 @@ export function IdePanel({ concept, focus, onFocusChange }: { concept: Concept; 
         });
         return;
       }
-      setResult(body.result);
+      applyExecutionResult(body.result);
     } catch {
-      setResult({ status: "system_error", label: "연결 장애", confirmed: "실행 서버에 연결하지 못했습니다. 저장된 코드는 그대로 유지됩니다." });
+      applyExecutionResult({ status: "system_error", label: "연결 장애", confirmed: "실행 서버에 연결하지 못했습니다. 저장된 코드는 그대로 유지됩니다." });
     } finally {
       setRunning(null);
     }
-  }, [capabilities, code, concept.id, concept.problem.examples, customInput, inputMode, language, running]);
+  }, [applyExecutionResult, capabilities, code, concept.id, concept.problem.examples, customInput, inputMode, language, running]);
 
   const selectedCapability = capabilities[language];
   const enabledServerLanguages = languages.filter((item) => capabilities[item]?.judge).length;
