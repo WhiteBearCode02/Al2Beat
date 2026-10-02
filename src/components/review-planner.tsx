@@ -1,31 +1,61 @@
 "use client";
 
 import { CalendarClock, Check, NotebookPen } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { DEFAULT_REVIEW_INTERVAL_DAYS, normalizeReviewInterval, reviewTiming, scheduleReview } from "@/lib/review";
 import type { SavedProgress } from "@/lib/storage";
 
 type ReviewPlannerProps = {
   progress?: SavedProgress;
-  onChange: (updates: Partial<Omit<SavedProgress, "conceptId" | "updatedAt">>) => void;
+  onChange: (updates: Partial<Omit<SavedProgress, "conceptId" | "updatedAt">>) => Promise<boolean>;
 };
+
+type NoteSaveState = "saved" | "dirty" | "saving" | "error";
 
 export function ReviewPlanner({ progress, onChange }: ReviewPlannerProps) {
   const [interval, setInterval] = useState(progress?.reviewIntervalDays ?? DEFAULT_REVIEW_INTERVAL_DAYS);
   const [note, setNote] = useState(progress?.wrongNote ?? "");
+  const [savedNote, setSavedNote] = useState(progress?.wrongNote ?? "");
+  const [noteSaveState, setNoteSaveState] = useState<NoteSaveState>("saved");
+  const noteRef = useRef(note);
+  const saveButtonRef = useRef<HTMLButtonElement>(null);
 
   const timing = reviewTiming(progress?.nextReviewAt);
   const reserve = (reviewed = false) => {
     const days = normalizeReviewInterval(interval);
     const now = new Date();
     setInterval(days);
-    onChange({
+    void onChange({
       reviewIntervalDays: days,
       nextReviewAt: scheduleReview(days, now),
       lastReviewedAt: reviewed ? now.toISOString() : progress?.lastReviewedAt,
       state: "review",
     });
   };
+
+  const saveNote = async (value: string) => {
+    if (value === savedNote) {
+      setNoteSaveState("saved");
+      return;
+    }
+
+    setNoteSaveState("saving");
+    const saved = await onChange({ wrongNote: value });
+    if (!saved) {
+      setNoteSaveState("error");
+      return;
+    }
+
+    setSavedNote(value);
+    setNoteSaveState(noteRef.current === value ? "saved" : "dirty");
+  };
+
+  const noteStatus = {
+    saved: "브라우저에 저장됨",
+    dirty: "저장 전 변경사항",
+    saving: "저장 중…",
+    error: "저장 실패 · 다시 시도하세요",
+  }[noteSaveState];
 
   return (
     <section className="review-planner panel" aria-labelledby="review-heading">
@@ -49,10 +79,21 @@ export function ReviewPlanner({ progress, onChange }: ReviewPlannerProps) {
           value={note}
           maxLength={2_000}
           placeholder="막힌 지점, 다음에 확인할 조건, 직접 찾은 해결 방법을 기록하세요."
-          onChange={(event) => setNote(event.target.value)}
-          onBlur={() => onChange({ wrongNote: note })}
+          onChange={(event) => {
+            noteRef.current = event.target.value;
+            setNote(event.target.value);
+            setNoteSaveState(event.target.value === savedNote ? "saved" : "dirty");
+          }}
+          onBlur={(event) => {
+            if (event.relatedTarget !== saveButtonRef.current) void saveNote(note);
+          }}
         />
-        <div><small>{note.length}/2,000 · 브라우저에 자동 저장</small><button type="button" onClick={() => onChange({ wrongNote: note })}>노트 저장</button></div>
+        <div>
+          <small aria-live="polite">{note.length}/2,000 · {noteStatus}</small>
+          <button ref={saveButtonRef} type="button" disabled={noteSaveState === "saving" || note === savedNote} onClick={() => void saveNote(note)}>
+            {noteSaveState === "saving" ? "저장 중…" : "노트 저장"}
+          </button>
+        </div>
       </div>
     </section>
   );

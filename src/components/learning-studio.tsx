@@ -25,14 +25,21 @@ export function LearningStudio({ concepts, glossary }: { concepts: Concept[]; gl
   const [progress, setProgress] = useState<Record<string, SavedProgress>>({});
   const [progressLoaded, setProgressLoaded] = useState(false);
   const [storageMessage, setStorageMessage] = useState("브라우저에 자동 저장");
+  const progressRef = useRef<Record<string, SavedProgress>>({});
   const fileRef = useRef<HTMLInputElement>(null);
   const selected = concepts.find((concept) => concept.id === selectedId) ?? concepts[0];
 
   useEffect(() => {
-    getAllProgress().then((items) => {
-      setProgress(Object.fromEntries(items.map((item) => [item.conceptId, item])));
-      setProgressLoaded(true);
-    });
+    getAllProgress()
+      .then((items) => {
+        const savedProgress = Object.fromEntries(items.map((item) => [item.conceptId, item]));
+        progressRef.current = savedProgress;
+        setProgress(savedProgress);
+      })
+      .catch((error: unknown) => {
+        setStorageMessage(error instanceof Error ? error.message : "저장된 기록을 불러오지 못했습니다.");
+      })
+      .finally(() => setProgressLoaded(true));
     const frame = window.requestAnimationFrame(() => setSidebarOpen(window.innerWidth > 1100));
     return () => window.cancelAnimationFrame(frame);
   }, []);
@@ -45,26 +52,34 @@ export function LearningStudio({ concepts, glossary }: { concepts: Concept[]; gl
     }));
   }, [concepts, query]);
 
-  const updateProgress = useCallback((conceptId: string, updates: Partial<Omit<SavedProgress, "conceptId" | "updatedAt">>) => {
-    setProgress((current) => {
-      const previous = current[conceptId] ?? { conceptId, state: "not-started" as ProgressState, bookmarked: false, watchedScene: 0, updatedAt: new Date().toISOString() };
-      const next = { ...previous, ...updates, updatedAt: new Date().toISOString() };
-      void saveProgress(next);
-      return { ...current, [conceptId]: next };
-    });
+  const updateProgress = useCallback(async (conceptId: string, updates: Partial<Omit<SavedProgress, "conceptId" | "updatedAt">>) => {
+    const previous = progressRef.current[conceptId] ?? { conceptId, state: "not-started" as ProgressState, bookmarked: false, watchedScene: 0, updatedAt: new Date().toISOString() };
+    const next = { ...previous, ...updates, updatedAt: new Date().toISOString() };
+    const nextProgress = { ...progressRef.current, [conceptId]: next };
+    progressRef.current = nextProgress;
+    setProgress(nextProgress);
+
+    try {
+      await saveProgress(next);
+      setStorageMessage("브라우저에 저장됨");
+      return true;
+    } catch (error) {
+      setStorageMessage(error instanceof Error ? `저장 실패 · ${error.message}` : "브라우저 저장 실패");
+      return false;
+    }
   }, []);
 
   const onScene = useCallback((scene: number) => {
     if (!progressLoaded) return;
     const current = progress[selectedId];
     if (!current || scene > current.watchedScene || current.state === "not-started") {
-      updateProgress(selectedId, { watchedScene: Math.max(scene, current?.watchedScene ?? 0), state: current?.state === "complete" ? "complete" : "learning" });
+      void updateProgress(selectedId, { watchedScene: Math.max(scene, current?.watchedScene ?? 0), state: current?.state === "complete" ? "complete" : "learning" });
     }
   }, [progress, progressLoaded, selectedId, updateProgress]);
 
   const recordPracticeIssue = useCallback((issue: { summary: string }) => {
     const current = progress[selectedId];
-    updateProgress(selectedId, {
+    void updateProgress(selectedId, {
       state: "review",
       lastWrongAt: new Date().toISOString(),
       lastWrongSummary: issue.summary.slice(0, 500),
@@ -158,8 +173,8 @@ export function LearningStudio({ concepts, glossary }: { concepts: Concept[]; gl
             <h1>{selected.title}<em>{selected.summary}</em></h1>
           </div>
           <div className="hero-actions">
-            <button className={`bookmark-button ${progress[selected.id]?.bookmarked ? "active" : ""}`} onClick={() => updateProgress(selected.id, { bookmarked: !progress[selected.id]?.bookmarked })} aria-pressed={progress[selected.id]?.bookmarked ?? false}><Bookmark size={16} />북마크</button>
-            <button className="complete-button" onClick={() => updateProgress(selected.id, { state: progress[selected.id]?.state === "complete" ? "review" : "complete" })}><Check size={16} />{progress[selected.id]?.state === "complete" ? "복습으로 전환" : "학습 완료"}</button>
+            <button className={`bookmark-button ${progress[selected.id]?.bookmarked ? "active" : ""}`} onClick={() => void updateProgress(selected.id, { bookmarked: !progress[selected.id]?.bookmarked })} aria-pressed={progress[selected.id]?.bookmarked ?? false}><Bookmark size={16} />북마크</button>
+            <button className="complete-button" onClick={() => void updateProgress(selected.id, { state: progress[selected.id]?.state === "complete" ? "review" : "complete" })}><Check size={16} />{progress[selected.id]?.state === "complete" ? "복습으로 전환" : "학습 완료"}</button>
           </div>
         </section>
 
@@ -186,7 +201,7 @@ export function LearningStudio({ concepts, glossary }: { concepts: Concept[]; gl
           </section>
         </div>
 
-        <ReviewPlanner key={`${selected.id}:${progress[selected.id]?.updatedAt ?? "loading"}`} progress={progress[selected.id]} onChange={(updates) => updateProgress(selected.id, updates)} />
+        <ReviewPlanner key={`${selected.id}:${progressLoaded ? "ready" : "loading"}`} progress={progress[selected.id]} onChange={(updates) => updateProgress(selected.id, updates)} />
         <IdePanel
           concept={selected}
           focus={focus}

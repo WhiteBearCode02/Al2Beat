@@ -72,10 +72,10 @@ export async function getAllProgress() {
   return (await dbPromise?.then((db) => db.getAll("progress"))) ?? [];
 }
 
-export async function saveProgress(value: Omit<SavedProgress, "updatedAt">) {
+export async function saveProgress(value: SavedProgress) {
   const db = await dbPromise;
-  if (!db) return;
-  await db.put("progress", { ...value, updatedAt: new Date().toISOString() });
+  if (!db) throw new Error("이 브라우저에서는 IndexedDB를 사용할 수 없습니다.");
+  await db.put("progress", value);
 }
 
 export async function exportBackup(): Promise<BackupPayload> {
