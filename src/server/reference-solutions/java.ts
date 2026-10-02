@@ -1,4 +1,5 @@
 import type { ReferenceSolutionSet } from "./types.ts";
+import { expandedJavaSolutions } from "./expanded/java.ts";
 
 const scanner = String.raw`static class FastScanner {
     private final byte[] buffer = new byte[1 << 16];
@@ -18,6 +19,7 @@ const scanner = String.raw`static class FastScanner {
 }`;
 
 export const javaSolutions = {
+  ...expandedJavaSolutions,
   stack: String.raw`import java.io.*;
 
 public class Main {

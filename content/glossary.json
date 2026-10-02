@@ -1,70 +1,1596 @@
 [
-  {"id":"algorithm","ko":"알고리즘","en":"Algorithm","aliases":["절차","풀이법"],"definition":"문제를 끝나는 단계들로 해결하는 명확한 절차입니다.","example":"정렬 후 이진 탐색하기","when":"같은 형태의 입력을 일관되게 처리할 때","mistake":"코드 한 조각 자체만을 알고리즘이라 부르는 것","related":["binary-search","merge-sort"]},
-  {"id":"data-structure","ko":"자료구조","en":"Data structure","aliases":["데이터 구조"],"definition":"값을 저장하고 꺼내는 규칙을 정한 방식입니다.","example":"스택, 큐, 해시맵","when":"연산의 순서와 비용을 설계할 때","mistake":"모든 상황에 한 구조가 가장 빠르다고 생각하는 것","related":["stack","queue","hash-map"]},
-  {"id":"stack","ko":"스택","en":"Stack","aliases":["쌓기 구조"],"definition":"가장 나중에 넣은 값을 가장 먼저 꺼내는 구조입니다.","example":"괄호 짝 검사","when":"최근 상태부터 되돌아볼 때","mistake":"빈 스택에서 꺼내는 것","related":["stack","dfs"]},
-  {"id":"lifo","ko":"후입선출","en":"Last In, First Out","abbr":"LIFO","aliases":["마지막 입력 우선"],"definition":"마지막으로 들어온 항목이 먼저 나가는 순서입니다.","example":"접시 더미의 맨 위 접시","when":"스택의 순서를 설명할 때","mistake":"FIFO와 혼동하는 것","related":["stack"]},
-  {"id":"push","ko":"푸시","en":"Push","aliases":["삽입","넣기"],"definition":"스택의 맨 위에 값을 추가하는 연산입니다.","example":"stack.push('(')","when":"새 상태를 스택에 보관할 때","mistake":"큐 뒤 삽입과 이름만 보고 같은 구조라 생각하는 것","related":["stack"]},
-  {"id":"pop","ko":"팝","en":"Pop","aliases":["꺼내기","제거"],"definition":"스택 맨 위 값을 제거하며 가져오는 연산입니다.","example":"닫는 괄호를 만나 top 제거","when":"최근 값을 소비할 때","mistake":"비었는지 확인하지 않는 것","related":["stack"]},
-  {"id":"top","ko":"스택 꼭대기","en":"Top","aliases":["peek","맨 위"],"definition":"스택에서 다음에 꺼낼 위치 또는 그 값입니다.","example":"top이 '['인지 확인","when":"제거하지 않고 최근 값을 볼 때","mistake":"top 조회가 pop처럼 값을 제거한다고 생각하는 것","related":["stack"]},
-  {"id":"queue","ko":"큐","en":"Queue","aliases":["대기열"],"definition":"먼저 넣은 값을 먼저 꺼내는 구조입니다.","example":"프린터 작업 대기열","when":"도착 순서를 지켜 처리할 때","mistake":"배열 앞 삭제로 매번 전체를 이동하는 것","related":["queue","bfs"]},
-  {"id":"fifo","ko":"선입선출","en":"First In, First Out","abbr":"FIFO","aliases":["먼저 입력 우선"],"definition":"먼저 들어온 항목이 먼저 나가는 순서입니다.","example":"매표소 줄","when":"큐의 순서를 설명할 때","mistake":"LIFO와 혼동하는 것","related":["queue"]},
-  {"id":"enqueue","ko":"인큐","en":"Enqueue","aliases":["뒤에 넣기"],"definition":"큐의 뒤에 새 값을 추가하는 연산입니다.","example":"작업 번호를 대기열 뒤에 추가","when":"새 작업이 도착할 때","mistake":"앞쪽에 추가해 순서를 바꾸는 것","related":["queue"]},
-  {"id":"dequeue","ko":"디큐","en":"Dequeue","aliases":["앞에서 꺼내기"],"definition":"큐의 앞 값을 제거하며 가져오는 연산입니다.","example":"가장 오래 기다린 작업 처리","when":"다음 작업을 처리할 때","mistake":"빈 큐 확인을 생략하는 것","related":["queue"]},
-  {"id":"front","ko":"큐 앞","en":"Front","aliases":["head","맨 앞"],"definition":"큐에서 다음에 나갈 항목의 위치입니다.","example":"front 포인터 증가","when":"다음 처리 대상을 볼 때","mistake":"rear와 반대로 이해하는 것","related":["queue"]},
-  {"id":"hash-map","ko":"해시맵","en":"Hash map","aliases":["해시 테이블","dictionary","map"],"definition":"키를 해시해 연결된 값을 빠르게 찾는 구조입니다.","example":"단어별 등장 횟수","when":"키로 값을 자주 조회하거나 갱신할 때","mistake":"항상 최악 O(1)이라고 단정하는 것","related":["hash-map"]},
-  {"id":"key","ko":"키","en":"Key","aliases":["식별자"],"definition":"해시맵에서 값을 찾는 데 쓰는 고유한 기준입니다.","example":"리듬 이름 'kick'","when":"대상을 구분해 저장할 때","mistake":"변경 가능한 객체를 무심코 키로 쓰는 것","related":["hash-map"]},
-  {"id":"value","ko":"값","en":"Value","aliases":["데이터"],"definition":"키에 연결해 저장하는 정보입니다.","example":"kick의 등장 횟수 3","when":"키와 관련된 상태를 보관할 때","mistake":"키와 값의 역할을 뒤집는 것","related":["hash-map"]},
-  {"id":"hash-function","ko":"해시 함수","en":"Hash function","aliases":["해싱"],"definition":"키를 저장 위치를 정하는 숫자로 바꾸는 함수입니다.","example":"문자열을 버킷 번호로 변환","when":"해시 기반 구조가 키를 배치할 때","mistake":"서로 다른 키가 항상 다른 결과를 낸다고 믿는 것","related":["hash-map"]},
-  {"id":"collision","ko":"해시 충돌","en":"Hash collision","aliases":["충돌"],"definition":"서로 다른 키가 같은 저장 위치 후보를 얻는 현상입니다.","example":"두 문자열이 같은 버킷을 가리킴","when":"해시맵 구현과 성능을 이해할 때","mistake":"충돌이 나면 값 하나가 반드시 사라진다고 생각하는 것","related":["hash-map"]},
-  {"id":"frequency","ko":"빈도","en":"Frequency","aliases":["등장 횟수","카운트"],"definition":"어떤 값이 나타난 횟수입니다.","example":"kick → 3","when":"최빈값이나 분포를 구할 때","mistake":"동률 처리 규칙을 빼먹는 것","related":["hash-map"]},
-  {"id":"binary-search","ko":"이진 탐색","en":"Binary search","aliases":["이분 탐색"],"definition":"정렬된 탐색 구간을 비교 결과에 따라 절반씩 줄이는 방법입니다.","example":"기준 이상인 첫 점수 찾기","when":"정렬된 값 또는 단조 조건의 경계를 찾을 때","mistake":"정렬되지 않은 배열에 적용하는 것","related":["binary-search"]},
-  {"id":"sorted","ko":"정렬됨","en":"Sorted","aliases":["순서화"],"definition":"정해진 비교 기준에 따라 값의 순서가 맞춰진 상태입니다.","example":"1, 3, 6, 9","when":"탐색이나 병합의 전제를 확인할 때","mistake":"부분 정렬을 전체 정렬로 착각하는 것","related":["binary-search","merge-sort"]},
-  {"id":"lower-bound","ko":"하한","en":"Lower bound","aliases":["로어 바운드"],"definition":"정렬된 범위에서 목표 이상인 첫 위치입니다.","example":"[1,6,6]에서 6의 하한은 2번 위치","when":"중복 값의 첫 경계를 찾을 때","mistake":"값을 찾지 못하면 무조건 -1이라고 정의하는 것","related":["binary-search"]},
-  {"id":"index","ko":"인덱스","en":"Index","aliases":["첨자","위치"],"definition":"배열 원소의 위치를 나타내는 번호입니다.","example":"0부터 시작하는 index 2","when":"배열의 특정 칸을 접근할 때","mistake":"0 기반과 1 기반 위치를 섞는 것","related":["binary-search"]},
-  {"id":"invariant","ko":"불변 조건","en":"Invariant","aliases":["루프 불변식"],"definition":"알고리즘이 진행되는 동안 계속 참으로 유지하는 조건입니다.","example":"답은 항상 [left, right] 안에 있음","when":"반복문의 정확성을 설명할 때","mistake":"경계 갱신 뒤 조건이 유지되는지 확인하지 않는 것","related":["binary-search"]},
-  {"id":"logarithm","ko":"로그","en":"Logarithm","abbr":"log","aliases":["대수"],"definition":"몇 번 곱해야 목표가 되는지를 나타내며 절반 줄이기의 횟수를 설명합니다.","example":"2^10=1024이므로 log2 1024=10","when":"이진 탐색의 반복 횟수를 셀 때","mistake":"로그 밑 차이를 복잡도에서 과도하게 구분하는 것","related":["binary-search","merge-sort"]},
-  {"id":"merge-sort","ko":"병합 정렬","en":"Merge sort","aliases":["합병 정렬"],"definition":"배열을 나눈 뒤 정렬된 조각을 병합하는 정렬입니다.","example":"[4,1]과 [3,2]를 나누어 병합","when":"O(n log n)과 안정성이 필요할 때","mistake":"병합용 추가 공간을 고려하지 않는 것","related":["merge-sort"]},
-  {"id":"divide-conquer","ko":"분할 정복","en":"Divide and conquer","abbr":"D&C","aliases":["분할정복"],"definition":"문제를 작은 독립 문제로 나누고 답을 합치는 전략입니다.","example":"병합 정렬의 반 나누기","when":"같은 형태의 작은 문제로 쪼갤 수 있을 때","mistake":"겹치는 부분 문제가 많아도 무조건 재귀만 쓰는 것","related":["merge-sort"]},
-  {"id":"recursion","ko":"재귀","en":"Recursion","aliases":["재귀 호출"],"definition":"함수가 더 작은 입력으로 자기 자신을 호출하는 방식입니다.","example":"왼쪽 절반을 다시 정렬","when":"트리형 구조나 분할 문제를 표현할 때","mistake":"기저 조건 없이 호출하는 것","related":["merge-sort","dfs"]},
-  {"id":"stable-sort","ko":"안정 정렬","en":"Stable sort","aliases":["안정성"],"definition":"비교 키가 같은 원소들의 기존 상대 순서를 보존하는 정렬입니다.","example":"동점 참가자의 입장 순서 유지","when":"보조 정보의 순서가 의미 있을 때","mistake":"정렬 결과의 값만 같으면 안정성도 같다고 보는 것","related":["merge-sort"]},
-  {"id":"time-complexity","ko":"시간 복잡도","en":"Time complexity","aliases":["실행 시간 복잡도"],"definition":"입력 크기가 커질 때 기본 연산 횟수가 늘어나는 정도입니다.","example":"선형 순회 O(n)","when":"알고리즘의 확장성을 비교할 때","mistake":"실제 초 단위 시간과 동일시하는 것","related":["stack","merge-sort"]},
-  {"id":"space-complexity","ko":"공간 복잡도","en":"Space complexity","aliases":["메모리 복잡도"],"definition":"입력 크기에 따라 필요한 추가 저장 공간이 늘어나는 정도입니다.","example":"병합 배열 O(n)","when":"메모리 제한을 검토할 때","mistake":"입력 자체와 추가 공간을 구분하지 않는 것","related":["merge-sort"]},
-  {"id":"bfs","ko":"너비 우선 탐색","en":"Breadth-first search","abbr":"BFS","aliases":["너비 탐색"],"definition":"시작점에서 거리가 가까운 정점부터 층별로 방문합니다.","example":"격자의 최소 이동 칸 수","when":"가중치 없는 최단 거리를 찾을 때","mistake":"큐에 넣을 때가 아니라 꺼낼 때 방문 표시하는 것","related":["bfs"]},
-  {"id":"graph","ko":"그래프","en":"Graph","aliases":["관계망"],"definition":"정점과 정점 사이의 연결인 간선으로 관계를 표현한 구조입니다.","example":"방을 정점, 통로를 간선으로 표현","when":"대상 사이 연결을 모델링할 때","mistake":"항상 모든 정점이 연결되어 있다고 가정하는 것","related":["bfs","dfs"]},
-  {"id":"vertex","ko":"정점","en":"Vertex","abbr":"V","aliases":["node","노드"],"definition":"그래프에서 하나의 대상이나 상태를 나타냅니다.","example":"격자의 한 칸","when":"그래프의 대상을 셀 때","mistake":"트리 노드와 그래프 정점의 용어 차이를 본질적 차이로 보는 것","related":["bfs","dfs"]},
-  {"id":"edge","ko":"간선","en":"Edge","abbr":"E","aliases":["연결선"],"definition":"두 정점 사이의 이동 가능 관계입니다.","example":"인접한 두 길 칸 사이 이동","when":"그래프의 연결을 표현할 때","mistake":"방향 그래프에서 반대 이동도 가능하다고 보는 것","related":["bfs","dfs"]},
-  {"id":"visited","ko":"방문 표시","en":"Visited","aliases":["방문 배열"],"definition":"이미 처리한 정점을 다시 처리하지 않도록 기록하는 상태입니다.","example":"visited[next] = true","when":"순환이 있는 그래프를 탐색할 때","mistake":"표시 시점이 늦어 같은 정점을 여러 번 넣는 것","related":["bfs","dfs"]},
-  {"id":"shortest-path","ko":"최단 경로","en":"Shortest path","aliases":["최소 경로"],"definition":"두 정점 사이에서 비용 합이 가장 작은 경로입니다.","example":"간선 수가 가장 적은 격자 경로","when":"이동 비용을 최소화할 때","mistake":"가중치가 다른 그래프에도 기본 BFS를 쓰는 것","related":["bfs"]},
-  {"id":"dfs","ko":"깊이 우선 탐색","en":"Depth-first search","abbr":"DFS","aliases":["깊이 탐색"],"definition":"한 갈래를 끝까지 방문한 뒤 되돌아오는 탐색입니다.","example":"연결 요소의 모든 정점 방문","when":"연결성, 순환, 완전 탐색을 다룰 때","mistake":"깊은 입력에서 재귀 한도를 무시하는 것","related":["dfs"]},
-  {"id":"connected-component","ko":"연결 요소","en":"Connected component","abbr":"CC","aliases":["연결 성분"],"definition":"무방향 그래프에서 서로 오갈 수 있는 정점의 최대 집합입니다.","example":"분리된 섬 하나","when":"그래프가 몇 덩어리인지 셀 때","mistake":"방향 그래프의 강한 연결 요소와 혼동하는 것","related":["dfs"]},
-  {"id":"call-stack","ko":"호출 스택","en":"Call stack","aliases":["함수 호출 스택"],"definition":"실행 중인 함수의 복귀 위치와 지역 상태를 쌓아 두는 영역입니다.","example":"재귀 DFS의 복귀 순서","when":"재귀 깊이와 메모리를 판단할 때","mistake":"입력이 커도 무한히 깊게 쓸 수 있다고 생각하는 것","related":["dfs"]},
-  {"id":"backtracking","ko":"백트래킹","en":"Backtracking","aliases":["되추적"],"definition":"선택을 진행하다 막히면 이전 선택으로 돌아가 다른 경우를 보는 전략입니다.","example":"미로 갈림길로 되돌아오기","when":"후보를 만들고 조건에 따라 가지치기할 때","mistake":"DFS와 완전히 같은 뜻으로 사용하는 것","related":["dfs"]},
-  {"id":"dynamic-programming","ko":"동적 계획법","en":"Dynamic programming","abbr":"DP","aliases":["동적계획법"],"definition":"겹치는 작은 문제의 답을 저장해 큰 답을 만드는 전략입니다.","example":"칸별 최소 에너지 저장","when":"최적 부분 구조와 중복 부분 문제가 있을 때","mistake":"배열을 썼다는 이유만으로 DP라 부르는 것","related":["basic-dp"]},
-  {"id":"state","ko":"상태","en":"State","aliases":["DP 상태"],"definition":"부분 문제의 답이 무엇을 뜻하는지 나타내는 정보입니다.","example":"dp[i] = i칸까지 최소 비용","when":"DP를 설계할 때 가장 먼저 정의","mistake":"정의에 필요한 정보가 빠져 서로 다른 상황을 합치는 것","related":["basic-dp"]},
-  {"id":"recurrence","ko":"점화식","en":"Recurrence relation","aliases":["전이식","상태 전이"],"definition":"이전 상태들로 현재 상태를 계산하는 관계식입니다.","example":"dp[i]=min(dp[i-1],dp[i-2])+cost[i]","when":"상태 사이 의존 관계를 표현할 때","mistake":"초깃값과 계산 순서를 빼먹는 것","related":["basic-dp"]},
-  {"id":"base-case","ko":"기저 조건","en":"Base case","aliases":["초기 조건","종료 조건"],"definition":"더 작게 나누지 않고 바로 답을 아는 가장 작은 경우입니다.","example":"빈 경로 비용은 0","when":"재귀나 DP를 시작하고 끝낼 때","mistake":"입력 0이나 1 경계를 놓치는 것","related":["basic-dp","merge-sort"]},
-  {"id":"memoization","ko":"메모이제이션","en":"Memoization","aliases":["하향식 DP","top-down"],"definition":"필요한 상태를 재귀로 계산하고 결과를 저장하는 방식입니다.","example":"계산한 dp[i]를 캐시에 보관","when":"필요한 상태만 계산하고 싶을 때","mistake":"계산 여부를 값 0만으로 판단하는 것","related":["basic-dp"]},
-  {"id":"tabulation","ko":"테이블 채우기","en":"Tabulation","aliases":["상향식 DP","bottom-up"],"definition":"작은 상태부터 정해진 순서로 표를 채우는 방식입니다.","example":"dp[0]부터 dp[n-1]까지 계산","when":"의존 순서가 명확하고 반복문이 편할 때","mistake":"아직 계산하지 않은 상태를 참조하는 것","related":["basic-dp"]},
-  {"id":"simulation","ko":"시뮬레이션","en":"Simulation","aliases":["구현"],"definition":"문제의 규칙을 상태 변화 순서대로 그대로 실행하는 방법입니다.","example":"명령마다 큐 넣기와 빼기","when":"규칙이 명확하고 상태 수가 감당될 때","mistake":"명령 순서를 임의로 바꾸는 것","related":["queue"]},
-  {"id":"big-o","ko":"빅오 표기법","en":"Big-O notation","abbr":"O","aliases":["점근 표기"],"definition":"입력이 커질 때 증가율의 상한을 핵심 항으로 나타냅니다.","example":"O(n log n)","when":"시간과 공간 증가율을 비교할 때","mistake":"상수와 실제 환경을 전부 무시해도 된다고 생각하는 것","related":["merge-sort","binary-search"]},
-  {"id":"boundary-case","ko":"경계값","en":"Boundary case","aliases":["엣지 케이스","edge case"],"definition":"최솟값, 최댓값, 빈 상태처럼 일반 흐름의 가장자리에 있는 입력입니다.","example":"원소가 하나인 배열","when":"테스트를 설계할 때","mistake":"공개 예제만 통과하면 모든 경계가 맞다고 믿는 것","related":["stack","basic-dp"]},
-  {"id":"compile-error","ko":"컴파일 오류","en":"Compile error","abbr":"CE","aliases":["문법 오류"],"definition":"코드를 실행 파일이나 중간 코드로 바꾸는 단계에서 생긴 오류입니다.","example":"괄호나 타입 선언 누락","when":"컴파일 언어의 빌드 결과를 해석할 때","mistake":"모든 컴파일 오류를 한 줄의 원인으로 단정하는 것","related":[]},
-  {"id":"runtime-error","ko":"런타임 오류","en":"Runtime error","abbr":"RE","aliases":["실행 오류"],"definition":"컴파일 뒤 실제 실행 중 비정상 종료된 상태입니다.","example":"빈 스택 접근, 0으로 나누기","when":"실행 결과를 분류할 때","mistake":"오답 출력과 비정상 종료를 같은 상태로 처리하는 것","related":[]},
-  {"id":"time-limit","ko":"시간 초과","en":"Time limit exceeded","abbr":"TLE","aliases":["시간 제한 초과"],"definition":"프로그램이 허용된 실행 시간 안에 끝나지 않은 상태입니다.","example":"큰 입력에 O(n²) 반복","when":"채점 결과와 복잡도를 연결해 점검할 때","mistake":"무한 반복이라고 단정하는 것","related":["time-complexity","big-o"]},
-  {"id":"deque","ko":"덱","en":"Deque","aliases":["double-ended queue","양방향 큐"],"definition":"앞과 뒤 양쪽에서 값을 넣고 뺄 수 있는 선형 자료구조입니다.","example":"양쪽 출입이 가능한 작업 대기열","when":"두 끝의 값을 모두 빠르게 다룰 때","mistake":"배열의 앞을 삭제하며 매번 전체를 이동하는 것","related":["deque"]},
-  {"id":"double-ended","ko":"양끝 연산","en":"Double-ended operation","aliases":["양방향","양쪽 끝"],"definition":"자료구조의 앞과 뒤를 모두 삽입 또는 삭제 지점으로 사용하는 방식입니다.","example":"push front와 pop back","when":"덱의 네 가지 핵심 연산을 구분할 때","mistake":"앞과 뒤의 기준을 명령마다 뒤집는 것","related":["deque"]},
-  {"id":"linked-list","ko":"연결 리스트","en":"Linked list","aliases":["연결 목록","링크드 리스트"],"definition":"각 노드가 이웃 노드의 연결 정보를 저장하는 선형 자료구조입니다.","example":"커서 주변 문자 노드 연결","when":"알고 있는 위치에서 삽입과 삭제가 잦을 때","mistake":"임의 위치 접근도 배열처럼 O(1)이라고 생각하는 것","related":["linked-list"]},
-  {"id":"node","ko":"노드","en":"Node","aliases":["자료 노드"],"definition":"값과 다른 원소로 이어지는 연결 정보를 묶은 단위입니다.","example":"문자와 이전·다음 링크","when":"연결 리스트나 트리의 원소를 표현할 때","mistake":"노드의 값과 노드 자체를 항상 같은 것으로 보는 것","related":["linked-list","min-heap"]},
-  {"id":"pointer","ko":"포인터","en":"Pointer","aliases":["참조","reference","링크"],"definition":"다른 값이나 노드의 위치를 가리키는 정보입니다.","example":"다음 노드를 가리키는 next","when":"노드 사이 연결을 구현할 때","mistake":"삭제한 노드를 계속 가리키는 참조를 남기는 것","related":["linked-list"]},
-  {"id":"cursor","ko":"커서","en":"Cursor","aliases":["편집 위치"],"definition":"문자나 노드 사이에서 다음 편집이 일어날 위치를 나타냅니다.","example":"두 문자 사이의 삽입 지점","when":"편집 명령의 현재 위치를 추적할 때","mistake":"문자 자체와 문자 사이 위치를 혼동하는 것","related":["linked-list"]},
-  {"id":"heap","ko":"힙","en":"Heap","aliases":["이진 힙"],"definition":"부모와 자식 사이의 우선순위 규칙을 유지하는 완전 이진 트리입니다.","example":"부모가 자식보다 작은 최소 힙","when":"최댓값이나 최솟값을 반복해서 꺼낼 때","mistake":"힙의 전체 배열이 정렬되어 있다고 생각하는 것","related":["min-heap"]},
-  {"id":"min-heap","ko":"최소 힙","en":"Min heap","aliases":["최솟값 힙"],"definition":"모든 부모가 자식보다 작거나 같아 루트가 최솟값인 힙입니다.","example":"가장 작은 작업 번호를 먼저 선택","when":"현재 최솟값을 빠르게 꺼낼 때","mistake":"동일한 우선순위의 입력 순서가 자동 보존된다고 믿는 것","related":["min-heap"]},
-  {"id":"priority-queue","ko":"우선순위 큐","en":"Priority queue","abbr":"PQ","aliases":["우선 큐"],"definition":"들어온 순서보다 정해진 우선순위가 높은 값을 먼저 꺼내는 구조입니다.","example":"비용이 가장 작은 작업부터 처리","when":"매 순간 최우선 후보를 선택할 때","mistake":"일반 FIFO 큐와 같은 순서로 나온다고 보는 것","related":["min-heap"]},
-  {"id":"heapify","ko":"힙 속성 복구","en":"Heapify","aliases":["sift up","sift down","힙화"],"definition":"위나 아래로 값을 이동시켜 힙의 부모·자식 규칙을 다시 맞추는 과정입니다.","example":"루트 값을 더 작은 자식과 교환","when":"힙 삽입이나 루트 제거 뒤","mistake":"두 자식 중 우선순위가 낮은 쪽과 교환하는 것","related":["min-heap"]},
-  {"id":"complete-binary-tree","ko":"완전 이진 트리","en":"Complete binary tree","aliases":["완전 이진트리"],"definition":"마지막 층을 제외한 층이 차 있고 마지막 층은 왼쪽부터 채워진 이진 트리입니다.","example":"배열로 빈틈없이 저장한 힙","when":"힙의 배열 인덱스 관계를 이해할 때","mistake":"모든 잎의 깊이가 같아야 한다고 생각하는 것","related":["min-heap"]},
-  {"id":"disjoint-set","ko":"서로소 집합","en":"Disjoint set","abbr":"DSU","aliases":["분리 집합","상호 배타적 집합"],"definition":"서로 겹치지 않는 여러 집합을 합치고 소속을 확인하는 자료구조입니다.","example":"같은 팀에 속한 두 번호 판정","when":"연결 관계가 합쳐지기만 할 때","mistake":"집합에서 원소를 떼는 연산도 같은 비용으로 가능하다고 보는 것","related":["union-find"]},
-  {"id":"union-find","ko":"유니온 파인드","en":"Union-Find","aliases":["합집합 찾기"],"definition":"union으로 집합을 합치고 find로 대표를 찾는 서로소 집합 연산입니다.","example":"두 정점의 대표 비교","when":"동적 연결 여부를 반복해서 확인할 때","mistake":"대표 번호 자체가 항상 가장 작은 원소라고 가정하는 것","related":["union-find"]},
-  {"id":"representative","ko":"대표 원소","en":"Representative","aliases":["루트","집합 대표"],"definition":"한 집합을 식별하기 위해 사용하는 루트 원소입니다.","example":"find(4)가 반환한 루트 1","when":"두 원소가 같은 집합인지 비교할 때","mistake":"union 뒤에도 이전 대표가 계속 대표라고 생각하는 것","related":["union-find"]},
-  {"id":"path-compression","ko":"경로 압축","en":"Path compression","aliases":["경로 압축 최적화"],"definition":"find 중 거친 노드를 대표에 직접 연결해 다음 탐색 경로를 줄이는 최적화입니다.","example":"parent[x]를 루트로 즉시 변경","when":"서로소 집합의 반복 find를 빠르게 할 때","mistake":"부모를 갱신하지 않고 루트만 반환해도 압축됐다고 보는 것","related":["union-find"]},
-  {"id":"union-by-size","ko":"크기 기준 합치기","en":"Union by size","aliases":["union by rank","랭크 결합"],"definition":"작은 트리를 큰 트리 아래에 붙여 높이가 커지는 것을 막는 최적화입니다.","example":"크기 2 집합을 크기 5 집합에 연결","when":"union 결과 트리를 낮게 유지할 때","mistake":"두 대표가 이미 같을 때 크기를 다시 더하는 것","related":["union-find"]}
+  {
+    "id": "algorithm",
+    "ko": "알고리즘",
+    "en": "Algorithm",
+    "aliases": [
+      "절차",
+      "풀이법"
+    ],
+    "definition": "문제를 끝나는 단계들로 해결하는 명확한 절차입니다.",
+    "example": "정렬 후 이진 탐색하기",
+    "when": "같은 형태의 입력을 일관되게 처리할 때",
+    "mistake": "코드 한 조각 자체만을 알고리즘이라 부르는 것",
+    "related": [
+      "binary-search",
+      "merge-sort"
+    ]
+  },
+  {
+    "id": "data-structure",
+    "ko": "자료구조",
+    "en": "Data structure",
+    "aliases": [
+      "데이터 구조"
+    ],
+    "definition": "값을 저장하고 꺼내는 규칙을 정한 방식입니다.",
+    "example": "스택, 큐, 해시맵",
+    "when": "연산의 순서와 비용을 설계할 때",
+    "mistake": "모든 상황에 한 구조가 가장 빠르다고 생각하는 것",
+    "related": [
+      "stack",
+      "queue",
+      "hash-map"
+    ]
+  },
+  {
+    "id": "stack",
+    "ko": "스택",
+    "en": "Stack",
+    "aliases": [
+      "쌓기 구조"
+    ],
+    "definition": "가장 나중에 넣은 값을 가장 먼저 꺼내는 구조입니다.",
+    "example": "괄호 짝 검사",
+    "when": "최근 상태부터 되돌아볼 때",
+    "mistake": "빈 스택에서 꺼내는 것",
+    "related": [
+      "stack",
+      "dfs"
+    ]
+  },
+  {
+    "id": "lifo",
+    "ko": "후입선출",
+    "en": "Last In, First Out",
+    "abbr": "LIFO",
+    "aliases": [
+      "마지막 입력 우선"
+    ],
+    "definition": "마지막으로 들어온 항목이 먼저 나가는 순서입니다.",
+    "example": "접시 더미의 맨 위 접시",
+    "when": "스택의 순서를 설명할 때",
+    "mistake": "FIFO와 혼동하는 것",
+    "related": [
+      "stack"
+    ]
+  },
+  {
+    "id": "push",
+    "ko": "푸시",
+    "en": "Push",
+    "aliases": [
+      "삽입",
+      "넣기"
+    ],
+    "definition": "스택의 맨 위에 값을 추가하는 연산입니다.",
+    "example": "stack.push('(')",
+    "when": "새 상태를 스택에 보관할 때",
+    "mistake": "큐 뒤 삽입과 이름만 보고 같은 구조라 생각하는 것",
+    "related": [
+      "stack"
+    ]
+  },
+  {
+    "id": "pop",
+    "ko": "팝",
+    "en": "Pop",
+    "aliases": [
+      "꺼내기",
+      "제거"
+    ],
+    "definition": "스택 맨 위 값을 제거하며 가져오는 연산입니다.",
+    "example": "닫는 괄호를 만나 top 제거",
+    "when": "최근 값을 소비할 때",
+    "mistake": "비었는지 확인하지 않는 것",
+    "related": [
+      "stack"
+    ]
+  },
+  {
+    "id": "top",
+    "ko": "스택 꼭대기",
+    "en": "Top",
+    "aliases": [
+      "peek",
+      "맨 위"
+    ],
+    "definition": "스택에서 다음에 꺼낼 위치 또는 그 값입니다.",
+    "example": "top이 '['인지 확인",
+    "when": "제거하지 않고 최근 값을 볼 때",
+    "mistake": "top 조회가 pop처럼 값을 제거한다고 생각하는 것",
+    "related": [
+      "stack"
+    ]
+  },
+  {
+    "id": "queue",
+    "ko": "큐",
+    "en": "Queue",
+    "aliases": [
+      "대기열"
+    ],
+    "definition": "먼저 넣은 값을 먼저 꺼내는 구조입니다.",
+    "example": "프린터 작업 대기열",
+    "when": "도착 순서를 지켜 처리할 때",
+    "mistake": "배열 앞 삭제로 매번 전체를 이동하는 것",
+    "related": [
+      "queue",
+      "bfs"
+    ]
+  },
+  {
+    "id": "fifo",
+    "ko": "선입선출",
+    "en": "First In, First Out",
+    "abbr": "FIFO",
+    "aliases": [
+      "먼저 입력 우선"
+    ],
+    "definition": "먼저 들어온 항목이 먼저 나가는 순서입니다.",
+    "example": "매표소 줄",
+    "when": "큐의 순서를 설명할 때",
+    "mistake": "LIFO와 혼동하는 것",
+    "related": [
+      "queue"
+    ]
+  },
+  {
+    "id": "enqueue",
+    "ko": "인큐",
+    "en": "Enqueue",
+    "aliases": [
+      "뒤에 넣기"
+    ],
+    "definition": "큐의 뒤에 새 값을 추가하는 연산입니다.",
+    "example": "작업 번호를 대기열 뒤에 추가",
+    "when": "새 작업이 도착할 때",
+    "mistake": "앞쪽에 추가해 순서를 바꾸는 것",
+    "related": [
+      "queue"
+    ]
+  },
+  {
+    "id": "dequeue",
+    "ko": "디큐",
+    "en": "Dequeue",
+    "aliases": [
+      "앞에서 꺼내기"
+    ],
+    "definition": "큐의 앞 값을 제거하며 가져오는 연산입니다.",
+    "example": "가장 오래 기다린 작업 처리",
+    "when": "다음 작업을 처리할 때",
+    "mistake": "빈 큐 확인을 생략하는 것",
+    "related": [
+      "queue"
+    ]
+  },
+  {
+    "id": "front",
+    "ko": "큐 앞",
+    "en": "Front",
+    "aliases": [
+      "head",
+      "맨 앞"
+    ],
+    "definition": "큐에서 다음에 나갈 항목의 위치입니다.",
+    "example": "front 포인터 증가",
+    "when": "다음 처리 대상을 볼 때",
+    "mistake": "rear와 반대로 이해하는 것",
+    "related": [
+      "queue"
+    ]
+  },
+  {
+    "id": "hash-map",
+    "ko": "해시맵",
+    "en": "Hash map",
+    "aliases": [
+      "해시 테이블",
+      "dictionary",
+      "map"
+    ],
+    "definition": "키를 해시해 연결된 값을 빠르게 찾는 구조입니다.",
+    "example": "단어별 등장 횟수",
+    "when": "키로 값을 자주 조회하거나 갱신할 때",
+    "mistake": "항상 최악 O(1)이라고 단정하는 것",
+    "related": [
+      "hash-map"
+    ]
+  },
+  {
+    "id": "key",
+    "ko": "키",
+    "en": "Key",
+    "aliases": [
+      "식별자"
+    ],
+    "definition": "해시맵에서 값을 찾는 데 쓰는 고유한 기준입니다.",
+    "example": "리듬 이름 'kick'",
+    "when": "대상을 구분해 저장할 때",
+    "mistake": "변경 가능한 객체를 무심코 키로 쓰는 것",
+    "related": [
+      "hash-map"
+    ]
+  },
+  {
+    "id": "value",
+    "ko": "값",
+    "en": "Value",
+    "aliases": [
+      "데이터"
+    ],
+    "definition": "키에 연결해 저장하는 정보입니다.",
+    "example": "kick의 등장 횟수 3",
+    "when": "키와 관련된 상태를 보관할 때",
+    "mistake": "키와 값의 역할을 뒤집는 것",
+    "related": [
+      "hash-map"
+    ]
+  },
+  {
+    "id": "hash-function",
+    "ko": "해시 함수",
+    "en": "Hash function",
+    "aliases": [
+      "해싱"
+    ],
+    "definition": "키를 저장 위치를 정하는 숫자로 바꾸는 함수입니다.",
+    "example": "문자열을 버킷 번호로 변환",
+    "when": "해시 기반 구조가 키를 배치할 때",
+    "mistake": "서로 다른 키가 항상 다른 결과를 낸다고 믿는 것",
+    "related": [
+      "hash-map"
+    ]
+  },
+  {
+    "id": "collision",
+    "ko": "해시 충돌",
+    "en": "Hash collision",
+    "aliases": [
+      "충돌"
+    ],
+    "definition": "서로 다른 키가 같은 저장 위치 후보를 얻는 현상입니다.",
+    "example": "두 문자열이 같은 버킷을 가리킴",
+    "when": "해시맵 구현과 성능을 이해할 때",
+    "mistake": "충돌이 나면 값 하나가 반드시 사라진다고 생각하는 것",
+    "related": [
+      "hash-map"
+    ]
+  },
+  {
+    "id": "frequency",
+    "ko": "빈도",
+    "en": "Frequency",
+    "aliases": [
+      "등장 횟수",
+      "카운트"
+    ],
+    "definition": "어떤 값이 나타난 횟수입니다.",
+    "example": "kick → 3",
+    "when": "최빈값이나 분포를 구할 때",
+    "mistake": "동률 처리 규칙을 빼먹는 것",
+    "related": [
+      "hash-map"
+    ]
+  },
+  {
+    "id": "binary-search",
+    "ko": "이진 탐색",
+    "en": "Binary search",
+    "aliases": [
+      "이분 탐색"
+    ],
+    "definition": "정렬된 탐색 구간을 비교 결과에 따라 절반씩 줄이는 방법입니다.",
+    "example": "기준 이상인 첫 점수 찾기",
+    "when": "정렬된 값 또는 단조 조건의 경계를 찾을 때",
+    "mistake": "정렬되지 않은 배열에 적용하는 것",
+    "related": [
+      "binary-search"
+    ]
+  },
+  {
+    "id": "sorted",
+    "ko": "정렬됨",
+    "en": "Sorted",
+    "aliases": [
+      "순서화"
+    ],
+    "definition": "정해진 비교 기준에 따라 값의 순서가 맞춰진 상태입니다.",
+    "example": "1, 3, 6, 9",
+    "when": "탐색이나 병합의 전제를 확인할 때",
+    "mistake": "부분 정렬을 전체 정렬로 착각하는 것",
+    "related": [
+      "binary-search",
+      "merge-sort"
+    ]
+  },
+  {
+    "id": "lower-bound",
+    "ko": "하한",
+    "en": "Lower bound",
+    "aliases": [
+      "로어 바운드"
+    ],
+    "definition": "정렬된 범위에서 목표 이상인 첫 위치입니다.",
+    "example": "[1,6,6]에서 6의 하한은 2번 위치",
+    "when": "중복 값의 첫 경계를 찾을 때",
+    "mistake": "값을 찾지 못하면 무조건 -1이라고 정의하는 것",
+    "related": [
+      "binary-search"
+    ]
+  },
+  {
+    "id": "index",
+    "ko": "인덱스",
+    "en": "Index",
+    "aliases": [
+      "첨자",
+      "위치"
+    ],
+    "definition": "배열 원소의 위치를 나타내는 번호입니다.",
+    "example": "0부터 시작하는 index 2",
+    "when": "배열의 특정 칸을 접근할 때",
+    "mistake": "0 기반과 1 기반 위치를 섞는 것",
+    "related": [
+      "binary-search"
+    ]
+  },
+  {
+    "id": "invariant",
+    "ko": "불변 조건",
+    "en": "Invariant",
+    "aliases": [
+      "루프 불변식"
+    ],
+    "definition": "알고리즘이 진행되는 동안 계속 참으로 유지하는 조건입니다.",
+    "example": "답은 항상 [left, right] 안에 있음",
+    "when": "반복문의 정확성을 설명할 때",
+    "mistake": "경계 갱신 뒤 조건이 유지되는지 확인하지 않는 것",
+    "related": [
+      "binary-search"
+    ]
+  },
+  {
+    "id": "logarithm",
+    "ko": "로그",
+    "en": "Logarithm",
+    "abbr": "log",
+    "aliases": [
+      "대수"
+    ],
+    "definition": "몇 번 곱해야 목표가 되는지를 나타내며 절반 줄이기의 횟수를 설명합니다.",
+    "example": "2^10=1024이므로 log2 1024=10",
+    "when": "이진 탐색의 반복 횟수를 셀 때",
+    "mistake": "로그 밑 차이를 복잡도에서 과도하게 구분하는 것",
+    "related": [
+      "binary-search",
+      "merge-sort"
+    ]
+  },
+  {
+    "id": "merge-sort",
+    "ko": "병합 정렬",
+    "en": "Merge sort",
+    "aliases": [
+      "합병 정렬"
+    ],
+    "definition": "배열을 나눈 뒤 정렬된 조각을 병합하는 정렬입니다.",
+    "example": "[4,1]과 [3,2]를 나누어 병합",
+    "when": "O(n log n)과 안정성이 필요할 때",
+    "mistake": "병합용 추가 공간을 고려하지 않는 것",
+    "related": [
+      "merge-sort"
+    ]
+  },
+  {
+    "id": "divide-conquer",
+    "ko": "분할 정복",
+    "en": "Divide and conquer",
+    "abbr": "D&C",
+    "aliases": [
+      "분할정복"
+    ],
+    "definition": "문제를 작은 독립 문제로 나누고 답을 합치는 전략입니다.",
+    "example": "병합 정렬의 반 나누기",
+    "when": "같은 형태의 작은 문제로 쪼갤 수 있을 때",
+    "mistake": "겹치는 부분 문제가 많아도 무조건 재귀만 쓰는 것",
+    "related": [
+      "merge-sort"
+    ]
+  },
+  {
+    "id": "recursion",
+    "ko": "재귀",
+    "en": "Recursion",
+    "aliases": [
+      "재귀 호출"
+    ],
+    "definition": "함수가 더 작은 입력으로 자기 자신을 호출하는 방식입니다.",
+    "example": "왼쪽 절반을 다시 정렬",
+    "when": "트리형 구조나 분할 문제를 표현할 때",
+    "mistake": "기저 조건 없이 호출하는 것",
+    "related": [
+      "merge-sort",
+      "dfs"
+    ]
+  },
+  {
+    "id": "stable-sort",
+    "ko": "안정 정렬",
+    "en": "Stable sort",
+    "aliases": [
+      "안정성"
+    ],
+    "definition": "비교 키가 같은 원소들의 기존 상대 순서를 보존하는 정렬입니다.",
+    "example": "동점 참가자의 입장 순서 유지",
+    "when": "보조 정보의 순서가 의미 있을 때",
+    "mistake": "정렬 결과의 값만 같으면 안정성도 같다고 보는 것",
+    "related": [
+      "merge-sort"
+    ]
+  },
+  {
+    "id": "time-complexity",
+    "ko": "시간 복잡도",
+    "en": "Time complexity",
+    "aliases": [
+      "실행 시간 복잡도"
+    ],
+    "definition": "입력 크기가 커질 때 기본 연산 횟수가 늘어나는 정도입니다.",
+    "example": "선형 순회 O(n)",
+    "when": "알고리즘의 확장성을 비교할 때",
+    "mistake": "실제 초 단위 시간과 동일시하는 것",
+    "related": [
+      "stack",
+      "merge-sort"
+    ]
+  },
+  {
+    "id": "space-complexity",
+    "ko": "공간 복잡도",
+    "en": "Space complexity",
+    "aliases": [
+      "메모리 복잡도"
+    ],
+    "definition": "입력 크기에 따라 필요한 추가 저장 공간이 늘어나는 정도입니다.",
+    "example": "병합 배열 O(n)",
+    "when": "메모리 제한을 검토할 때",
+    "mistake": "입력 자체와 추가 공간을 구분하지 않는 것",
+    "related": [
+      "merge-sort"
+    ]
+  },
+  {
+    "id": "bfs",
+    "ko": "너비 우선 탐색",
+    "en": "Breadth-first search",
+    "abbr": "BFS",
+    "aliases": [
+      "너비 탐색"
+    ],
+    "definition": "시작점에서 거리가 가까운 정점부터 층별로 방문합니다.",
+    "example": "격자의 최소 이동 칸 수",
+    "when": "가중치 없는 최단 거리를 찾을 때",
+    "mistake": "큐에 넣을 때가 아니라 꺼낼 때 방문 표시하는 것",
+    "related": [
+      "bfs"
+    ]
+  },
+  {
+    "id": "graph",
+    "ko": "그래프",
+    "en": "Graph",
+    "aliases": [
+      "관계망"
+    ],
+    "definition": "정점과 정점 사이의 연결인 간선으로 관계를 표현한 구조입니다.",
+    "example": "방을 정점, 통로를 간선으로 표현",
+    "when": "대상 사이 연결을 모델링할 때",
+    "mistake": "항상 모든 정점이 연결되어 있다고 가정하는 것",
+    "related": [
+      "bfs",
+      "dfs"
+    ]
+  },
+  {
+    "id": "vertex",
+    "ko": "정점",
+    "en": "Vertex",
+    "abbr": "V",
+    "aliases": [
+      "node",
+      "노드"
+    ],
+    "definition": "그래프에서 하나의 대상이나 상태를 나타냅니다.",
+    "example": "격자의 한 칸",
+    "when": "그래프의 대상을 셀 때",
+    "mistake": "트리 노드와 그래프 정점의 용어 차이를 본질적 차이로 보는 것",
+    "related": [
+      "bfs",
+      "dfs"
+    ]
+  },
+  {
+    "id": "edge",
+    "ko": "간선",
+    "en": "Edge",
+    "abbr": "E",
+    "aliases": [
+      "연결선"
+    ],
+    "definition": "두 정점 사이의 이동 가능 관계입니다.",
+    "example": "인접한 두 길 칸 사이 이동",
+    "when": "그래프의 연결을 표현할 때",
+    "mistake": "방향 그래프에서 반대 이동도 가능하다고 보는 것",
+    "related": [
+      "bfs",
+      "dfs"
+    ]
+  },
+  {
+    "id": "visited",
+    "ko": "방문 표시",
+    "en": "Visited",
+    "aliases": [
+      "방문 배열"
+    ],
+    "definition": "이미 처리한 정점을 다시 처리하지 않도록 기록하는 상태입니다.",
+    "example": "visited[next] = true",
+    "when": "순환이 있는 그래프를 탐색할 때",
+    "mistake": "표시 시점이 늦어 같은 정점을 여러 번 넣는 것",
+    "related": [
+      "bfs",
+      "dfs"
+    ]
+  },
+  {
+    "id": "shortest-path",
+    "ko": "최단 경로",
+    "en": "Shortest path",
+    "aliases": [
+      "최소 경로"
+    ],
+    "definition": "두 정점 사이에서 비용 합이 가장 작은 경로입니다.",
+    "example": "간선 수가 가장 적은 격자 경로",
+    "when": "이동 비용을 최소화할 때",
+    "mistake": "가중치가 다른 그래프에도 기본 BFS를 쓰는 것",
+    "related": [
+      "bfs"
+    ]
+  },
+  {
+    "id": "dfs",
+    "ko": "깊이 우선 탐색",
+    "en": "Depth-first search",
+    "abbr": "DFS",
+    "aliases": [
+      "깊이 탐색"
+    ],
+    "definition": "한 갈래를 끝까지 방문한 뒤 되돌아오는 탐색입니다.",
+    "example": "연결 요소의 모든 정점 방문",
+    "when": "연결성, 순환, 완전 탐색을 다룰 때",
+    "mistake": "깊은 입력에서 재귀 한도를 무시하는 것",
+    "related": [
+      "dfs"
+    ]
+  },
+  {
+    "id": "connected-component",
+    "ko": "연결 요소",
+    "en": "Connected component",
+    "abbr": "CC",
+    "aliases": [
+      "연결 성분"
+    ],
+    "definition": "무방향 그래프에서 서로 오갈 수 있는 정점의 최대 집합입니다.",
+    "example": "분리된 섬 하나",
+    "when": "그래프가 몇 덩어리인지 셀 때",
+    "mistake": "방향 그래프의 강한 연결 요소와 혼동하는 것",
+    "related": [
+      "dfs"
+    ]
+  },
+  {
+    "id": "call-stack",
+    "ko": "호출 스택",
+    "en": "Call stack",
+    "aliases": [
+      "함수 호출 스택"
+    ],
+    "definition": "실행 중인 함수의 복귀 위치와 지역 상태를 쌓아 두는 영역입니다.",
+    "example": "재귀 DFS의 복귀 순서",
+    "when": "재귀 깊이와 메모리를 판단할 때",
+    "mistake": "입력이 커도 무한히 깊게 쓸 수 있다고 생각하는 것",
+    "related": [
+      "dfs"
+    ]
+  },
+  {
+    "id": "backtracking",
+    "ko": "백트래킹",
+    "en": "Backtracking",
+    "aliases": [
+      "되추적"
+    ],
+    "definition": "선택을 진행하다 막히면 이전 선택으로 돌아가 다른 경우를 보는 전략입니다.",
+    "example": "미로 갈림길로 되돌아오기",
+    "when": "후보를 만들고 조건에 따라 가지치기할 때",
+    "mistake": "DFS와 완전히 같은 뜻으로 사용하는 것",
+    "related": [
+      "dfs"
+    ]
+  },
+  {
+    "id": "dynamic-programming",
+    "ko": "동적 계획법",
+    "en": "Dynamic programming",
+    "abbr": "DP",
+    "aliases": [
+      "동적계획법"
+    ],
+    "definition": "겹치는 작은 문제의 답을 저장해 큰 답을 만드는 전략입니다.",
+    "example": "칸별 최소 에너지 저장",
+    "when": "최적 부분 구조와 중복 부분 문제가 있을 때",
+    "mistake": "배열을 썼다는 이유만으로 DP라 부르는 것",
+    "related": [
+      "basic-dp"
+    ]
+  },
+  {
+    "id": "state",
+    "ko": "상태",
+    "en": "State",
+    "aliases": [
+      "DP 상태"
+    ],
+    "definition": "부분 문제의 답이 무엇을 뜻하는지 나타내는 정보입니다.",
+    "example": "dp[i] = i칸까지 최소 비용",
+    "when": "DP를 설계할 때 가장 먼저 정의",
+    "mistake": "정의에 필요한 정보가 빠져 서로 다른 상황을 합치는 것",
+    "related": [
+      "basic-dp"
+    ]
+  },
+  {
+    "id": "recurrence",
+    "ko": "점화식",
+    "en": "Recurrence relation",
+    "aliases": [
+      "전이식",
+      "상태 전이"
+    ],
+    "definition": "이전 상태들로 현재 상태를 계산하는 관계식입니다.",
+    "example": "dp[i]=min(dp[i-1],dp[i-2])+cost[i]",
+    "when": "상태 사이 의존 관계를 표현할 때",
+    "mistake": "초깃값과 계산 순서를 빼먹는 것",
+    "related": [
+      "basic-dp"
+    ]
+  },
+  {
+    "id": "base-case",
+    "ko": "기저 조건",
+    "en": "Base case",
+    "aliases": [
+      "초기 조건",
+      "종료 조건"
+    ],
+    "definition": "더 작게 나누지 않고 바로 답을 아는 가장 작은 경우입니다.",
+    "example": "빈 경로 비용은 0",
+    "when": "재귀나 DP를 시작하고 끝낼 때",
+    "mistake": "입력 0이나 1 경계를 놓치는 것",
+    "related": [
+      "basic-dp",
+      "merge-sort"
+    ]
+  },
+  {
+    "id": "memoization",
+    "ko": "메모이제이션",
+    "en": "Memoization",
+    "aliases": [
+      "하향식 DP",
+      "top-down"
+    ],
+    "definition": "필요한 상태를 재귀로 계산하고 결과를 저장하는 방식입니다.",
+    "example": "계산한 dp[i]를 캐시에 보관",
+    "when": "필요한 상태만 계산하고 싶을 때",
+    "mistake": "계산 여부를 값 0만으로 판단하는 것",
+    "related": [
+      "basic-dp"
+    ]
+  },
+  {
+    "id": "tabulation",
+    "ko": "테이블 채우기",
+    "en": "Tabulation",
+    "aliases": [
+      "상향식 DP",
+      "bottom-up"
+    ],
+    "definition": "작은 상태부터 정해진 순서로 표를 채우는 방식입니다.",
+    "example": "dp[0]부터 dp[n-1]까지 계산",
+    "when": "의존 순서가 명확하고 반복문이 편할 때",
+    "mistake": "아직 계산하지 않은 상태를 참조하는 것",
+    "related": [
+      "basic-dp"
+    ]
+  },
+  {
+    "id": "simulation",
+    "ko": "시뮬레이션",
+    "en": "Simulation",
+    "aliases": [
+      "구현"
+    ],
+    "definition": "문제의 규칙을 상태 변화 순서대로 그대로 실행하는 방법입니다.",
+    "example": "명령마다 큐 넣기와 빼기",
+    "when": "규칙이 명확하고 상태 수가 감당될 때",
+    "mistake": "명령 순서를 임의로 바꾸는 것",
+    "related": [
+      "queue"
+    ]
+  },
+  {
+    "id": "big-o",
+    "ko": "빅오 표기법",
+    "en": "Big-O notation",
+    "abbr": "O",
+    "aliases": [
+      "점근 표기"
+    ],
+    "definition": "입력이 커질 때 증가율의 상한을 핵심 항으로 나타냅니다.",
+    "example": "O(n log n)",
+    "when": "시간과 공간 증가율을 비교할 때",
+    "mistake": "상수와 실제 환경을 전부 무시해도 된다고 생각하는 것",
+    "related": [
+      "merge-sort",
+      "binary-search"
+    ]
+  },
+  {
+    "id": "boundary-case",
+    "ko": "경계값",
+    "en": "Boundary case",
+    "aliases": [
+      "엣지 케이스",
+      "edge case"
+    ],
+    "definition": "최솟값, 최댓값, 빈 상태처럼 일반 흐름의 가장자리에 있는 입력입니다.",
+    "example": "원소가 하나인 배열",
+    "when": "테스트를 설계할 때",
+    "mistake": "공개 예제만 통과하면 모든 경계가 맞다고 믿는 것",
+    "related": [
+      "stack",
+      "basic-dp"
+    ]
+  },
+  {
+    "id": "compile-error",
+    "ko": "컴파일 오류",
+    "en": "Compile error",
+    "abbr": "CE",
+    "aliases": [
+      "문법 오류"
+    ],
+    "definition": "코드를 실행 파일이나 중간 코드로 바꾸는 단계에서 생긴 오류입니다.",
+    "example": "괄호나 타입 선언 누락",
+    "when": "컴파일 언어의 빌드 결과를 해석할 때",
+    "mistake": "모든 컴파일 오류를 한 줄의 원인으로 단정하는 것",
+    "related": []
+  },
+  {
+    "id": "runtime-error",
+    "ko": "런타임 오류",
+    "en": "Runtime error",
+    "abbr": "RE",
+    "aliases": [
+      "실행 오류"
+    ],
+    "definition": "컴파일 뒤 실제 실행 중 비정상 종료된 상태입니다.",
+    "example": "빈 스택 접근, 0으로 나누기",
+    "when": "실행 결과를 분류할 때",
+    "mistake": "오답 출력과 비정상 종료를 같은 상태로 처리하는 것",
+    "related": []
+  },
+  {
+    "id": "time-limit",
+    "ko": "시간 초과",
+    "en": "Time limit exceeded",
+    "abbr": "TLE",
+    "aliases": [
+      "시간 제한 초과"
+    ],
+    "definition": "프로그램이 허용된 실행 시간 안에 끝나지 않은 상태입니다.",
+    "example": "큰 입력에 O(n²) 반복",
+    "when": "채점 결과와 복잡도를 연결해 점검할 때",
+    "mistake": "무한 반복이라고 단정하는 것",
+    "related": [
+      "time-complexity",
+      "big-o"
+    ]
+  },
+  {
+    "id": "deque",
+    "ko": "덱",
+    "en": "Deque",
+    "aliases": [
+      "double-ended queue",
+      "양방향 큐"
+    ],
+    "definition": "앞과 뒤 양쪽에서 값을 넣고 뺄 수 있는 선형 자료구조입니다.",
+    "example": "양쪽 출입이 가능한 작업 대기열",
+    "when": "두 끝의 값을 모두 빠르게 다룰 때",
+    "mistake": "배열의 앞을 삭제하며 매번 전체를 이동하는 것",
+    "related": [
+      "deque"
+    ]
+  },
+  {
+    "id": "double-ended",
+    "ko": "양끝 연산",
+    "en": "Double-ended operation",
+    "aliases": [
+      "양방향",
+      "양쪽 끝"
+    ],
+    "definition": "자료구조의 앞과 뒤를 모두 삽입 또는 삭제 지점으로 사용하는 방식입니다.",
+    "example": "push front와 pop back",
+    "when": "덱의 네 가지 핵심 연산을 구분할 때",
+    "mistake": "앞과 뒤의 기준을 명령마다 뒤집는 것",
+    "related": [
+      "deque"
+    ]
+  },
+  {
+    "id": "linked-list",
+    "ko": "연결 리스트",
+    "en": "Linked list",
+    "aliases": [
+      "연결 목록",
+      "링크드 리스트"
+    ],
+    "definition": "각 노드가 이웃 노드의 연결 정보를 저장하는 선형 자료구조입니다.",
+    "example": "커서 주변 문자 노드 연결",
+    "when": "알고 있는 위치에서 삽입과 삭제가 잦을 때",
+    "mistake": "임의 위치 접근도 배열처럼 O(1)이라고 생각하는 것",
+    "related": [
+      "linked-list"
+    ]
+  },
+  {
+    "id": "node",
+    "ko": "노드",
+    "en": "Node",
+    "aliases": [
+      "자료 노드"
+    ],
+    "definition": "값과 다른 원소로 이어지는 연결 정보를 묶은 단위입니다.",
+    "example": "문자와 이전·다음 링크",
+    "when": "연결 리스트나 트리의 원소를 표현할 때",
+    "mistake": "노드의 값과 노드 자체를 항상 같은 것으로 보는 것",
+    "related": [
+      "linked-list",
+      "min-heap"
+    ]
+  },
+  {
+    "id": "pointer",
+    "ko": "포인터",
+    "en": "Pointer",
+    "aliases": [
+      "참조",
+      "reference",
+      "링크"
+    ],
+    "definition": "다른 값이나 노드의 위치를 가리키는 정보입니다.",
+    "example": "다음 노드를 가리키는 next",
+    "when": "노드 사이 연결을 구현할 때",
+    "mistake": "삭제한 노드를 계속 가리키는 참조를 남기는 것",
+    "related": [
+      "linked-list"
+    ]
+  },
+  {
+    "id": "cursor",
+    "ko": "커서",
+    "en": "Cursor",
+    "aliases": [
+      "편집 위치"
+    ],
+    "definition": "문자나 노드 사이에서 다음 편집이 일어날 위치를 나타냅니다.",
+    "example": "두 문자 사이의 삽입 지점",
+    "when": "편집 명령의 현재 위치를 추적할 때",
+    "mistake": "문자 자체와 문자 사이 위치를 혼동하는 것",
+    "related": [
+      "linked-list"
+    ]
+  },
+  {
+    "id": "heap",
+    "ko": "힙",
+    "en": "Heap",
+    "aliases": [
+      "이진 힙"
+    ],
+    "definition": "부모와 자식 사이의 우선순위 규칙을 유지하는 완전 이진 트리입니다.",
+    "example": "부모가 자식보다 작은 최소 힙",
+    "when": "최댓값이나 최솟값을 반복해서 꺼낼 때",
+    "mistake": "힙의 전체 배열이 정렬되어 있다고 생각하는 것",
+    "related": [
+      "min-heap"
+    ]
+  },
+  {
+    "id": "min-heap",
+    "ko": "최소 힙",
+    "en": "Min heap",
+    "aliases": [
+      "최솟값 힙"
+    ],
+    "definition": "모든 부모가 자식보다 작거나 같아 루트가 최솟값인 힙입니다.",
+    "example": "가장 작은 작업 번호를 먼저 선택",
+    "when": "현재 최솟값을 빠르게 꺼낼 때",
+    "mistake": "동일한 우선순위의 입력 순서가 자동 보존된다고 믿는 것",
+    "related": [
+      "min-heap"
+    ]
+  },
+  {
+    "id": "priority-queue",
+    "ko": "우선순위 큐",
+    "en": "Priority queue",
+    "abbr": "PQ",
+    "aliases": [
+      "우선 큐"
+    ],
+    "definition": "들어온 순서보다 정해진 우선순위가 높은 값을 먼저 꺼내는 구조입니다.",
+    "example": "비용이 가장 작은 작업부터 처리",
+    "when": "매 순간 최우선 후보를 선택할 때",
+    "mistake": "일반 FIFO 큐와 같은 순서로 나온다고 보는 것",
+    "related": [
+      "min-heap"
+    ]
+  },
+  {
+    "id": "heapify",
+    "ko": "힙 속성 복구",
+    "en": "Heapify",
+    "aliases": [
+      "sift up",
+      "sift down",
+      "힙화"
+    ],
+    "definition": "위나 아래로 값을 이동시켜 힙의 부모·자식 규칙을 다시 맞추는 과정입니다.",
+    "example": "루트 값을 더 작은 자식과 교환",
+    "when": "힙 삽입이나 루트 제거 뒤",
+    "mistake": "두 자식 중 우선순위가 낮은 쪽과 교환하는 것",
+    "related": [
+      "min-heap"
+    ]
+  },
+  {
+    "id": "complete-binary-tree",
+    "ko": "완전 이진 트리",
+    "en": "Complete binary tree",
+    "aliases": [
+      "완전 이진트리"
+    ],
+    "definition": "마지막 층을 제외한 층이 차 있고 마지막 층은 왼쪽부터 채워진 이진 트리입니다.",
+    "example": "배열로 빈틈없이 저장한 힙",
+    "when": "힙의 배열 인덱스 관계를 이해할 때",
+    "mistake": "모든 잎의 깊이가 같아야 한다고 생각하는 것",
+    "related": [
+      "min-heap"
+    ]
+  },
+  {
+    "id": "disjoint-set",
+    "ko": "서로소 집합",
+    "en": "Disjoint set",
+    "abbr": "DSU",
+    "aliases": [
+      "분리 집합",
+      "상호 배타적 집합"
+    ],
+    "definition": "서로 겹치지 않는 여러 집합을 합치고 소속을 확인하는 자료구조입니다.",
+    "example": "같은 팀에 속한 두 번호 판정",
+    "when": "연결 관계가 합쳐지기만 할 때",
+    "mistake": "집합에서 원소를 떼는 연산도 같은 비용으로 가능하다고 보는 것",
+    "related": [
+      "union-find"
+    ]
+  },
+  {
+    "id": "union-find",
+    "ko": "유니온 파인드",
+    "en": "Union-Find",
+    "aliases": [
+      "합집합 찾기"
+    ],
+    "definition": "union으로 집합을 합치고 find로 대표를 찾는 서로소 집합 연산입니다.",
+    "example": "두 정점의 대표 비교",
+    "when": "동적 연결 여부를 반복해서 확인할 때",
+    "mistake": "대표 번호 자체가 항상 가장 작은 원소라고 가정하는 것",
+    "related": [
+      "union-find"
+    ]
+  },
+  {
+    "id": "representative",
+    "ko": "대표 원소",
+    "en": "Representative",
+    "aliases": [
+      "루트",
+      "집합 대표"
+    ],
+    "definition": "한 집합을 식별하기 위해 사용하는 루트 원소입니다.",
+    "example": "find(4)가 반환한 루트 1",
+    "when": "두 원소가 같은 집합인지 비교할 때",
+    "mistake": "union 뒤에도 이전 대표가 계속 대표라고 생각하는 것",
+    "related": [
+      "union-find"
+    ]
+  },
+  {
+    "id": "path-compression",
+    "ko": "경로 압축",
+    "en": "Path compression",
+    "aliases": [
+      "경로 압축 최적화"
+    ],
+    "definition": "find 중 거친 노드를 대표에 직접 연결해 다음 탐색 경로를 줄이는 최적화입니다.",
+    "example": "parent[x]를 루트로 즉시 변경",
+    "when": "서로소 집합의 반복 find를 빠르게 할 때",
+    "mistake": "부모를 갱신하지 않고 루트만 반환해도 압축됐다고 보는 것",
+    "related": [
+      "union-find"
+    ]
+  },
+  {
+    "id": "union-by-size",
+    "ko": "크기 기준 합치기",
+    "en": "Union by size",
+    "aliases": [
+      "union by rank",
+      "랭크 결합"
+    ],
+    "definition": "작은 트리를 큰 트리 아래에 붙여 높이가 커지는 것을 막는 최적화입니다.",
+    "example": "크기 2 집합을 크기 5 집합에 연결",
+    "when": "union 결과 트리를 낮게 유지할 때",
+    "mistake": "두 대표가 이미 같을 때 크기를 다시 더하는 것",
+    "related": [
+      "union-find"
+    ]
+  },
+  {
+    "id": "array",
+    "ko": "배열",
+    "en": "Array",
+    "aliases": [
+      "연속 저장소"
+    ],
+    "definition": "같은 종류의 값을 인덱스 순서로 저장하는 구조입니다.",
+    "example": "scores[2]로 세 번째 점수 읽기",
+    "when": "위치로 빠르게 값을 읽고 순회할 때",
+    "mistake": "인덱스 범위를 벗어나는 것",
+    "related": [
+      "array-string",
+      "prefix-sum"
+    ]
+  },
+  {
+    "id": "string",
+    "ko": "문자열",
+    "en": "String",
+    "aliases": [
+      "문자 배열"
+    ],
+    "definition": "문자가 순서대로 이어진 값입니다.",
+    "example": "beat의 길이는 4",
+    "when": "텍스트를 비교·탐색·변환할 때",
+    "mistake": "문자와 문자열을 같은 타입으로 생각하는 것",
+    "related": [
+      "array-string",
+      "sliding-window"
+    ]
+  },
+  {
+    "id": "traversal",
+    "ko": "순회",
+    "en": "Traversal",
+    "aliases": [
+      "훑기"
+    ],
+    "definition": "자료의 원소나 노드를 정해진 순서로 한 번씩 방문하는 과정입니다.",
+    "example": "배열을 왼쪽부터 읽기",
+    "when": "모든 값을 검사하거나 상태를 누적할 때",
+    "mistake": "마지막 원소 처리를 빼먹는 것",
+    "related": [
+      "array-string",
+      "binary-tree"
+    ]
+  },
+  {
+    "id": "prefix-sum",
+    "ko": "누적 합",
+    "en": "Prefix sum",
+    "aliases": [
+      "부분 합"
+    ],
+    "definition": "처음부터 각 위치까지의 합을 미리 저장한 배열입니다.",
+    "example": "prefix[3]=a1+a2+a3",
+    "when": "변하지 않는 배열의 합 질의가 많을 때",
+    "mistake": "prefix[0] 경계를 만들지 않는 것",
+    "related": [
+      "prefix-sum"
+    ]
+  },
+  {
+    "id": "range-sum",
+    "ko": "구간 합",
+    "en": "Range sum",
+    "aliases": [
+      "부분 구간 합"
+    ],
+    "definition": "연속한 l번부터 r번까지 값의 합입니다.",
+    "example": "prefix[r]-prefix[l-1]",
+    "when": "기간·점수 등 연속 범위의 총합을 구할 때",
+    "mistake": "l번째 값을 함께 빼는 것",
+    "related": [
+      "prefix-sum"
+    ]
+  },
+  {
+    "id": "preprocessing",
+    "ko": "전처리",
+    "en": "Preprocessing",
+    "aliases": [
+      "사전 계산"
+    ],
+    "definition": "반복 질의를 빠르게 답하려고 입력을 미리 계산하는 단계입니다.",
+    "example": "O(n)으로 누적 합 만들기",
+    "when": "같은 데이터에 여러 질의가 들어올 때",
+    "mistake": "전처리 비용과 메모리를 무시하는 것",
+    "related": [
+      "prefix-sum"
+    ]
+  },
+  {
+    "id": "two-pointers",
+    "ko": "투 포인터",
+    "en": "Two pointers",
+    "aliases": [
+      "두 포인터"
+    ],
+    "definition": "두 인덱스를 규칙에 따라 움직여 탐색 범위를 줄이는 기법입니다.",
+    "example": "정렬 배열의 양끝 합 비교",
+    "when": "쌍이나 연속 구간을 선형 시간에 찾을 때",
+    "mistake": "이동 근거 없이 포인터를 옮기는 것",
+    "related": [
+      "two-pointers",
+      "sliding-window"
+    ]
+  },
+  {
+    "id": "sliding-window",
+    "ko": "슬라이딩 윈도우",
+    "en": "Sliding window",
+    "aliases": [
+      "이동 창"
+    ],
+    "definition": "연속 구간의 양끝을 앞으로 움직이며 상태를 재사용하는 기법입니다.",
+    "example": "문자 종류가 많으면 왼쪽 축소",
+    "when": "연속 구간의 최장·최단 조건을 찾을 때",
+    "mistake": "빠지는 원소의 상태를 갱신하지 않는 것",
+    "related": [
+      "sliding-window"
+    ]
+  },
+  {
+    "id": "window",
+    "ko": "윈도우",
+    "en": "Window",
+    "aliases": [
+      "현재 구간"
+    ],
+    "definition": "슬라이딩 윈도우가 현재 포함하고 있는 연속 범위입니다.",
+    "example": "문자열[left..right]",
+    "when": "구간 상태를 유지하며 확장·축소할 때",
+    "mistake": "불연속 원소를 한 윈도우로 보는 것",
+    "related": [
+      "sliding-window"
+    ]
+  },
+  {
+    "id": "permutation",
+    "ko": "순열",
+    "en": "Permutation",
+    "aliases": [
+      "순서 있는 나열"
+    ],
+    "definition": "서로 다른 항목을 순서를 고려해 나열한 결과입니다.",
+    "example": "1 2와 2 1은 다른 순열",
+    "when": "배치 순서가 결과를 바꿀 때",
+    "mistake": "조합처럼 순서를 무시하는 것",
+    "related": [
+      "recursion-backtracking"
+    ]
+  },
+  {
+    "id": "greedy",
+    "ko": "그리디",
+    "en": "Greedy",
+    "aliases": [
+      "탐욕법"
+    ],
+    "definition": "각 단계의 최선 선택을 되돌리지 않고 확정하는 전략입니다.",
+    "example": "큰 동전부터 사용",
+    "when": "지역 선택이 전체 최적임을 증명할 수 있을 때",
+    "mistake": "증명 없이 가장 큰 값만 고르는 것",
+    "related": [
+      "greedy"
+    ]
+  },
+  {
+    "id": "local-optimum",
+    "ko": "지역 최적",
+    "en": "Local optimum",
+    "aliases": [
+      "현재 최선"
+    ],
+    "definition": "현재 한 단계에서 가장 좋아 보이는 선택입니다.",
+    "example": "남은 금액 이하의 가장 큰 동전",
+    "when": "그리디 선택 기준을 설명할 때",
+    "mistake": "항상 전역 최적이라고 가정하는 것",
+    "related": [
+      "greedy"
+    ]
+  },
+  {
+    "id": "global-optimum",
+    "ko": "전역 최적",
+    "en": "Global optimum",
+    "aliases": [
+      "전체 최선"
+    ],
+    "definition": "가능한 모든 완성 결과 가운데 가장 좋은 결과입니다.",
+    "example": "전체 동전 개수의 최솟값",
+    "when": "알고리즘의 최종 정답을 비교할 때",
+    "mistake": "지역 최적과 구분하지 않는 것",
+    "related": [
+      "greedy",
+      "knapsack-dp"
+    ]
+  },
+  {
+    "id": "counterexample",
+    "ko": "반례",
+    "en": "Counterexample",
+    "aliases": [
+      "깨지는 예"
+    ],
+    "definition": "주장이나 알고리즘이 항상 맞지 않음을 보여 주는 입력 하나입니다.",
+    "example": "동전 1,3,4에서 금액 6",
+    "when": "그리디 규칙의 성립 여부를 검사할 때",
+    "mistake": "일부 예제가 맞는 것을 증명으로 여기는 것",
+    "related": [
+      "greedy"
+    ]
+  },
+  {
+    "id": "amortized-time",
+    "ko": "분할 상환 시간",
+    "en": "Amortized time",
+    "aliases": [
+      "상각 시간"
+    ],
+    "definition": "여러 연산 전체 비용을 연산 수로 나누어 보는 분석입니다.",
+    "example": "윈도우 원소는 들어오고 나가기 한 번씩",
+    "when": "개별 연산은 달라도 전체 이동 수가 제한될 때",
+    "mistake": "최악 한 번의 비용과 혼동하는 것",
+    "related": [
+      "sliding-window"
+    ]
+  },
+  {
+    "id": "binary-tree",
+    "ko": "이진 트리",
+    "en": "Binary tree",
+    "aliases": [
+      "이진 나무"
+    ],
+    "definition": "각 노드가 왼쪽과 오른쪽 자식을 최대 하나씩 갖는 트리입니다.",
+    "example": "루트 1의 자식 2와 3",
+    "when": "계층적 데이터를 두 갈래로 표현할 때",
+    "mistake": "이진 탐색 트리와 같은 뜻으로 보는 것",
+    "related": [
+      "binary-tree",
+      "binary-search-tree"
+    ]
+  },
+  {
+    "id": "root",
+    "ko": "루트",
+    "en": "Root",
+    "aliases": [
+      "뿌리 노드"
+    ],
+    "definition": "트리에서 부모가 없는 시작 노드입니다.",
+    "example": "1번 노드가 루트",
+    "when": "트리 순회와 깊이의 기준을 정할 때",
+    "mistake": "그래프의 임의 시작점과 항상 같다고 보는 것",
+    "related": [
+      "binary-tree"
+    ]
+  },
+  {
+    "id": "parent",
+    "ko": "부모",
+    "en": "Parent",
+    "aliases": [
+      "상위 노드"
+    ],
+    "definition": "트리에서 한 단계 위에 직접 연결된 노드입니다.",
+    "example": "2의 부모가 1",
+    "when": "노드 사이 계층 관계를 표현할 때",
+    "mistake": "한 노드에 부모가 여러 개라고 생각하는 것",
+    "related": [
+      "binary-tree"
+    ]
+  },
+  {
+    "id": "child",
+    "ko": "자식",
+    "en": "Child",
+    "aliases": [
+      "하위 노드"
+    ],
+    "definition": "트리에서 한 단계 아래에 직접 연결된 노드입니다.",
+    "example": "1의 왼쪽 자식이 2",
+    "when": "다음 깊이로 순회할 때",
+    "mistake": "자손 전체를 자식이라고 부르는 것",
+    "related": [
+      "binary-tree"
+    ]
+  },
+  {
+    "id": "leaf",
+    "ko": "리프",
+    "en": "Leaf",
+    "aliases": [
+      "단말 노드",
+      "잎 노드"
+    ],
+    "definition": "자식이 하나도 없는 트리 노드입니다.",
+    "example": "왼쪽과 오른쪽이 모두 0",
+    "when": "재귀 종료나 트리 끝을 판단할 때",
+    "mistake": "자식 하나가 있는 노드를 리프로 보는 것",
+    "related": [
+      "binary-tree"
+    ]
+  },
+  {
+    "id": "tree-height",
+    "ko": "트리 높이",
+    "en": "Tree height",
+    "aliases": [
+      "높이"
+    ],
+    "definition": "루트부터 가장 깊은 노드까지 포함한 레벨 수입니다.",
+    "example": "루트만 있으면 높이 1",
+    "when": "트리 깊이와 연산 비용을 평가할 때",
+    "mistake": "간선 수 기준과 노드 수 기준을 섞는 것",
+    "related": [
+      "binary-tree",
+      "binary-search-tree"
+    ]
+  },
+  {
+    "id": "binary-search-tree",
+    "ko": "이진 탐색 트리",
+    "en": "Binary search tree",
+    "aliases": [
+      "BST"
+    ],
+    "definition": "왼쪽 서브트리는 작고 오른쪽 서브트리는 큰 키를 갖는 이진 트리입니다.",
+    "example": "2의 왼쪽 1, 오른쪽 4",
+    "when": "정렬 순서를 유지하며 키를 탐색할 때",
+    "mistake": "직접 자식만 비교하면 충분하다고 생각하는 것",
+    "related": [
+      "binary-search-tree"
+    ]
+  },
+  {
+    "id": "subtree",
+    "ko": "서브트리",
+    "en": "Subtree",
+    "aliases": [
+      "부분 트리"
+    ],
+    "definition": "한 노드와 그 아래 모든 자손으로 이루어진 트리입니다.",
+    "example": "루트의 왼쪽 자식 아래 전체",
+    "when": "재귀적으로 트리 속성을 검사할 때",
+    "mistake": "자식 한 노드만을 서브트리로 보는 것",
+    "related": [
+      "binary-tree",
+      "binary-search-tree"
+    ]
+  },
+  {
+    "id": "dijkstra",
+    "ko": "다익스트라",
+    "en": "Dijkstra's algorithm",
+    "aliases": [
+      "다익스트라 알고리즘"
+    ],
+    "definition": "음이 아닌 가중치 그래프의 한 시작점 최단 거리를 구하는 알고리즘입니다.",
+    "example": "가장 가까운 후보부터 간선 완화",
+    "when": "도로 비용처럼 음수가 없는 최단 경로에",
+    "mistake": "음수 간선에 그대로 사용하는 것",
+    "related": [
+      "dijkstra"
+    ]
+  },
+  {
+    "id": "weighted-graph",
+    "ko": "가중 그래프",
+    "en": "Weighted graph",
+    "aliases": [
+      "비용 그래프"
+    ],
+    "definition": "각 간선에 거리나 비용 같은 수치가 붙은 그래프입니다.",
+    "example": "1→2 비용 7",
+    "when": "연결마다 이동 비용이 다를 때",
+    "mistake": "가중치를 정점 값과 혼동하는 것",
+    "related": [
+      "dijkstra"
+    ]
+  },
+  {
+    "id": "relaxation",
+    "ko": "완화",
+    "en": "Relaxation",
+    "aliases": [
+      "거리 갱신"
+    ],
+    "definition": "간선을 거쳐 더 짧은 경로를 찾으면 거리 값을 낮추는 연산입니다.",
+    "example": "dist[v] > dist[u]+w이면 갱신",
+    "when": "최단 거리 알고리즘에서 후보를 개선할 때",
+    "mistake": "큰 값으로 되돌려 갱신하는 것",
+    "related": [
+      "dijkstra"
+    ]
+  },
+  {
+    "id": "nonnegative-weight",
+    "ko": "음이 아닌 가중치",
+    "en": "Nonnegative weight",
+    "aliases": [
+      "비음수 비용"
+    ],
+    "definition": "0 이상인 간선 비용입니다.",
+    "example": "0, 3, 10",
+    "when": "다익스트라의 확정 논리를 보장할 때",
+    "mistake": "0도 양수라고 표현하는 것",
+    "related": [
+      "dijkstra"
+    ]
+  },
+  {
+    "id": "topological-sort",
+    "ko": "위상 정렬",
+    "en": "Topological sort",
+    "aliases": [
+      "의존 순서"
+    ],
+    "definition": "방향 간선의 선행 관계를 모두 지키도록 정점을 나열하는 방법입니다.",
+    "example": "빌드 단계 A 뒤에 B",
+    "when": "DAG의 작업 순서를 정할 때",
+    "mistake": "순환 그래프에도 항상 결과가 있다고 생각하는 것",
+    "related": [
+      "topological-sort"
+    ]
+  },
+  {
+    "id": "dag",
+    "ko": "방향 비순환 그래프",
+    "en": "Directed acyclic graph",
+    "aliases": [
+      "DAG"
+    ],
+    "definition": "방향을 따라 출발점으로 돌아오는 순환이 없는 그래프입니다.",
+    "example": "선수 과목 관계",
+    "when": "의존성과 선후 관계를 표현할 때",
+    "mistake": "무방향 사이클과 같은 방식으로 판단하는 것",
+    "related": [
+      "topological-sort"
+    ]
+  },
+  {
+    "id": "indegree",
+    "ko": "진입 차수",
+    "en": "Indegree",
+    "aliases": [
+      "들어오는 간선 수"
+    ],
+    "definition": "한 정점으로 들어오는 방향 간선의 개수입니다.",
+    "example": "선행 작업이 둘이면 2",
+    "when": "위상 정렬에서 준비된 작업을 찾을 때",
+    "mistake": "나가는 간선 수와 바꾸는 것",
+    "related": [
+      "topological-sort"
+    ]
+  },
+  {
+    "id": "dependency",
+    "ko": "의존성",
+    "en": "Dependency",
+    "aliases": [
+      "선행 관계"
+    ],
+    "definition": "한 작업이 다른 작업의 완료를 먼저 요구하는 관계입니다.",
+    "example": "A 완료 뒤 B 시작",
+    "when": "작업·과목·빌드 순서를 모델링할 때",
+    "mistake": "방향을 반대로 기록하는 것",
+    "related": [
+      "topological-sort"
+    ]
+  },
+  {
+    "id": "knapsack",
+    "ko": "배낭 문제",
+    "en": "Knapsack problem",
+    "aliases": [
+      "배낭 DP"
+    ],
+    "definition": "용량 제한 안에서 항목을 골라 가치 합을 최대화하는 문제입니다.",
+    "example": "무게 7 이하 최대 가치",
+    "when": "정수 용량과 선택 가치가 있을 때",
+    "mistake": "그리디로 항상 풀린다고 생각하는 것",
+    "related": [
+      "knapsack-dp"
+    ]
+  },
+  {
+    "id": "capacity",
+    "ko": "용량",
+    "en": "Capacity",
+    "aliases": [
+      "수용 한도"
+    ],
+    "definition": "선택한 항목의 총 무게가 넘을 수 없는 상한입니다.",
+    "example": "W=10",
+    "when": "자원 제한을 DP 상태로 둘 때",
+    "mistake": "현재 무게와 남은 용량을 섞는 것",
+    "related": [
+      "knapsack-dp"
+    ]
+  },
+  {
+    "id": "zero-one-choice",
+    "ko": "0/1 선택",
+    "en": "Zero-one choice",
+    "aliases": [
+      "한 번 선택"
+    ],
+    "definition": "각 항목을 선택하지 않거나 정확히 한 번만 선택하는 조건입니다.",
+    "example": "장비 하나는 중복 장착 불가",
+    "when": "항목 재사용이 금지된 선택 문제에서",
+    "mistake": "완전 배낭처럼 같은 항목을 반복 사용하는 것",
+    "related": [
+      "knapsack-dp"
+    ]
+  }
 ]

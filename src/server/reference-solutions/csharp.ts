@@ -1,4 +1,5 @@
 import type { ReferenceSolutionSet } from "./types.ts";
+import { expandedCsharpSolutions } from "./expanded/csharp.ts";
 
 const scanner = String.raw`sealed class FastScanner
 {
@@ -22,6 +23,7 @@ const scanner = String.raw`sealed class FastScanner
 }`;
 
 export const csharpSolutions = {
+  ...expandedCsharpSolutions,
   stack: String.raw`using System;
 
 public static class Program

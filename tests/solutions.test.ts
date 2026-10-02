@@ -8,7 +8,7 @@ import type { LanguageId } from "../src/types/content.ts";
 const conceptIds = PROBLEM_IDS;
 const languages: LanguageId[] = ["c", "cpp", "java", "python", "csharp"];
 
-test("12개 문제에 다섯 언어 기준 풀이가 모두 있다", () => {
+test("23개 문제에 다섯 언어 기준 풀이가 모두 있다", () => {
   for (const conceptId of conceptIds) {
     for (const language of languages) {
       const source = getReferenceSolution(conceptId, language);
@@ -19,7 +19,7 @@ test("12개 문제에 다섯 언어 기준 풀이가 모두 있다", () => {
   }
 });
 
-test("기준 풀이 API가 12개 문제의 다섯 언어 코드를 반환한다", async () => {
+test("기준 풀이 API가 23개 문제의 다섯 언어 코드를 반환한다", async () => {
   for (const conceptId of conceptIds) {
     for (const language of languages) {
       const response = await getSolution(new Request(`http://localhost/api/solutions/${conceptId}?language=${language}`), {

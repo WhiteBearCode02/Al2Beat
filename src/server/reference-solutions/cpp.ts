@@ -1,6 +1,8 @@
 import type { ReferenceSolutionSet } from "./types.ts";
+import { expandedCppSolutions } from "./expanded/cpp.ts";
 
 export const cppSolutions = {
+  ...expandedCppSolutions,
   stack: String.raw`#include <bits/stdc++.h>
 using namespace std;
 int main(){string s;cin>>s;vector<char>st;map<char,char>p={{')','('},{']','['},{'}','{'}};for(char c:s){if(c=='('||c=='['||c=='{')st.push_back(c);else if(st.empty()||st.back()!=p[c]){cout<<"NO";return 0;}else st.pop_back();}cout<<(st.empty()?"YES":"NO");}`,

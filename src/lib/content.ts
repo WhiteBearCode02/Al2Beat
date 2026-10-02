@@ -17,6 +17,17 @@ const slugs: Record<string, string> = {
   dfs: "분리된 리듬 섬",
   "union-find": "같은 무대인지 확인하기",
   "basic-dp": "최소 에너지 트랙",
+  "array-string": "리듬 문자열 압축",
+  "prefix-sum": "구간 에너지 합",
+  "two-pointers": "목표 합을 만드는 두 비트",
+  "sliding-window": "가장 긴 콤보 구간",
+  "recursion-backtracking": "가능한 리듬 패턴 만들기",
+  greedy: "최소 코인으로 박자 맞추기",
+  "binary-tree": "트랙 조명 트리의 높이",
+  "binary-search-tree": "탐색 트리 튜닝 검사",
+  dijkstra: "최단 비트 경로",
+  "topological-sort": "공연 준비 순서",
+  "knapsack-dp": "한정된 트랙 장비",
 };
 
 function starter(language: LanguageId, conceptId: string): string {

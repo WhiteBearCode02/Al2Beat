@@ -102,6 +102,35 @@ try {
     }
     console.log(`PASS ${runtime.language}: ${concepts.length}개 기준 풀이 컴파일·실행`);
   }
+  const { loadPyodide } = await import("pyodide");
+  const pyodide = await loadPyodide();
+  for (const concept of concepts) {
+    const source = getReferenceSolution(concept.id, "python");
+    const cases = [
+      ...concept.problem.examples.map(({ input, output }) => ({ input, expected: output })),
+      ...getPrivateTests(concept.id),
+    ];
+    for (const testCase of cases) {
+      pyodide.globals.set("__al2_source", source);
+      pyodide.globals.set("__al2_input", testCase.input);
+      const output = await pyodide.runPythonAsync(`
+import contextlib, io, sys
+__al2_stdout = io.StringIO()
+__al2_previous_stdin = sys.stdin
+sys.stdin = io.StringIO(__al2_input)
+try:
+    with contextlib.redirect_stdout(__al2_stdout):
+        exec(__al2_source, {"__name__": "__main__"})
+finally:
+    sys.stdin = __al2_previous_stdin
+__al2_stdout.getvalue()
+`);
+      if (normalized(output) !== normalized(testCase.expected))
+        throw new Error(`python/${concept.id} output mismatch`);
+    }
+  }
+  verified += concepts.length;
+  console.log(`PASS python: ${concepts.length}개 기준 풀이 Pyodide 실행`);
   console.log(`로컬 검증 완료: ${verified}개 풀이`);
 } finally {
   rmSync(root, { recursive: true, force: true });

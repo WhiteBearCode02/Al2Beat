@@ -1,6 +1,8 @@
 import type { ReferenceSolutionSet } from "./types.ts";
+import { expandedPythonSolutions } from "./expanded/python.ts";
 
 export const pythonSolutions = {
+  ...expandedPythonSolutions,
   stack: String.raw`import sys
 s = sys.stdin.readline().strip()
 stack = []

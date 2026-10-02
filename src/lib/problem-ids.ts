@@ -11,6 +11,17 @@ export const PROBLEM_IDS = [
   "dfs",
   "union-find",
   "basic-dp",
+  "array-string",
+  "prefix-sum",
+  "two-pointers",
+  "sliding-window",
+  "recursion-backtracking",
+  "greedy",
+  "binary-tree",
+  "binary-search-tree",
+  "dijkstra",
+  "topological-sort",
+  "knapsack-dp",
 ] as const;
 
 export type ProblemId = (typeof PROBLEM_IDS)[number];

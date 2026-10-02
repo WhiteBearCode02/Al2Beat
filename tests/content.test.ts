@@ -3,16 +3,18 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
 import { PROBLEM_IDS } from "../src/lib/problem-ids.ts";
+import { getPrivateTests } from "../src/server/private-tests.ts";
 
 type Concept = { id: string; status: string; duration: number; scenes: unknown[]; transcript: string[]; problem: { examples: unknown[]; terms: string[] } };
 type Term = { id: string; ko: string; en: string; definition: string; example: string; when: string; mistake: string; related: string[] };
 
 const concepts = JSON.parse(readFileSync("content/concepts.json", "utf8")) as Concept[];
 const terms = JSON.parse(readFileSync("content/glossary.json", "utf8")) as Term[];
+const expandedIds = ["array-string", "prefix-sum", "two-pointers", "sliding-window", "recursion-backtracking", "greedy", "binary-tree", "binary-search-tree", "dijkstra", "topological-sort", "knapsack-dp"];
 
-test("12개 콘텐츠가 영상·대본·문제·용어 연결을 갖춘다", () => {
-  assert.equal(concepts.length, 12);
-  assert.equal(new Set(concepts.map((item) => item.id)).size, 12);
+test("23개 콘텐츠가 영상·대본·문제·용어 연결을 갖춘다", () => {
+  assert.equal(concepts.length, 23);
+  assert.equal(new Set(concepts.map((item) => item.id)).size, 23);
   assert.deepEqual(new Set(concepts.map((item) => item.id)), new Set(PROBLEM_IDS));
   const termIds = new Set(terms.map((item) => item.id));
   for (const concept of concepts) {
@@ -20,9 +22,20 @@ test("12개 콘텐츠가 영상·대본·문제·용어 연결을 갖춘다", ()
     assert.ok(concept.duration >= 30 && concept.duration <= 90);
     assert.equal(concept.scenes.length, 6);
     assert.equal(concept.transcript.length, 6);
-    assert.ok(concept.problem.examples.length >= 1);
-    assert.ok(concept.problem.terms.length >= 5);
+    assert.ok(concept.problem.examples.length >= 2 || !expandedIds.includes(concept.id));
+    assert.ok(concept.problem.terms.length >= 6 || !expandedIds.includes(concept.id));
     for (const term of concept.problem.terms) assert.ok(termIds.has(term), `${concept.id}/${term} glossary term missing`);
+  }
+});
+
+test("새 문제의 비공개 테스트가 서버 전용 한도 안에 있다", () => {
+  for (const conceptId of expandedIds) {
+    const cases = getPrivateTests(conceptId);
+    assert.equal(cases.length, 7, `${conceptId} hidden case count`);
+    for (const item of cases) {
+      assert.ok(Buffer.byteLength(item.input, "utf8") <= 10_000, `${conceptId} hidden input exceeds API limit`);
+      assert.ok(Buffer.byteLength(item.expected, "utf8") <= 64_000, `${conceptId} hidden output exceeds API limit`);
+    }
   }
 });
 

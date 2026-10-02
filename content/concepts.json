@@ -8,24 +8,81 @@
     "duration": 48,
     "summary": "가장 나중에 넣은 값을 가장 먼저 꺼내는 LIFO 구조를 괄호 리듬으로 익힙니다.",
     "prerequisite": [],
-    "checkpoints": ["push와 pop 구분", "top 추적", "빈 스택 처리", "괄호 짝 판정"],
-    "scenes": [
-      { "title": "접시를 쌓듯", "caption": "새 값은 언제나 맨 위에 올라갑니다.", "visual": "stack" },
-      { "title": "마지막이 먼저", "caption": "가장 최근 값부터 꺼내는 규칙이 LIFO입니다.", "visual": "stack" },
-      { "title": "열린 괄호 저장", "caption": "여는 괄호를 만날 때마다 스택에 넣습니다.", "visual": "stack" },
-      { "title": "짝을 확인", "caption": "닫는 괄호는 top과 짝인지 확인한 뒤 꺼냅니다.", "visual": "stack" },
-      { "title": "빈 상태로 마침", "caption": "끝에 스택이 비어 있으면 모든 짝이 맞았습니다.", "visual": "stack" },
-      { "title": "한 번씩만", "caption": "문자마다 push 또는 pop 한 번, 시간은 O(n)입니다.", "visual": "stack" }
+    "checkpoints": [
+      "push와 pop 구분",
+      "top 추적",
+      "빈 스택 처리",
+      "괄호 짝 판정"
     ],
-    "transcript": ["스택은 마지막에 들어온 값이 먼저 나오는 자료구조입니다.", "괄호 문자열을 왼쪽부터 보며 여는 괄호를 넣습니다.", "닫는 괄호가 나오면 맨 위 괄호와 짝인지 확인합니다.", "짝이 아니거나 스택이 비어 있으면 즉시 올바르지 않습니다.", "모든 문자를 본 뒤 스택까지 비어 있어야 올바른 문자열입니다.", "각 문자를 한 번만 보므로 시간 복잡도는 O(n)입니다."],
+    "scenes": [
+      {
+        "title": "접시를 쌓듯",
+        "caption": "새 값은 언제나 맨 위에 올라갑니다.",
+        "visual": "stack"
+      },
+      {
+        "title": "마지막이 먼저",
+        "caption": "가장 최근 값부터 꺼내는 규칙이 LIFO입니다.",
+        "visual": "stack"
+      },
+      {
+        "title": "열린 괄호 저장",
+        "caption": "여는 괄호를 만날 때마다 스택에 넣습니다.",
+        "visual": "stack"
+      },
+      {
+        "title": "짝을 확인",
+        "caption": "닫는 괄호는 top과 짝인지 확인한 뒤 꺼냅니다.",
+        "visual": "stack"
+      },
+      {
+        "title": "빈 상태로 마침",
+        "caption": "끝에 스택이 비어 있으면 모든 짝이 맞았습니다.",
+        "visual": "stack"
+      },
+      {
+        "title": "한 번씩만",
+        "caption": "문자마다 push 또는 pop 한 번, 시간은 O(n)입니다.",
+        "visual": "stack"
+      }
+    ],
+    "transcript": [
+      "스택은 마지막에 들어온 값이 먼저 나오는 자료구조입니다.",
+      "괄호 문자열을 왼쪽부터 보며 여는 괄호를 넣습니다.",
+      "닫는 괄호가 나오면 맨 위 괄호와 짝인지 확인합니다.",
+      "짝이 아니거나 스택이 비어 있으면 즉시 올바르지 않습니다.",
+      "모든 문자를 본 뒤 스택까지 비어 있어야 올바른 문자열입니다.",
+      "각 문자를 한 번만 보므로 시간 복잡도는 O(n)입니다."
+    ],
     "problem": {
       "title": "괄호 비트 맞추기",
       "statement": "소괄호 (), 대괄호 [], 중괄호 {}로 이루어진 한 줄이 주어집니다. 모든 괄호가 올바른 순서로 열리고 닫혔으면 YES, 아니면 NO를 출력하세요.",
       "input": "첫 줄에 길이 n의 괄호 문자열이 주어집니다.",
       "output": "올바르면 YES, 아니면 NO를 출력합니다.",
-      "constraints": ["1 ≤ n ≤ 100,000", "입력은 ()[]{} 여섯 문자로만 이루어집니다."],
-      "examples": [{ "input": "{[()]}", "output": "YES", "note": "안쪽 괄호부터 차례로 닫힙니다." }, { "input": "([)]", "output": "NO", "note": "대괄호가 닫히기 전에 소괄호가 닫혔습니다." }],
-      "terms": ["stack", "lifo", "push", "pop", "top", "time-complexity"]
+      "constraints": [
+        "1 ≤ n ≤ 100,000",
+        "입력은 ()[]{} 여섯 문자로만 이루어집니다."
+      ],
+      "examples": [
+        {
+          "input": "{[()]}",
+          "output": "YES",
+          "note": "안쪽 괄호부터 차례로 닫힙니다."
+        },
+        {
+          "input": "([)]",
+          "output": "NO",
+          "note": "대괄호가 닫히기 전에 소괄호가 닫혔습니다."
+        }
+      ],
+      "terms": [
+        "stack",
+        "lifo",
+        "push",
+        "pop",
+        "top",
+        "time-complexity"
+      ]
     }
   },
   {
@@ -37,24 +94,76 @@
     "duration": 48,
     "summary": "먼저 들어온 값이 먼저 나오는 FIFO 구조로 제한된 버퍼를 시뮬레이션합니다.",
     "prerequisite": [],
-    "checkpoints": ["enqueue와 dequeue", "front 추적", "용량 제한", "시뮬레이션"],
-    "scenes": [
-      { "title": "한 줄로 입장", "caption": "새 작업은 대기열의 뒤에 붙습니다.", "visual": "queue" },
-      { "title": "먼저 온 작업부터", "caption": "front의 작업이 가장 먼저 처리됩니다.", "visual": "queue" },
-      { "title": "처리 시간", "caption": "매 초 맨 앞 작업의 남은 시간이 줄어듭니다.", "visual": "queue" },
-      { "title": "완료하면 퇴장", "caption": "남은 시간이 0이면 dequeue합니다.", "visual": "queue" },
-      { "title": "자리가 없으면", "caption": "용량을 넘는 새 작업은 받지 않습니다.", "visual": "queue" },
-      { "title": "순서를 보존", "caption": "FIFO가 도착 순서를 그대로 지켜 줍니다.", "visual": "queue" }
+    "checkpoints": [
+      "enqueue와 dequeue",
+      "front 추적",
+      "용량 제한",
+      "시뮬레이션"
     ],
-    "transcript": ["큐는 먼저 들어온 값이 먼저 나오는 FIFO 구조입니다.", "새 작업은 뒤에 넣고, 처리는 앞에서 시작합니다.", "이번 문제에서는 버퍼가 가득 찼을 때 새 작업을 버립니다.", "0은 맨 앞 작업 하나를 끝내라는 신호입니다.", "앞과 뒤를 직접 관리하면 모든 연산을 O(1)에 처리할 수 있습니다.", "배열의 앞을 매번 삭제해 전체를 옮기는 실수를 피하세요."],
+    "scenes": [
+      {
+        "title": "한 줄로 입장",
+        "caption": "새 작업은 대기열의 뒤에 붙습니다.",
+        "visual": "queue"
+      },
+      {
+        "title": "먼저 온 작업부터",
+        "caption": "front의 작업이 가장 먼저 처리됩니다.",
+        "visual": "queue"
+      },
+      {
+        "title": "처리 시간",
+        "caption": "매 초 맨 앞 작업의 남은 시간이 줄어듭니다.",
+        "visual": "queue"
+      },
+      {
+        "title": "완료하면 퇴장",
+        "caption": "남은 시간이 0이면 dequeue합니다.",
+        "visual": "queue"
+      },
+      {
+        "title": "자리가 없으면",
+        "caption": "용량을 넘는 새 작업은 받지 않습니다.",
+        "visual": "queue"
+      },
+      {
+        "title": "순서를 보존",
+        "caption": "FIFO가 도착 순서를 그대로 지켜 줍니다.",
+        "visual": "queue"
+      }
+    ],
+    "transcript": [
+      "큐는 먼저 들어온 값이 먼저 나오는 FIFO 구조입니다.",
+      "새 작업은 뒤에 넣고, 처리는 앞에서 시작합니다.",
+      "이번 문제에서는 버퍼가 가득 찼을 때 새 작업을 버립니다.",
+      "0은 맨 앞 작업 하나를 끝내라는 신호입니다.",
+      "앞과 뒤를 직접 관리하면 모든 연산을 O(1)에 처리할 수 있습니다.",
+      "배열의 앞을 매번 삭제해 전체를 옮기는 실수를 피하세요."
+    ],
     "problem": {
       "title": "연습실 버퍼",
       "statement": "크기 k인 작업 큐에 명령이 주어집니다. 양수 x는 작업 x를 뒤에 넣되 가득 차면 무시하고, 0은 맨 앞 작업을 하나 꺼냅니다. 마지막 큐를 앞에서부터 출력하세요.",
       "input": "첫 줄에 k와 명령 수 n, 둘째 줄에 n개의 정수가 주어집니다.",
       "output": "남은 작업 번호를 공백으로 출력합니다. 비었으면 EMPTY를 출력합니다.",
-      "constraints": ["1 ≤ k, n ≤ 100,000", "0 ≤ 명령 값 ≤ 1,000,000"],
-      "examples": [{ "input": "3 7\n10 20 0 30 40 50 0", "output": "30 40", "note": "50은 가득 찬 큐에서 무시됩니다." }],
-      "terms": ["queue", "fifo", "enqueue", "dequeue", "front", "simulation"]
+      "constraints": [
+        "1 ≤ k, n ≤ 100,000",
+        "0 ≤ 명령 값 ≤ 1,000,000"
+      ],
+      "examples": [
+        {
+          "input": "3 7\n10 20 0 30 40 50 0",
+          "output": "30 40",
+          "note": "50은 가득 찬 큐에서 무시됩니다."
+        }
+      ],
+      "terms": [
+        "queue",
+        "fifo",
+        "enqueue",
+        "dequeue",
+        "front",
+        "simulation"
+      ]
     }
   },
   {
@@ -66,24 +175,76 @@
     "duration": 48,
     "summary": "키를 해시해 값을 빠르게 찾고 빈도를 세는 패턴을 연습합니다.",
     "prerequisite": [],
-    "checkpoints": ["키와 값", "빈도 누적", "충돌 개념", "동률 규칙"],
-    "scenes": [
-      { "title": "이름표와 서랍", "caption": "키를 해시 함수에 넣어 저장 위치를 찾습니다.", "visual": "hash" },
-      { "title": "같은 키 발견", "caption": "이미 있으면 연결된 값을 바로 갱신합니다.", "visual": "hash" },
-      { "title": "빈도 세기", "caption": "리듬 이름을 키, 등장 횟수를 값으로 둡니다.", "visual": "hash" },
-      { "title": "충돌 처리", "caption": "다른 키가 같은 칸을 가리킬 수 있어 충돌 처리가 필요합니다.", "visual": "hash" },
-      { "title": "최댓값 선택", "caption": "빈도가 큰 키를 찾고 동률 규칙을 적용합니다.", "visual": "hash" },
-      { "title": "평균 O(1)", "caption": "조회와 갱신은 보통 상수 시간에 가깝습니다.", "visual": "hash" }
+    "checkpoints": [
+      "키와 값",
+      "빈도 누적",
+      "충돌 개념",
+      "동률 규칙"
     ],
-    "transcript": ["해시맵은 키를 이용해 값을 빠르게 찾는 자료구조입니다.", "문자열마다 등장 횟수를 저장하면 빈도표가 됩니다.", "같은 문자열을 다시 만나면 기존 값에 1을 더합니다.", "서로 다른 키가 같은 위치로 가는 충돌은 구현체가 처리합니다.", "가장 큰 빈도를 고르고, 동률이면 사전순 규칙을 적용합니다.", "평균 조회와 갱신은 O(1), 전체 처리는 평균 O(n)입니다."],
+    "scenes": [
+      {
+        "title": "이름표와 서랍",
+        "caption": "키를 해시 함수에 넣어 저장 위치를 찾습니다.",
+        "visual": "hash"
+      },
+      {
+        "title": "같은 키 발견",
+        "caption": "이미 있으면 연결된 값을 바로 갱신합니다.",
+        "visual": "hash"
+      },
+      {
+        "title": "빈도 세기",
+        "caption": "리듬 이름을 키, 등장 횟수를 값으로 둡니다.",
+        "visual": "hash"
+      },
+      {
+        "title": "충돌 처리",
+        "caption": "다른 키가 같은 칸을 가리킬 수 있어 충돌 처리가 필요합니다.",
+        "visual": "hash"
+      },
+      {
+        "title": "최댓값 선택",
+        "caption": "빈도가 큰 키를 찾고 동률 규칙을 적용합니다.",
+        "visual": "hash"
+      },
+      {
+        "title": "평균 O(1)",
+        "caption": "조회와 갱신은 보통 상수 시간에 가깝습니다.",
+        "visual": "hash"
+      }
+    ],
+    "transcript": [
+      "해시맵은 키를 이용해 값을 빠르게 찾는 자료구조입니다.",
+      "문자열마다 등장 횟수를 저장하면 빈도표가 됩니다.",
+      "같은 문자열을 다시 만나면 기존 값에 1을 더합니다.",
+      "서로 다른 키가 같은 위치로 가는 충돌은 구현체가 처리합니다.",
+      "가장 큰 빈도를 고르고, 동률이면 사전순 규칙을 적용합니다.",
+      "평균 조회와 갱신은 O(1), 전체 처리는 평균 O(n)입니다."
+    ],
     "problem": {
       "title": "오늘의 최다 비트",
       "statement": "n개의 소문자 리듬 이름 중 가장 많이 등장한 이름과 횟수를 출력하세요. 횟수가 같으면 사전순으로 앞선 이름을 고릅니다.",
       "input": "첫 줄에 n, 다음 n줄에 길이 1~20의 소문자 문자열이 주어집니다.",
       "output": "선택한 이름과 등장 횟수를 공백으로 출력합니다.",
-      "constraints": ["1 ≤ n ≤ 200,000", "이름은 영문 소문자로만 이루어집니다."],
-      "examples": [{ "input": "6\nkick\nsnare\nkick\nhat\nsnare\nkick", "output": "kick 3", "note": "kick이 세 번 등장합니다." }],
-      "terms": ["hash-map", "key", "value", "hash-function", "collision", "frequency"]
+      "constraints": [
+        "1 ≤ n ≤ 200,000",
+        "이름은 영문 소문자로만 이루어집니다."
+      ],
+      "examples": [
+        {
+          "input": "6\nkick\nsnare\nkick\nhat\nsnare\nkick",
+          "output": "kick 3",
+          "note": "kick이 세 번 등장합니다."
+        }
+      ],
+      "terms": [
+        "hash-map",
+        "key",
+        "value",
+        "hash-function",
+        "collision",
+        "frequency"
+      ]
     }
   },
   {
@@ -94,25 +255,81 @@
     "status": "ready",
     "duration": 48,
     "summary": "정렬된 구간을 절반씩 줄여 처음 조건을 만족하는 위치를 찾습니다.",
-    "prerequisite": ["정렬", "인덱스"],
-    "checkpoints": ["정렬 전제", "탐색 구간", "중간값", "lower bound"],
-    "scenes": [
-      { "title": "정렬이 출발선", "caption": "값이 정렬되어 있어야 절반을 버릴 근거가 생깁니다.", "visual": "search" },
-      { "title": "가운데 확인", "caption": "중앙 값과 목표를 비교합니다.", "visual": "search" },
-      { "title": "절반 제거", "caption": "조건을 못 만족하면 왼쪽 절반을 버립니다.", "visual": "search" },
-      { "title": "후보를 보존", "caption": "조건을 만족하면 답 후보로 두고 더 왼쪽을 봅니다.", "visual": "search" },
-      { "title": "경계가 만남", "caption": "left와 right가 만나는 곳이 첫 위치입니다.", "visual": "search" },
-      { "title": "로그 박자", "caption": "매번 절반이 되어 O(log n)만 필요합니다.", "visual": "search" }
+    "prerequisite": [
+      "정렬",
+      "인덱스"
     ],
-    "transcript": ["이진 탐색은 정렬된 범위를 절반씩 줄입니다.", "이번에는 목표 이상인 첫 위치, lower bound를 찾습니다.", "중앙 값이 목표보다 작으면 답이 오른쪽에만 있습니다.", "목표 이상이면 중앙도 후보이므로 오른쪽 경계를 중앙으로 옮깁니다.", "두 경계가 만나면 그 위치가 답입니다.", "구간이 절반씩 줄어 시간 복잡도는 O(log n)입니다."],
+    "checkpoints": [
+      "정렬 전제",
+      "탐색 구간",
+      "중간값",
+      "lower bound"
+    ],
+    "scenes": [
+      {
+        "title": "정렬이 출발선",
+        "caption": "값이 정렬되어 있어야 절반을 버릴 근거가 생깁니다.",
+        "visual": "search"
+      },
+      {
+        "title": "가운데 확인",
+        "caption": "중앙 값과 목표를 비교합니다.",
+        "visual": "search"
+      },
+      {
+        "title": "절반 제거",
+        "caption": "조건을 못 만족하면 왼쪽 절반을 버립니다.",
+        "visual": "search"
+      },
+      {
+        "title": "후보를 보존",
+        "caption": "조건을 만족하면 답 후보로 두고 더 왼쪽을 봅니다.",
+        "visual": "search"
+      },
+      {
+        "title": "경계가 만남",
+        "caption": "left와 right가 만나는 곳이 첫 위치입니다.",
+        "visual": "search"
+      },
+      {
+        "title": "로그 박자",
+        "caption": "매번 절반이 되어 O(log n)만 필요합니다.",
+        "visual": "search"
+      }
+    ],
+    "transcript": [
+      "이진 탐색은 정렬된 범위를 절반씩 줄입니다.",
+      "이번에는 목표 이상인 첫 위치, lower bound를 찾습니다.",
+      "중앙 값이 목표보다 작으면 답이 오른쪽에만 있습니다.",
+      "목표 이상이면 중앙도 후보이므로 오른쪽 경계를 중앙으로 옮깁니다.",
+      "두 경계가 만나면 그 위치가 답입니다.",
+      "구간이 절반씩 줄어 시간 복잡도는 O(log n)입니다."
+    ],
     "problem": {
       "title": "첫 임계 비트",
       "statement": "오름차순 점수 n개와 기준 x가 주어질 때, x 이상인 첫 점수의 1부터 시작하는 위치를 출력하세요. 없으면 -1을 출력합니다.",
       "input": "첫 줄에 n과 x, 둘째 줄에 n개의 오름차순 정수가 주어집니다.",
       "output": "조건을 만족하는 첫 위치 또는 -1을 출력합니다.",
-      "constraints": ["1 ≤ n ≤ 1,000,000", "-10^9 ≤ 점수, x ≤ 10^9", "같은 점수가 여러 번 나올 수 있습니다."],
-      "examples": [{ "input": "7 6\n1 3 6 6 9 12 15", "output": "3", "note": "첫 번째 6은 3번 위치입니다." }],
-      "terms": ["binary-search", "sorted", "lower-bound", "index", "invariant", "logarithm"]
+      "constraints": [
+        "1 ≤ n ≤ 1,000,000",
+        "-10^9 ≤ 점수, x ≤ 10^9",
+        "같은 점수가 여러 번 나올 수 있습니다."
+      ],
+      "examples": [
+        {
+          "input": "7 6\n1 3 6 6 9 12 15",
+          "output": "3",
+          "note": "첫 번째 6은 3번 위치입니다."
+        }
+      ],
+      "terms": [
+        "binary-search",
+        "sorted",
+        "lower-bound",
+        "index",
+        "invariant",
+        "logarithm"
+      ]
     }
   },
   {
@@ -123,25 +340,81 @@
     "status": "ready",
     "duration": 48,
     "summary": "나누고 정렬된 두 줄을 합쳐 안정적으로 정렬합니다.",
-    "prerequisite": ["재귀", "배열"],
-    "checkpoints": ["분할", "기저 조건", "병합", "안정성"],
-    "scenes": [
-      { "title": "반으로 나누기", "caption": "배열을 원소 하나가 될 때까지 나눕니다.", "visual": "merge" },
-      { "title": "하나는 이미 정렬", "caption": "원소 하나인 배열은 정렬된 상태입니다.", "visual": "merge" },
-      { "title": "두 줄의 앞 비교", "caption": "더 작은 앞 원소를 결과에 놓습니다.", "visual": "merge" },
-      { "title": "같으면 왼쪽 먼저", "caption": "동일 키에서 왼쪽을 먼저 두면 원래 순서가 유지됩니다.", "visual": "merge" },
-      { "title": "모두 합치기", "caption": "남은 원소를 붙이면 한 단계 병합이 끝납니다.", "visual": "merge" },
-      { "title": "O(n log n)", "caption": "log n개 층에서 각 원소를 한 번씩 다룹니다.", "visual": "merge" }
+    "prerequisite": [
+      "재귀",
+      "배열"
     ],
-    "transcript": ["병합 정렬은 배열을 반으로 나눈 뒤 다시 합칩니다.", "원소 하나는 이미 정렬되어 있다고 봅니다.", "정렬된 두 배열의 앞을 비교해 작은 값을 꺼냅니다.", "키가 같을 때 왼쪽 원소를 먼저 두면 안정 정렬이 됩니다.", "각 층에서는 모든 원소를 한 번 보고 층은 log n개입니다.", "따라서 시간은 O(n log n), 추가 배열 공간은 O(n)입니다."],
+    "checkpoints": [
+      "분할",
+      "기저 조건",
+      "병합",
+      "안정성"
+    ],
+    "scenes": [
+      {
+        "title": "반으로 나누기",
+        "caption": "배열을 원소 하나가 될 때까지 나눕니다.",
+        "visual": "merge"
+      },
+      {
+        "title": "하나는 이미 정렬",
+        "caption": "원소 하나인 배열은 정렬된 상태입니다.",
+        "visual": "merge"
+      },
+      {
+        "title": "두 줄의 앞 비교",
+        "caption": "더 작은 앞 원소를 결과에 놓습니다.",
+        "visual": "merge"
+      },
+      {
+        "title": "같으면 왼쪽 먼저",
+        "caption": "동일 키에서 왼쪽을 먼저 두면 원래 순서가 유지됩니다.",
+        "visual": "merge"
+      },
+      {
+        "title": "모두 합치기",
+        "caption": "남은 원소를 붙이면 한 단계 병합이 끝납니다.",
+        "visual": "merge"
+      },
+      {
+        "title": "O(n log n)",
+        "caption": "log n개 층에서 각 원소를 한 번씩 다룹니다.",
+        "visual": "merge"
+      }
+    ],
+    "transcript": [
+      "병합 정렬은 배열을 반으로 나눈 뒤 다시 합칩니다.",
+      "원소 하나는 이미 정렬되어 있다고 봅니다.",
+      "정렬된 두 배열의 앞을 비교해 작은 값을 꺼냅니다.",
+      "키가 같을 때 왼쪽 원소를 먼저 두면 안정 정렬이 됩니다.",
+      "각 층에서는 모든 원소를 한 번 보고 층은 log n개입니다.",
+      "따라서 시간은 O(n log n), 추가 배열 공간은 O(n)입니다."
+    ],
     "problem": {
       "title": "입장 순서를 지키는 믹스",
       "statement": "참가자의 점수와 이름이 입력 순서대로 주어집니다. 점수 오름차순으로 정렬하되 점수가 같으면 입력 순서를 유지해 출력하세요.",
       "input": "첫 줄에 n, 다음 n줄에 점수와 이름이 주어집니다.",
       "output": "정렬된 점수와 이름을 한 줄씩 출력합니다.",
-      "constraints": ["1 ≤ n ≤ 200,000", "0 ≤ 점수 ≤ 1,000,000", "이름 길이는 1~20입니다."],
-      "examples": [{ "input": "4\n90 aria\n70 beat\n90 coda\n70 drum", "output": "70 beat\n70 drum\n90 aria\n90 coda", "note": "동점자의 입력 순서가 유지됩니다." }],
-      "terms": ["merge-sort", "divide-conquer", "recursion", "stable-sort", "time-complexity", "space-complexity"]
+      "constraints": [
+        "1 ≤ n ≤ 200,000",
+        "0 ≤ 점수 ≤ 1,000,000",
+        "이름 길이는 1~20입니다."
+      ],
+      "examples": [
+        {
+          "input": "4\n90 aria\n70 beat\n90 coda\n70 drum",
+          "output": "70 beat\n70 drum\n90 aria\n90 coda",
+          "note": "동점자의 입력 순서가 유지됩니다."
+        }
+      ],
+      "terms": [
+        "merge-sort",
+        "divide-conquer",
+        "recursion",
+        "stable-sort",
+        "time-complexity",
+        "space-complexity"
+      ]
     }
   },
   {
@@ -152,25 +425,80 @@
     "status": "ready",
     "duration": 48,
     "summary": "큐로 같은 거리의 정점을 먼저 방문해 가중치 없는 최단 거리를 찾습니다.",
-    "prerequisite": ["큐", "그래프"],
-    "checkpoints": ["큐 사용", "방문 표시", "거리 층", "최단 경로 조건"],
-    "scenes": [
-      { "title": "시작점을 큐에", "caption": "거리 0인 시작점을 넣고 방문 표시합니다.", "visual": "bfs" },
-      { "title": "가까운 곳부터", "caption": "큐에서 꺼낸 정점의 이웃을 확인합니다.", "visual": "bfs" },
-      { "title": "첫 방문만", "caption": "처음 본 이웃만 큐에 넣어 중복을 막습니다.", "visual": "bfs" },
-      { "title": "층이 퍼짐", "caption": "거리 1, 2, 3 순으로 파동처럼 탐색합니다.", "visual": "bfs" },
-      { "title": "첫 도착이 최단", "caption": "모든 간선 비용이 같을 때 첫 거리가 최단입니다.", "visual": "bfs" },
-      { "title": "정점과 간선만큼", "caption": "인접 리스트에서는 O(V+E)입니다.", "visual": "bfs" }
+    "prerequisite": [
+      "큐",
+      "그래프"
     ],
-    "transcript": ["BFS는 시작점에서 가까운 정점부터 방문합니다.", "큐에 시작점을 넣고 방문 표시를 먼저 합니다.", "정점을 하나 꺼내 아직 방문하지 않은 이웃을 뒤에 넣습니다.", "큐의 순서 때문에 같은 거리의 정점이 같은 층에서 처리됩니다.", "간선 비용이 모두 같을 때 처음 기록한 거리가 최단 거리입니다.", "정점과 간선을 한 번씩 확인해 O(V+E)입니다."],
+    "checkpoints": [
+      "큐 사용",
+      "방문 표시",
+      "거리 층",
+      "최단 경로 조건"
+    ],
+    "scenes": [
+      {
+        "title": "시작점을 큐에",
+        "caption": "거리 0인 시작점을 넣고 방문 표시합니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "가까운 곳부터",
+        "caption": "큐에서 꺼낸 정점의 이웃을 확인합니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "첫 방문만",
+        "caption": "처음 본 이웃만 큐에 넣어 중복을 막습니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "층이 퍼짐",
+        "caption": "거리 1, 2, 3 순으로 파동처럼 탐색합니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "첫 도착이 최단",
+        "caption": "모든 간선 비용이 같을 때 첫 거리가 최단입니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "정점과 간선만큼",
+        "caption": "인접 리스트에서는 O(V+E)입니다.",
+        "visual": "bfs"
+      }
+    ],
+    "transcript": [
+      "BFS는 시작점에서 가까운 정점부터 방문합니다.",
+      "큐에 시작점을 넣고 방문 표시를 먼저 합니다.",
+      "정점을 하나 꺼내 아직 방문하지 않은 이웃을 뒤에 넣습니다.",
+      "큐의 순서 때문에 같은 거리의 정점이 같은 층에서 처리됩니다.",
+      "간선 비용이 모두 같을 때 처음 기록한 거리가 최단 거리입니다.",
+      "정점과 간선을 한 번씩 확인해 O(V+E)입니다."
+    ],
     "problem": {
       "title": "최소 박자로 출구까지",
       "statement": "0은 길, 1은 벽인 격자에서 왼쪽 위에서 오른쪽 아래까지 상하좌우로 이동하는 최소 칸 수를 구하세요. 시작 칸도 1칸으로 셉니다. 갈 수 없으면 -1입니다.",
       "input": "첫 줄에 h와 w, 다음 h줄에 0과 1로 된 문자열이 주어집니다.",
       "output": "최소 칸 수 또는 -1을 출력합니다.",
-      "constraints": ["1 ≤ h, w ≤ 1,000", "시작과 도착은 길입니다."],
-      "examples": [{ "input": "3 4\n0001\n1100\n0000", "output": "6", "note": "같은 칸을 반복 방문하지 않습니다." }],
-      "terms": ["bfs", "graph", "vertex", "edge", "visited", "shortest-path"]
+      "constraints": [
+        "1 ≤ h, w ≤ 1,000",
+        "시작과 도착은 길입니다."
+      ],
+      "examples": [
+        {
+          "input": "3 4\n0001\n1100\n0000",
+          "output": "6",
+          "note": "같은 칸을 반복 방문하지 않습니다."
+        }
+      ],
+      "terms": [
+        "bfs",
+        "graph",
+        "vertex",
+        "edge",
+        "visited",
+        "shortest-path"
+      ]
     }
   },
   {
@@ -181,25 +509,81 @@
     "status": "ready",
     "duration": 48,
     "summary": "한 갈래를 끝까지 탐색한 뒤 되돌아와 연결 요소를 셉니다.",
-    "prerequisite": ["스택", "그래프"],
-    "checkpoints": ["깊이 진행", "백트래킹", "방문 표시", "연결 요소"],
-    "scenes": [
-      { "title": "한 갈래 선택", "caption": "아직 방문하지 않은 이웃 하나로 깊게 들어갑니다.", "visual": "dfs" },
-      { "title": "즉시 방문 표시", "caption": "들어갈 때 표시해 순환을 막습니다.", "visual": "dfs" },
-      { "title": "막히면 되돌아감", "caption": "갈 곳이 없으면 이전 갈림길로 돌아옵니다.", "visual": "dfs" },
-      { "title": "한 덩어리 완주", "caption": "한 번의 DFS가 연결된 모든 정점을 방문합니다.", "visual": "dfs" },
-      { "title": "새 시작 찾기", "caption": "미방문 정점을 만나면 연결 요소가 하나 늘어납니다.", "visual": "dfs" },
-      { "title": "스택도 가능", "caption": "재귀 대신 명시적 스택으로 깊은 입력을 안전하게 다룹니다.", "visual": "dfs" }
+    "prerequisite": [
+      "스택",
+      "그래프"
     ],
-    "transcript": ["DFS는 한 방향으로 갈 수 있을 때까지 깊게 들어갑니다.", "정점에 들어가는 순간 방문 표시를 해야 순환하지 않습니다.", "막다른 곳에서는 이전 갈림길로 되돌아갑니다.", "한 번의 탐색이 끝나면 시작점과 연결된 정점을 모두 본 셈입니다.", "아직 방문하지 않은 정점마다 새 탐색을 시작하면 연결 요소 수를 셀 수 있습니다.", "입력이 깊다면 호출 스택 대신 명시적 스택을 사용하세요."],
+    "checkpoints": [
+      "깊이 진행",
+      "백트래킹",
+      "방문 표시",
+      "연결 요소"
+    ],
+    "scenes": [
+      {
+        "title": "한 갈래 선택",
+        "caption": "아직 방문하지 않은 이웃 하나로 깊게 들어갑니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "즉시 방문 표시",
+        "caption": "들어갈 때 표시해 순환을 막습니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "막히면 되돌아감",
+        "caption": "갈 곳이 없으면 이전 갈림길로 돌아옵니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "한 덩어리 완주",
+        "caption": "한 번의 DFS가 연결된 모든 정점을 방문합니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "새 시작 찾기",
+        "caption": "미방문 정점을 만나면 연결 요소가 하나 늘어납니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "스택도 가능",
+        "caption": "재귀 대신 명시적 스택으로 깊은 입력을 안전하게 다룹니다.",
+        "visual": "dfs"
+      }
+    ],
+    "transcript": [
+      "DFS는 한 방향으로 갈 수 있을 때까지 깊게 들어갑니다.",
+      "정점에 들어가는 순간 방문 표시를 해야 순환하지 않습니다.",
+      "막다른 곳에서는 이전 갈림길로 되돌아갑니다.",
+      "한 번의 탐색이 끝나면 시작점과 연결된 정점을 모두 본 셈입니다.",
+      "아직 방문하지 않은 정점마다 새 탐색을 시작하면 연결 요소 수를 셀 수 있습니다.",
+      "입력이 깊다면 호출 스택 대신 명시적 스택을 사용하세요."
+    ],
     "problem": {
       "title": "분리된 리듬 섬",
       "statement": "무방향 그래프의 정점과 간선이 주어집니다. 서로 오갈 수 있는 정점 집합인 연결 요소의 개수를 출력하세요.",
       "input": "첫 줄에 정점 수 v와 간선 수 e, 다음 e줄에 두 정점 번호가 주어집니다.",
       "output": "연결 요소 개수를 출력합니다.",
-      "constraints": ["1 ≤ v ≤ 200,000", "0 ≤ e ≤ 400,000", "정점 번호는 1부터 v입니다."],
-      "examples": [{ "input": "6 3\n1 2\n2 3\n5 6", "output": "3", "note": "{1,2,3}, {4}, {5,6} 세 덩어리입니다." }],
-      "terms": ["dfs", "graph", "connected-component", "recursion", "call-stack", "backtracking"]
+      "constraints": [
+        "1 ≤ v ≤ 200,000",
+        "0 ≤ e ≤ 400,000",
+        "정점 번호는 1부터 v입니다."
+      ],
+      "examples": [
+        {
+          "input": "6 3\n1 2\n2 3\n5 6",
+          "output": "3",
+          "note": "{1,2,3}, {4}, {5,6} 세 덩어리입니다."
+        }
+      ],
+      "terms": [
+        "dfs",
+        "graph",
+        "connected-component",
+        "recursion",
+        "call-stack",
+        "backtracking"
+      ]
     }
   },
   {
@@ -210,25 +594,80 @@
     "status": "ready",
     "duration": 48,
     "summary": "작은 문제의 답을 저장해 중복 계산 없이 큰 문제를 풉니다.",
-    "prerequisite": ["배열", "점화식"],
-    "checkpoints": ["상태 정의", "점화식", "초깃값", "계산 순서"],
-    "scenes": [
-      { "title": "상태를 한 문장으로", "caption": "dp[i]를 i번째 칸까지의 최소 비용으로 정의합니다.", "visual": "dp" },
-      { "title": "마지막 선택", "caption": "i에는 i-1 또는 i-2에서 올 수 있습니다.", "visual": "dp" },
-      { "title": "작은 답 재사용", "caption": "두 이전 답 중 작은 값에 현재 비용을 더합니다.", "visual": "dp" },
-      { "title": "바닥부터", "caption": "필요한 이전 상태가 먼저 계산되도록 왼쪽부터 채웁니다.", "visual": "dp" },
-      { "title": "경계 초기화", "caption": "시작 직전 상태를 0으로 두면 식이 단순해집니다.", "visual": "dp" },
-      { "title": "중복을 제거", "caption": "각 상태를 한 번 계산해 O(n)에 끝냅니다.", "visual": "dp" }
+    "prerequisite": [
+      "배열",
+      "점화식"
     ],
-    "transcript": ["동적 계획법은 작은 문제의 답을 저장해 다시 사용합니다.", "먼저 dp[i]가 무엇을 뜻하는지 한 문장으로 정의합니다.", "i번째 칸에는 한 칸 전이나 두 칸 전에서 올 수 있습니다.", "따라서 두 이전 최소 비용 중 작은 값에 현재 비용을 더합니다.", "초기 상태와 계산 순서가 점화식만큼 중요합니다.", "각 상태를 한 번만 계산하므로 시간은 O(n)입니다."],
+    "checkpoints": [
+      "상태 정의",
+      "점화식",
+      "초깃값",
+      "계산 순서"
+    ],
+    "scenes": [
+      {
+        "title": "상태를 한 문장으로",
+        "caption": "dp[i]를 i번째 칸까지의 최소 비용으로 정의합니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "마지막 선택",
+        "caption": "i에는 i-1 또는 i-2에서 올 수 있습니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "작은 답 재사용",
+        "caption": "두 이전 답 중 작은 값에 현재 비용을 더합니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "바닥부터",
+        "caption": "필요한 이전 상태가 먼저 계산되도록 왼쪽부터 채웁니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "경계 초기화",
+        "caption": "시작 직전 상태를 0으로 두면 식이 단순해집니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "중복을 제거",
+        "caption": "각 상태를 한 번 계산해 O(n)에 끝냅니다.",
+        "visual": "dp"
+      }
+    ],
+    "transcript": [
+      "동적 계획법은 작은 문제의 답을 저장해 다시 사용합니다.",
+      "먼저 dp[i]가 무엇을 뜻하는지 한 문장으로 정의합니다.",
+      "i번째 칸에는 한 칸 전이나 두 칸 전에서 올 수 있습니다.",
+      "따라서 두 이전 최소 비용 중 작은 값에 현재 비용을 더합니다.",
+      "초기 상태와 계산 순서가 점화식만큼 중요합니다.",
+      "각 상태를 한 번만 계산하므로 시간은 O(n)입니다."
+    ],
     "problem": {
       "title": "최소 에너지 트랙",
       "statement": "각 칸의 에너지 비용이 주어집니다. 시작점에서 한 번에 1칸 또는 2칸 이동해 마지막 칸에 도착할 때 지불하는 최소 비용을 구하세요. 밟은 칸의 비용만 냅니다.",
       "input": "첫 줄에 n, 둘째 줄에 n개의 비용이 주어집니다.",
       "output": "마지막 칸까지의 최소 비용을 출력합니다.",
-      "constraints": ["1 ≤ n ≤ 200,000", "0 ≤ 비용 ≤ 1,000,000"],
-      "examples": [{ "input": "5\n4 2 7 1 3", "output": "6", "note": "2번째, 4번째, 5번째 칸을 밟습니다." }],
-      "terms": ["dynamic-programming", "state", "recurrence", "base-case", "memoization", "tabulation"]
+      "constraints": [
+        "1 ≤ n ≤ 200,000",
+        "0 ≤ 비용 ≤ 1,000,000"
+      ],
+      "examples": [
+        {
+          "input": "5\n4 2 7 1 3",
+          "output": "6",
+          "note": "2번째, 4번째, 5번째 칸을 밟습니다."
+        }
+      ],
+      "terms": [
+        "dynamic-programming",
+        "state",
+        "recurrence",
+        "base-case",
+        "memoization",
+        "tabulation"
+      ]
     }
   },
   {
@@ -239,25 +678,79 @@
     "status": "ready",
     "duration": 48,
     "summary": "앞과 뒤 양쪽에서 값을 넣고 빼는 구조로 두 방향의 흐름을 다룹니다.",
-    "prerequisite": ["큐"],
-    "checkpoints": ["양쪽 삽입", "양쪽 삭제", "빈 덱 처리", "O(1) 연산"],
-    "scenes": [
-      { "title": "두 개의 출입구", "caption": "덱은 앞과 뒤를 모두 입구와 출구로 사용합니다.", "visual": "deque" },
-      { "title": "앞에 넣기", "caption": "push front는 새 값을 맨 앞에 연결합니다.", "visual": "deque" },
-      { "title": "뒤에 넣기", "caption": "push back은 새 값을 맨 뒤에 연결합니다.", "visual": "deque" },
-      { "title": "앞에서 꺼내기", "caption": "pop front는 가장 앞의 값을 제거합니다.", "visual": "deque" },
-      { "title": "뒤에서 꺼내기", "caption": "pop back은 가장 뒤의 값을 제거합니다.", "visual": "deque" },
-      { "title": "양끝은 O(1)", "caption": "양끝 위치를 관리하면 네 연산을 상수 시간에 처리합니다.", "visual": "deque" }
+    "prerequisite": [
+      "큐"
     ],
-    "transcript": ["덱은 double-ended queue를 줄인 말로 양쪽 끝을 모두 사용합니다.", "앞에 값을 넣으면 기존 첫 값보다 먼저 나오게 됩니다.", "뒤에 넣는 동작은 일반 큐의 enqueue와 같습니다.", "앞과 뒤 어느 쪽에서도 값을 꺼낼 수 있습니다.", "비어 있을 때 삭제 명령이 와도 상태를 그대로 유지해야 합니다.", "양끝의 위치를 직접 관리하면 각 명령을 O(1)에 처리할 수 있습니다."],
+    "checkpoints": [
+      "양쪽 삽입",
+      "양쪽 삭제",
+      "빈 덱 처리",
+      "O(1) 연산"
+    ],
+    "scenes": [
+      {
+        "title": "두 개의 출입구",
+        "caption": "덱은 앞과 뒤를 모두 입구와 출구로 사용합니다.",
+        "visual": "deque"
+      },
+      {
+        "title": "앞에 넣기",
+        "caption": "push front는 새 값을 맨 앞에 연결합니다.",
+        "visual": "deque"
+      },
+      {
+        "title": "뒤에 넣기",
+        "caption": "push back은 새 값을 맨 뒤에 연결합니다.",
+        "visual": "deque"
+      },
+      {
+        "title": "앞에서 꺼내기",
+        "caption": "pop front는 가장 앞의 값을 제거합니다.",
+        "visual": "deque"
+      },
+      {
+        "title": "뒤에서 꺼내기",
+        "caption": "pop back은 가장 뒤의 값을 제거합니다.",
+        "visual": "deque"
+      },
+      {
+        "title": "양끝은 O(1)",
+        "caption": "양끝 위치를 관리하면 네 연산을 상수 시간에 처리합니다.",
+        "visual": "deque"
+      }
+    ],
+    "transcript": [
+      "덱은 double-ended queue를 줄인 말로 양쪽 끝을 모두 사용합니다.",
+      "앞에 값을 넣으면 기존 첫 값보다 먼저 나오게 됩니다.",
+      "뒤에 넣는 동작은 일반 큐의 enqueue와 같습니다.",
+      "앞과 뒤 어느 쪽에서도 값을 꺼낼 수 있습니다.",
+      "비어 있을 때 삭제 명령이 와도 상태를 그대로 유지해야 합니다.",
+      "양끝의 위치를 직접 관리하면 각 명령을 O(1)에 처리할 수 있습니다."
+    ],
     "problem": {
       "title": "양방향 셔틀",
       "statement": "비트 번호를 싣는 덱에 q개의 명령이 주어집니다. LF x는 앞에 x를 넣고, LB x는 뒤에 x를 넣습니다. PF와 PB는 각각 앞과 뒤의 값을 하나 제거하며, 덱이 비어 있으면 아무 일도 하지 않습니다. 모든 명령 뒤의 덱을 앞에서부터 출력하세요.",
       "input": "첫 줄에 명령 수 q, 다음 q줄에 LF x, LB x, PF, PB 중 하나가 주어집니다.",
       "output": "남은 값을 앞에서부터 공백으로 출력합니다. 비었으면 EMPTY를 출력합니다.",
-      "constraints": ["1 ≤ q ≤ 200,000", "1 ≤ x ≤ 1,000,000"],
-      "examples": [{ "input": "8\nLB 10\nLF 5\nLB 20\nPF\nLF 7\nPB\nLF 3\nPF", "output": "7 10", "note": "양끝 삽입과 삭제 뒤 7, 10이 남습니다." }],
-      "terms": ["deque", "double-ended", "front", "enqueue", "dequeue", "time-complexity"]
+      "constraints": [
+        "1 ≤ q ≤ 200,000",
+        "1 ≤ x ≤ 1,000,000"
+      ],
+      "examples": [
+        {
+          "input": "8\nLB 10\nLF 5\nLB 20\nPF\nLF 7\nPB\nLF 3\nPF",
+          "output": "7 10",
+          "note": "양끝 삽입과 삭제 뒤 7, 10이 남습니다."
+        }
+      ],
+      "terms": [
+        "deque",
+        "double-ended",
+        "front",
+        "enqueue",
+        "dequeue",
+        "time-complexity"
+      ]
     }
   },
   {
@@ -268,25 +761,79 @@
     "status": "ready",
     "duration": 48,
     "summary": "노드 사이의 연결을 바꿔 커서 주변의 삽입과 삭제를 빠르게 처리합니다.",
-    "prerequisite": ["선형 자료구조"],
-    "checkpoints": ["노드와 링크", "커서 위치", "삽입 연결", "삭제 연결"],
-    "scenes": [
-      { "title": "값과 연결", "caption": "각 노드는 값과 이웃 노드를 가리키는 연결을 가집니다.", "visual": "linked-list" },
-      { "title": "커서는 노드 사이", "caption": "커서를 두 노드 사이의 위치로 생각합니다.", "visual": "linked-list" },
-      { "title": "왼쪽으로 이동", "caption": "이전 연결을 따라가면 커서가 한 칸 왼쪽으로 갑니다.", "visual": "linked-list" },
-      { "title": "새 노드 끼우기", "caption": "양쪽 연결을 새 노드를 거치도록 바꿉니다.", "visual": "linked-list" },
-      { "title": "노드 떼어내기", "caption": "삭제할 노드의 양옆을 직접 이어 줍니다.", "visual": "linked-list" },
-      { "title": "위치를 알면 O(1)", "caption": "커서 위치를 알고 있으면 삽입과 삭제는 상수 시간입니다.", "visual": "linked-list" }
+    "prerequisite": [
+      "선형 자료구조"
     ],
-    "transcript": ["연결 리스트는 값과 다음 또는 이전 노드의 연결을 함께 저장합니다.", "배열과 달리 노드가 메모리에서 연속될 필요가 없습니다.", "커서를 노드 사이의 위치로 두면 이전과 다음 연결로 이동할 수 있습니다.", "삽입할 때는 양쪽 연결이 새 노드를 지나도록 고칩니다.", "삭제할 때는 대상 노드를 건너뛰도록 이웃끼리 연결합니다.", "커서 노드를 이미 알고 있다면 이동, 삽입, 삭제를 O(1)에 처리합니다."],
+    "checkpoints": [
+      "노드와 링크",
+      "커서 위치",
+      "삽입 연결",
+      "삭제 연결"
+    ],
+    "scenes": [
+      {
+        "title": "값과 연결",
+        "caption": "각 노드는 값과 이웃 노드를 가리키는 연결을 가집니다.",
+        "visual": "linked-list"
+      },
+      {
+        "title": "커서는 노드 사이",
+        "caption": "커서를 두 노드 사이의 위치로 생각합니다.",
+        "visual": "linked-list"
+      },
+      {
+        "title": "왼쪽으로 이동",
+        "caption": "이전 연결을 따라가면 커서가 한 칸 왼쪽으로 갑니다.",
+        "visual": "linked-list"
+      },
+      {
+        "title": "새 노드 끼우기",
+        "caption": "양쪽 연결을 새 노드를 거치도록 바꿉니다.",
+        "visual": "linked-list"
+      },
+      {
+        "title": "노드 떼어내기",
+        "caption": "삭제할 노드의 양옆을 직접 이어 줍니다.",
+        "visual": "linked-list"
+      },
+      {
+        "title": "위치를 알면 O(1)",
+        "caption": "커서 위치를 알고 있으면 삽입과 삭제는 상수 시간입니다.",
+        "visual": "linked-list"
+      }
+    ],
+    "transcript": [
+      "연결 리스트는 값과 다음 또는 이전 노드의 연결을 함께 저장합니다.",
+      "배열과 달리 노드가 메모리에서 연속될 필요가 없습니다.",
+      "커서를 노드 사이의 위치로 두면 이전과 다음 연결로 이동할 수 있습니다.",
+      "삽입할 때는 양쪽 연결이 새 노드를 지나도록 고칩니다.",
+      "삭제할 때는 대상 노드를 건너뛰도록 이웃끼리 연결합니다.",
+      "커서 노드를 이미 알고 있다면 이동, 삽입, 삭제를 O(1)에 처리합니다."
+    ],
     "problem": {
       "title": "커서 사이에 비트 넣기",
       "statement": "문자열 끝에 놓인 커서에 편집 명령이 주어집니다. L은 왼쪽, R은 오른쪽으로 한 칸 이동하고, I c는 커서 왼쪽에 문자 c를 넣습니다. D는 커서 왼쪽 문자를 삭제합니다. 이동하거나 삭제할 문자가 없으면 해당 명령을 무시하세요.",
       "input": "첫 줄에 소문자 문자열, 둘째 줄에 명령 수 q, 다음 q줄에 명령이 주어집니다.",
       "output": "모든 명령을 적용한 문자열을 출력합니다.",
-      "constraints": ["초기 길이와 q의 합은 200,000 이하", "삽입 문자는 영문 대소문자 또는 숫자입니다."],
-      "examples": [{ "input": "beat\n6\nL\nL\nI X\nD\nR\nI Z", "output": "beaZt", "note": "커서 주변의 삽입과 삭제만 연결을 바꿉니다." }],
-      "terms": ["linked-list", "node", "pointer", "cursor", "time-complexity", "boundary-case"]
+      "constraints": [
+        "초기 길이와 q의 합은 200,000 이하",
+        "삽입 문자는 영문 대소문자 또는 숫자입니다."
+      ],
+      "examples": [
+        {
+          "input": "beat\n6\nL\nL\nI X\nD\nR\nI Z",
+          "output": "beaZt",
+          "note": "커서 주변의 삽입과 삭제만 연결을 바꿉니다."
+        }
+      ],
+      "terms": [
+        "linked-list",
+        "node",
+        "pointer",
+        "cursor",
+        "time-complexity",
+        "boundary-case"
+      ]
     }
   },
   {
@@ -297,25 +844,80 @@
     "status": "ready",
     "duration": 48,
     "summary": "가장 작은 우선순위 값을 루트에 유지해 다음 작업을 빠르게 선택합니다.",
-    "prerequisite": ["완전 이진 트리", "배열"],
-    "checkpoints": ["힙 속성", "위로 올리기", "루트 제거", "아래로 내리기"],
-    "scenes": [
-      { "title": "루트가 최솟값", "caption": "부모가 자식보다 작거나 같은 힙 속성을 유지합니다.", "visual": "heap" },
-      { "title": "끝에 새 값 추가", "caption": "완전 이진 트리의 다음 자리에 값을 놓습니다.", "visual": "heap" },
-      { "title": "위로 올리기", "caption": "부모보다 작으면 자리를 바꾸며 올라갑니다.", "visual": "heap" },
-      { "title": "루트를 꺼내기", "caption": "가장 작은 루트를 답으로 선택합니다.", "visual": "heap" },
-      { "title": "아래로 내리기", "caption": "마지막 값을 루트에 옮기고 더 작은 자식과 바꿉니다.", "visual": "heap" },
-      { "title": "연산은 O(log n)", "caption": "트리 높이만큼만 이동해 삽입과 삭제를 처리합니다.", "visual": "heap" }
+    "prerequisite": [
+      "완전 이진 트리",
+      "배열"
     ],
-    "transcript": ["최소 힙은 모든 부모가 자식보다 작거나 같은 완전 이진 트리입니다.", "그래서 루트에는 언제나 전체에서 가장 작은 값이 있습니다.", "삽입은 배열 끝에 값을 놓고 부모와 비교하며 올립니다.", "최솟값을 꺼낸 뒤에는 마지막 값을 루트로 옮깁니다.", "더 작은 자식과 교환하며 내려가면 힙 속성이 복구됩니다.", "트리 높이가 log n이므로 삽입과 제거는 O(log n)입니다."],
+    "checkpoints": [
+      "힙 속성",
+      "위로 올리기",
+      "루트 제거",
+      "아래로 내리기"
+    ],
+    "scenes": [
+      {
+        "title": "루트가 최솟값",
+        "caption": "부모가 자식보다 작거나 같은 힙 속성을 유지합니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "끝에 새 값 추가",
+        "caption": "완전 이진 트리의 다음 자리에 값을 놓습니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "위로 올리기",
+        "caption": "부모보다 작으면 자리를 바꾸며 올라갑니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "루트를 꺼내기",
+        "caption": "가장 작은 루트를 답으로 선택합니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "아래로 내리기",
+        "caption": "마지막 값을 루트에 옮기고 더 작은 자식과 바꿉니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "연산은 O(log n)",
+        "caption": "트리 높이만큼만 이동해 삽입과 삭제를 처리합니다.",
+        "visual": "heap"
+      }
+    ],
+    "transcript": [
+      "최소 힙은 모든 부모가 자식보다 작거나 같은 완전 이진 트리입니다.",
+      "그래서 루트에는 언제나 전체에서 가장 작은 값이 있습니다.",
+      "삽입은 배열 끝에 값을 놓고 부모와 비교하며 올립니다.",
+      "최솟값을 꺼낸 뒤에는 마지막 값을 루트로 옮깁니다.",
+      "더 작은 자식과 교환하며 내려가면 힙 속성이 복구됩니다.",
+      "트리 높이가 log n이므로 삽입과 제거는 O(log n)입니다."
+    ],
     "problem": {
       "title": "가장 가벼운 비트부터",
       "statement": "우선순위 큐에 q개의 명령이 주어집니다. P x는 값 x를 넣고, O는 가장 작은 값을 꺼내 출력합니다. O 명령 때 큐가 비어 있으면 EMPTY를 출력하세요.",
       "input": "첫 줄에 명령 수 q, 다음 q줄에 P x 또는 O가 주어집니다.",
       "output": "각 O 명령의 결과를 한 줄에 하나씩 출력합니다.",
-      "constraints": ["1 ≤ q ≤ 200,000", "-1,000,000,000 ≤ x ≤ 1,000,000,000"],
-      "examples": [{ "input": "7\nP 5\nP 2\nP 8\nO\nP 1\nO\nO", "output": "2\n1\n5", "note": "삽입 순서와 상관없이 현재 최솟값이 먼저 나옵니다." }],
-      "terms": ["heap", "min-heap", "priority-queue", "heapify", "complete-binary-tree", "logarithm"]
+      "constraints": [
+        "1 ≤ q ≤ 200,000",
+        "-1,000,000,000 ≤ x ≤ 1,000,000,000"
+      ],
+      "examples": [
+        {
+          "input": "7\nP 5\nP 2\nP 8\nO\nP 1\nO\nO",
+          "output": "2\n1\n5",
+          "note": "삽입 순서와 상관없이 현재 최솟값이 먼저 나옵니다."
+        }
+      ],
+      "terms": [
+        "heap",
+        "min-heap",
+        "priority-queue",
+        "heapify",
+        "complete-binary-tree",
+        "logarithm"
+      ]
     }
   },
   {
@@ -326,25 +928,1076 @@
     "status": "ready",
     "duration": 48,
     "summary": "대표 원소를 합치고 찾아 두 정점이 같은 집합인지 빠르게 판정합니다.",
-    "prerequisite": ["트리", "그래프"],
-    "checkpoints": ["대표 찾기", "집합 합치기", "경로 압축", "크기 기준 결합"],
-    "scenes": [
-      { "title": "각자 다른 집합", "caption": "처음에는 모든 정점이 자기 자신을 대표로 가집니다.", "visual": "union-find" },
-      { "title": "대표를 따라가기", "caption": "부모 연결을 따라가 루트 대표를 찾습니다.", "visual": "union-find" },
-      { "title": "두 집합 합치기", "caption": "서로 다른 대표 하나를 다른 대표에 연결합니다.", "visual": "union-find" },
-      { "title": "작은 트리를 아래에", "caption": "작은 집합을 큰 집합에 붙여 높이 증가를 줄입니다.", "visual": "union-find" },
-      { "title": "경로를 압축", "caption": "find 중 만난 정점을 루트에 바로 연결합니다.", "visual": "union-find" },
-      { "title": "같은 대표인지", "caption": "두 정점의 대표가 같으면 같은 집합에 속합니다.", "visual": "union-find" }
+    "prerequisite": [
+      "트리",
+      "그래프"
     ],
-    "transcript": ["서로소 집합은 겹치지 않는 여러 집합을 관리하는 자료구조입니다.", "각 집합은 루트 하나를 대표로 사용합니다.", "find는 부모 연결을 따라가 현재 대표를 찾습니다.", "union은 두 대표가 다를 때 한 트리를 다른 트리 아래에 붙입니다.", "크기 기준 결합과 경로 압축을 함께 쓰면 트리가 거의 평평해집니다.", "두 정점의 대표를 비교하면 같은 연결 집합인지 빠르게 알 수 있습니다."],
+    "checkpoints": [
+      "대표 찾기",
+      "집합 합치기",
+      "경로 압축",
+      "크기 기준 결합"
+    ],
+    "scenes": [
+      {
+        "title": "각자 다른 집합",
+        "caption": "처음에는 모든 정점이 자기 자신을 대표로 가집니다.",
+        "visual": "union-find"
+      },
+      {
+        "title": "대표를 따라가기",
+        "caption": "부모 연결을 따라가 루트 대표를 찾습니다.",
+        "visual": "union-find"
+      },
+      {
+        "title": "두 집합 합치기",
+        "caption": "서로 다른 대표 하나를 다른 대표에 연결합니다.",
+        "visual": "union-find"
+      },
+      {
+        "title": "작은 트리를 아래에",
+        "caption": "작은 집합을 큰 집합에 붙여 높이 증가를 줄입니다.",
+        "visual": "union-find"
+      },
+      {
+        "title": "경로를 압축",
+        "caption": "find 중 만난 정점을 루트에 바로 연결합니다.",
+        "visual": "union-find"
+      },
+      {
+        "title": "같은 대표인지",
+        "caption": "두 정점의 대표가 같으면 같은 집합에 속합니다.",
+        "visual": "union-find"
+      }
+    ],
+    "transcript": [
+      "서로소 집합은 겹치지 않는 여러 집합을 관리하는 자료구조입니다.",
+      "각 집합은 루트 하나를 대표로 사용합니다.",
+      "find는 부모 연결을 따라가 현재 대표를 찾습니다.",
+      "union은 두 대표가 다를 때 한 트리를 다른 트리 아래에 붙입니다.",
+      "크기 기준 결합과 경로 압축을 함께 쓰면 트리가 거의 평평해집니다.",
+      "두 정점의 대표를 비교하면 같은 연결 집합인지 빠르게 알 수 있습니다."
+    ],
     "problem": {
       "title": "같은 무대인지 확인하기",
       "statement": "1번부터 n번까지 팀이 처음에는 모두 떨어져 있습니다. U a b는 a가 속한 팀과 b가 속한 팀을 합치고, Q a b는 두 번호가 현재 같은 팀이면 YES, 아니면 NO를 출력합니다.",
       "input": "첫 줄에 n과 명령 수 q, 다음 q줄에 U a b 또는 Q a b가 주어집니다.",
       "output": "각 Q 명령의 결과를 한 줄에 하나씩 출력합니다.",
-      "constraints": ["1 ≤ n, q ≤ 200,000", "1 ≤ a, b ≤ n"],
-      "examples": [{ "input": "6 7\nQ 1 2\nU 1 2\nU 2 3\nQ 1 3\nQ 1 4\nU 4 3\nQ 1 4", "output": "NO\nYES\nNO\nYES", "note": "합치기가 누적되며 대표가 같아진 정점만 YES입니다." }],
-      "terms": ["disjoint-set", "union-find", "representative", "path-compression", "union-by-size", "graph"]
+      "constraints": [
+        "1 ≤ n, q ≤ 200,000",
+        "1 ≤ a, b ≤ n"
+      ],
+      "examples": [
+        {
+          "input": "6 7\nQ 1 2\nU 1 2\nU 2 3\nQ 1 3\nQ 1 4\nU 4 3\nQ 1 4",
+          "output": "NO\nYES\nNO\nYES",
+          "note": "합치기가 누적되며 대표가 같아진 정점만 YES입니다."
+        }
+      ],
+      "terms": [
+        "disjoint-set",
+        "union-find",
+        "representative",
+        "path-compression",
+        "union-by-size",
+        "graph"
+      ]
+    }
+  },
+  {
+    "id": "array-string",
+    "title": "배열과 문자열",
+    "english": "Array and string",
+    "category": "자료구조",
+    "status": "ready",
+    "duration": 48,
+    "summary": "연속된 문자를 한 번씩 훑으며 같은 값의 구간을 압축합니다.",
+    "prerequisite": [
+      "반복문",
+      "인덱스"
+    ],
+    "checkpoints": [
+      "인덱스 이동",
+      "연속 구간 추적",
+      "마지막 구간 처리",
+      "O(n) 순회"
+    ],
+    "scenes": [
+      {
+        "title": "첫 문자에서 시작",
+        "caption": "현재 문자와 반복 횟수를 첫 칸에서 준비합니다.",
+        "visual": "search"
+      },
+      {
+        "title": "옆 칸과 비교",
+        "caption": "같은 문자면 횟수만 하나 늘립니다.",
+        "visual": "search"
+      },
+      {
+        "title": "리듬이 바뀌면",
+        "caption": "문자가 달라질 때 완성된 문자와 횟수를 기록합니다.",
+        "visual": "search"
+      },
+      {
+        "title": "새 구간 시작",
+        "caption": "바뀐 문자를 기준으로 횟수를 다시 1로 둡니다.",
+        "visual": "search"
+      },
+      {
+        "title": "끝 구간 기록",
+        "caption": "반복문이 끝난 뒤 마지막 구간을 한 번 더 출력합니다.",
+        "visual": "search"
+      },
+      {
+        "title": "한 박자에 한 칸",
+        "caption": "각 문자를 한 번 보므로 시간 O(n), 추가 공간 O(1)입니다.",
+        "visual": "search"
+      }
+    ],
+    "transcript": [
+      "배열과 문자열은 인덱스로 각 원소를 차례대로 확인할 수 있습니다.",
+      "현재 문자와 연속 횟수를 유지하면 같은 구간을 즉시 압축할 수 있습니다.",
+      "문자가 바뀌는 순간 이전 구간을 출력하고 새 구간을 시작합니다.",
+      "마지막 구간은 다음 문자가 없으므로 반복문 뒤에서 따로 기록해야 합니다.",
+      "입력 전체를 한 번 순회해 시간 복잡도는 O(n), 출력 제외 추가 공간은 O(1)입니다.",
+      "순서대로 읽으며 인접한 값의 변화를 찾는 문제에 잘 맞습니다."
+    ],
+    "problem": {
+      "title": "리듬 문자열 압축",
+      "statement": "영문 소문자 문자열을 왼쪽부터 읽어 같은 문자가 연속한 각 구간을 문자와 반복 횟수로 압축하세요. 구간마다 `문자 횟수`를 한 줄에 출력합니다.",
+      "input": "첫 줄에 길이 n의 영문 소문자 문자열이 주어집니다.",
+      "output": "왼쪽부터 각 연속 구간의 문자와 길이를 한 줄에 출력합니다.",
+      "constraints": [
+        "1 ≤ n ≤ 9,000",
+        "문자열은 영문 소문자로만 이루어집니다."
+      ],
+      "examples": [
+        {
+          "input": "aaabbc",
+          "output": "a 3\nb 2\nc 1",
+          "note": "세 연속 구간을 순서대로 압축합니다."
+        },
+        {
+          "input": "z",
+          "output": "z 1",
+          "note": "길이 1인 마지막 구간도 출력합니다."
+        }
+      ],
+      "terms": [
+        "array",
+        "string",
+        "traversal",
+        "index",
+        "boundary-case",
+        "time-complexity"
+      ]
+    }
+  },
+  {
+    "id": "prefix-sum",
+    "title": "누적 합",
+    "english": "Prefix sum",
+    "category": "문제 해결 전략",
+    "status": "ready",
+    "duration": 48,
+    "summary": "앞에서부터 합을 저장해 여러 구간의 합을 두 값의 차로 계산합니다.",
+    "prerequisite": [
+      "배열",
+      "덧셈"
+    ],
+    "checkpoints": [
+      "prefix[0] 정의",
+      "전처리 누적",
+      "l-1 경계",
+      "O(1) 질의"
+    ],
+    "scenes": [
+      {
+        "title": "빈 앞부분은 0",
+        "caption": "prefix[0]을 0으로 두어 첫 구간도 같은 식으로 처리합니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "한 칸씩 누적",
+        "caption": "prefix[i]는 앞 합에 i번째 값을 더한 결과입니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "두 경계 선택",
+        "caption": "질의의 오른쪽까지 합과 왼쪽 전까지 합을 찾습니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "앞부분 빼기",
+        "caption": "prefix[r] - prefix[l-1]이 원하는 구간 합입니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "질의를 반복",
+        "caption": "배열을 다시 걷지 않고 매번 두 값만 읽습니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "전처리의 힘",
+        "caption": "전처리 O(n), 질의당 O(1), 공간 O(n)입니다.",
+        "visual": "dp"
+      }
+    ],
+    "transcript": [
+      "누적 합 배열은 첫 원소부터 현재 위치까지의 합을 저장합니다.",
+      "빈 구간의 합 prefix[0]을 0으로 두면 인덱스 경계를 단순하게 만들 수 있습니다.",
+      "l부터 r까지의 합은 prefix[r]에서 prefix[l-1]을 빼면 됩니다.",
+      "매 질의마다 원래 배열을 더하는 실수는 큰 입력에서 O(nq)가 됩니다.",
+      "전처리는 O(n), 각 질의는 O(1), 누적 배열 공간은 O(n)입니다.",
+      "값이 바뀌지 않는 배열에 구간 합 질의가 많을 때 사용합니다."
+    ],
+    "problem": {
+      "title": "구간 에너지 합",
+      "statement": "n개의 에너지 값과 q개의 구간 질의가 주어집니다. 각 질의 l r에 대해 l번째부터 r번째까지의 합을 출력하세요.",
+      "input": "첫 줄에 n과 q, 둘째 줄에 n개 정수, 다음 q줄에 l과 r이 주어집니다.",
+      "output": "각 구간 합을 한 줄에 하나씩 출력합니다.",
+      "constraints": [
+        "1 ≤ n ≤ 400",
+        "1 ≤ q ≤ 200",
+        "-1,000,000,000 ≤ 값 ≤ 1,000,000,000",
+        "1 ≤ l ≤ r ≤ n",
+        "구간 합은 64비트 부호 있는 정수 범위입니다."
+      ],
+      "examples": [
+        {
+          "input": "5 3\n2 -1 4 3 5\n1 3\n2 5\n4 4",
+          "output": "5\n11\n3",
+          "note": "누적 합의 차로 세 구간을 계산합니다."
+        },
+        {
+          "input": "1 2\n-7\n1 1\n1 1",
+          "output": "-7\n-7",
+          "note": "원소 하나인 구간도 같은 식을 사용합니다."
+        }
+      ],
+      "terms": [
+        "prefix-sum",
+        "range-sum",
+        "array",
+        "preprocessing",
+        "index",
+        "time-complexity"
+      ]
+    }
+  },
+  {
+    "id": "two-pointers",
+    "title": "투 포인터",
+    "english": "Two pointers",
+    "category": "문제 해결 전략",
+    "status": "ready",
+    "duration": 48,
+    "summary": "정렬된 배열의 양끝을 좁혀 목표 합을 선형 시간에 찾습니다.",
+    "prerequisite": [
+      "정렬",
+      "배열"
+    ],
+    "checkpoints": [
+      "left/right 초기화",
+      "현재 합 비교",
+      "이동 방향 근거",
+      "서로 다른 인덱스"
+    ],
+    "scenes": [
+      {
+        "title": "양끝에서 시작",
+        "caption": "left는 가장 작은 값, right는 가장 큰 값을 가리킵니다.",
+        "visual": "search"
+      },
+      {
+        "title": "현재 합 계산",
+        "caption": "두 포인터가 가리키는 값을 더해 목표와 비교합니다.",
+        "visual": "search"
+      },
+      {
+        "title": "합이 작으면",
+        "caption": "더 큰 합이 필요하므로 left를 오른쪽으로 옮깁니다.",
+        "visual": "search"
+      },
+      {
+        "title": "합이 크면",
+        "caption": "더 작은 합이 필요하므로 right를 왼쪽으로 옮깁니다.",
+        "visual": "search"
+      },
+      {
+        "title": "같으면 발견",
+        "caption": "포인터가 만나기 전에 목표 합이면 두 값을 찾았습니다.",
+        "visual": "search"
+      },
+      {
+        "title": "한 방향으로만",
+        "caption": "각 포인터가 최대 n번 움직여 시간 O(n), 공간 O(1)입니다.",
+        "visual": "search"
+      }
+    ],
+    "transcript": [
+      "투 포인터는 두 위치를 함께 움직여 탐색 범위를 줄입니다.",
+      "이 문제에서는 정렬 상태 덕분에 합이 작거나 클 때 이동 방향이 정해집니다.",
+      "합이 작으면 왼쪽을, 크면 오른쪽을 안쪽으로 옮깁니다.",
+      "같은 원소를 두 번 쓰지 않도록 left가 right보다 작은 동안만 검사합니다.",
+      "두 포인터가 한 방향으로만 이동해 시간 O(n), 추가 공간 O(1)입니다.",
+      "정렬된 배열의 쌍이나 연속 구간을 찾을 때 유용합니다."
+    ],
+    "problem": {
+      "title": "목표 합을 만드는 두 비트",
+      "statement": "오름차순으로 정렬된 n개 정수에서 서로 다른 두 위치의 값 합이 x가 되는 경우가 있으면 YES, 없으면 NO를 출력하세요.",
+      "input": "첫 줄에 n과 x, 둘째 줄에 오름차순 정렬된 n개 정수가 주어집니다.",
+      "output": "조건을 만족하는 두 위치가 있으면 YES, 아니면 NO를 출력합니다.",
+      "constraints": [
+        "2 ≤ n ≤ 800",
+        "-1,000,000,000 ≤ 값, x ≤ 1,000,000,000",
+        "같은 값이 여러 번 등장할 수 있습니다."
+      ],
+      "examples": [
+        {
+          "input": "6 9\n1 2 3 4 7 10",
+          "output": "YES",
+          "note": "2와 7의 합이 9입니다."
+        },
+        {
+          "input": "4 8\n1 2 3 9",
+          "output": "NO",
+          "note": "서로 다른 두 위치로 8을 만들 수 없습니다."
+        }
+      ],
+      "terms": [
+        "two-pointers",
+        "sorted",
+        "array",
+        "invariant",
+        "index",
+        "time-complexity"
+      ]
+    }
+  },
+  {
+    "id": "sliding-window",
+    "title": "슬라이딩 윈도우",
+    "english": "Sliding window",
+    "category": "문제 해결 전략",
+    "status": "ready",
+    "duration": 48,
+    "summary": "오른쪽을 넓히고 조건을 넘으면 왼쪽을 줄여 가장 긴 구간을 찾습니다.",
+    "prerequisite": [
+      "투 포인터",
+      "해시맵"
+    ],
+    "checkpoints": [
+      "right 확장",
+      "문자 빈도 갱신",
+      "조건 위반 축소",
+      "최대 길이 갱신"
+    ],
+    "scenes": [
+      {
+        "title": "빈 창에서 시작",
+        "caption": "left와 right가 문자열의 시작을 가리킵니다.",
+        "visual": "search"
+      },
+      {
+        "title": "오른쪽 확장",
+        "caption": "새 문자를 포함하고 해당 문자의 빈도를 올립니다.",
+        "visual": "search"
+      },
+      {
+        "title": "종류 수 확인",
+        "caption": "서로 다른 문자가 k개를 넘었는지 검사합니다.",
+        "visual": "search"
+      },
+      {
+        "title": "왼쪽 축소",
+        "caption": "조건을 만족할 때까지 왼쪽 문자의 빈도를 줄입니다.",
+        "visual": "search"
+      },
+      {
+        "title": "가장 긴 창 기록",
+        "caption": "유효한 매 순간 현재 길이의 최댓값을 갱신합니다.",
+        "visual": "search"
+      },
+      {
+        "title": "되돌아가지 않기",
+        "caption": "각 문자가 들어오고 나가는 횟수는 한 번씩이라 O(n)입니다.",
+        "visual": "search"
+      }
+    ],
+    "transcript": [
+      "슬라이딩 윈도우는 연속 구간의 양끝을 앞으로만 움직입니다.",
+      "right를 확장할 때 문자의 빈도와 서로 다른 문자 수를 갱신합니다.",
+      "문자 종류가 k개를 넘으면 조건을 만족할 때까지 left를 줄입니다.",
+      "빈도가 0이 된 문자는 종류 수에서 제거해야 합니다.",
+      "각 문자가 최대 한 번 들어오고 나가 시간 O(n), 빈도 공간은 문자 종류 수만큼 필요합니다.",
+      "연속 부분 배열이나 문자열의 최장·최단 조건을 찾을 때 적합합니다."
+    ],
+    "problem": {
+      "title": "가장 긴 콤보 구간",
+      "statement": "영문 소문자 문자열에서 서로 다른 문자가 최대 k개인 가장 긴 연속 부분 문자열의 길이를 구하세요.",
+      "input": "첫 줄에 n과 k, 둘째 줄에 길이 n의 영문 소문자 문자열이 주어집니다.",
+      "output": "조건을 만족하는 가장 긴 연속 구간의 길이를 출력합니다.",
+      "constraints": [
+        "1 ≤ n ≤ 9,000",
+        "1 ≤ k ≤ 26",
+        "문자열은 영문 소문자로만 이루어집니다."
+      ],
+      "examples": [
+        {
+          "input": "7 2\nabaccca",
+          "output": "5",
+          "note": "accca는 서로 다른 문자가 두 개이고 길이가 5입니다."
+        },
+        {
+          "input": "5 1\naaaaa",
+          "output": "5",
+          "note": "한 종류만 있어 전체가 유효합니다."
+        }
+      ],
+      "terms": [
+        "sliding-window",
+        "window",
+        "two-pointers",
+        "frequency",
+        "invariant",
+        "amortized-time"
+      ]
+    }
+  },
+  {
+    "id": "recursion-backtracking",
+    "title": "재귀와 백트래킹",
+    "english": "Recursion and backtracking",
+    "category": "문제 해결 전략",
+    "status": "ready",
+    "duration": 48,
+    "summary": "하나를 선택해 내려가고 되돌아오며 가능한 순열을 빠짐없이 만듭니다.",
+    "prerequisite": [
+      "재귀",
+      "배열"
+    ],
+    "checkpoints": [
+      "종료 조건",
+      "선택",
+      "재귀 호출",
+      "선택 복구"
+    ],
+    "scenes": [
+      {
+        "title": "첫 칸 선택",
+        "caption": "아직 쓰지 않은 수 하나를 현재 위치에 놓습니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "다음 깊이",
+        "caption": "선택한 상태로 다음 위치를 재귀 호출합니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "길이를 채우면",
+        "caption": "r개를 골랐다면 현재 순열을 출력합니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "되돌아오기",
+        "caption": "호출이 끝나면 방문 표시를 해제합니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "다른 선택 시도",
+        "caption": "같은 깊이에서 다음 미사용 수로 가지를 바꿉니다.",
+        "visual": "dfs"
+      },
+      {
+        "title": "탐색 트리",
+        "caption": "출력 크기에 비례하며 방문 배열과 호출 스택은 O(n)입니다.",
+        "visual": "dfs"
+      }
+    ],
+    "transcript": [
+      "재귀는 같은 선택 문제를 더 작은 깊이에서 다시 호출합니다.",
+      "방문 배열은 현재 순열에서 이미 사용한 수를 표시합니다.",
+      "깊이가 r이면 하나의 완성된 순열을 출력하고 돌아갑니다.",
+      "재귀 뒤 방문 표시를 복구하지 않으면 다른 가지에서 그 수를 사용할 수 없습니다.",
+      "시간은 생성하는 순열 수에 비례하고 보조 공간은 방문 배열과 호출 스택 O(n)입니다.",
+      "모든 조합·순열·배치를 조건에 맞게 열거할 때 사용합니다."
+    ],
+    "problem": {
+      "title": "가능한 리듬 패턴 만들기",
+      "statement": "서로 다른 n개 정수에서 중복 없이 r개를 골라 만든 모든 순열을 값의 사전순으로 출력하세요. 입력 수의 순서와 관계없이 각 위치에서 작은 값부터 선택합니다.",
+      "input": "첫 줄에 n과 r, 둘째 줄에 서로 다른 n개 정수가 주어집니다.",
+      "output": "각 순열을 한 줄에 공백으로 구분해 출력합니다.",
+      "constraints": [
+        "1 ≤ r ≤ n ≤ 9",
+        "-100 ≤ 각 값 ≤ 100",
+        "모든 값은 서로 다릅니다.",
+        "전체 출력은 64KB 이하입니다."
+      ],
+      "examples": [
+        {
+          "input": "3 2\n3 1 2",
+          "output": "1 2\n1 3\n2 1\n2 3\n3 1\n3 2",
+          "note": "수를 정렬한 뒤 작은 선택부터 탐색합니다."
+        },
+        {
+          "input": "1 1\n7",
+          "output": "7",
+          "note": "선택 하나가 곧 완성된 순열입니다."
+        }
+      ],
+      "terms": [
+        "recursion",
+        "backtracking",
+        "permutation",
+        "visited",
+        "call-stack",
+        "base-case"
+      ]
+    }
+  },
+  {
+    "id": "greedy",
+    "title": "그리디",
+    "english": "Greedy",
+    "category": "문제 해결 전략",
+    "status": "ready",
+    "duration": 48,
+    "summary": "이 문제에서 최적성이 보장된 가장 큰 동전을 먼저 골라 최소 개수를 만듭니다.",
+    "prerequisite": [
+      "정렬",
+      "나눗셈"
+    ],
+    "checkpoints": [
+      "선택 기준",
+      "큰 단위 우선",
+      "나머지 갱신",
+      "성립 조건 확인"
+    ],
+    "scenes": [
+      {
+        "title": "가장 큰 단위",
+        "caption": "남은 금액 이하에서 가장 큰 동전을 선택합니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "한꺼번에 사용",
+        "caption": "몫만큼 동전을 사용해 반복을 줄입니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "나머지 이동",
+        "caption": "사용한 금액을 빼고 다음 작은 단위를 봅니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "1원에서 종료",
+        "caption": "마지막 단위 1이 있어 언제나 정확히 만들 수 있습니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "최적성의 조건",
+        "caption": "1·5·10·50·100·500 체계에서는 큰 단위 우선이 최적입니다.",
+        "visual": "heap"
+      },
+      {
+        "title": "단위 수만큼",
+        "caption": "동전 종류가 d개면 시간 O(d), 추가 공간 O(1)입니다.",
+        "visual": "heap"
+      }
+    ],
+    "transcript": [
+      "그리디는 매 단계에서 현재 가장 좋아 보이는 선택을 확정합니다.",
+      "이 문제의 동전 체계에서는 큰 동전 하나를 더 작은 동전으로 바꾸면 개수가 줄지 않습니다.",
+      "따라서 큰 단위부터 몫만큼 사용하는 선택이 전체 최소 개수로 이어집니다.",
+      "임의의 동전 단위에서는 같은 전략이 실패할 수 있으므로 성립 조건을 확인해야 합니다.",
+      "동전 종류가 d개일 때 시간 O(d), 추가 공간 O(1)입니다.",
+      "교환 논리로 지역 최선이 전역 최선임을 보일 수 있는 문제에 사용합니다."
+    ],
+    "problem": {
+      "title": "최소 코인으로 박자 맞추기",
+      "statement": "동전 단위가 1, 5, 10, 50, 100, 500으로 고정되어 있습니다. 목표 금액을 정확히 만드는 데 필요한 최소 동전 수를 출력하세요. 이 동전 체계에서는 큰 단위를 먼저 사용하는 방법이 항상 최적입니다.",
+      "input": "첫 줄에 목표 금액 m이 주어집니다.",
+      "output": "필요한 최소 동전 개수를 출력합니다.",
+      "constraints": [
+        "0 ≤ m ≤ 1,000,000,000",
+        "각 동전은 원하는 만큼 사용할 수 있습니다."
+      ],
+      "examples": [
+        {
+          "input": "1260",
+          "output": "6",
+          "note": "500 두 개, 100 두 개, 50 하나, 10 하나를 사용합니다."
+        },
+        {
+          "input": "0",
+          "output": "0",
+          "note": "금액이 0이면 동전이 필요 없습니다."
+        }
+      ],
+      "terms": [
+        "greedy",
+        "local-optimum",
+        "global-optimum",
+        "invariant",
+        "time-complexity",
+        "counterexample"
+      ]
+    }
+  },
+  {
+    "id": "binary-tree",
+    "title": "이진 트리",
+    "english": "Binary tree",
+    "category": "자료구조",
+    "status": "ready",
+    "duration": 48,
+    "summary": "각 노드의 왼쪽·오른쪽 자식을 층별로 따라가 트리 높이를 구합니다.",
+    "prerequisite": [
+      "큐",
+      "노드"
+    ],
+    "checkpoints": [
+      "루트",
+      "두 자식",
+      "레벨 순회",
+      "높이 계산"
+    ],
+    "scenes": [
+      {
+        "title": "루트 한 개",
+        "caption": "트리는 부모가 없는 루트에서 시작합니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "두 갈래 연결",
+        "caption": "각 노드는 왼쪽과 오른쪽 자식을 최대 하나씩 가집니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "첫 레벨 큐",
+        "caption": "루트를 큐에 넣고 현재 레벨의 노드 수를 셉니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "자식 레벨 추가",
+        "caption": "현재 레벨의 모든 자식을 다음 레벨 큐에 넣습니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "레벨마다 높이 증가",
+        "caption": "큐가 빌 때까지 처리한 레벨 수가 높이입니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "모든 노드 한 번",
+        "caption": "시간 O(n), 가장 넓은 레벨만큼 공간 O(n)입니다.",
+        "visual": "bfs"
+      }
+    ],
+    "transcript": [
+      "이진 트리는 각 노드가 왼쪽과 오른쪽 자식을 최대 하나씩 갖는 구조입니다.",
+      "루트부터 같은 깊이의 노드를 큐에 모으면 레벨 순회가 됩니다.",
+      "한 레벨의 노드를 모두 꺼낼 때마다 높이를 하나 증가시킵니다.",
+      "자식 번호 0은 노드가 없다는 뜻이므로 큐에 넣으면 안 됩니다.",
+      "모든 노드를 한 번 방문해 시간 O(n), 큐 공간은 최악 O(n)입니다.",
+      "계층 구조와 깊이·너비 정보를 다룰 때 이진 트리를 사용합니다."
+    ],
+    "problem": {
+      "title": "트랙 조명 트리의 높이",
+      "statement": "1번이 루트인 이진 트리의 각 노드에 대해 왼쪽과 오른쪽 자식 번호가 주어집니다. 루트만 있는 트리의 높이를 1로 할 때 전체 높이를 구하세요.",
+      "input": "첫 줄에 n, 다음 n줄에 i번 노드의 왼쪽 자식과 오른쪽 자식 번호가 주어집니다. 자식이 없으면 0입니다.",
+      "output": "트리의 높이를 출력합니다.",
+      "constraints": [
+        "1 ≤ n ≤ 900",
+        "입력은 1번을 루트로 하는 올바른 이진 트리입니다.",
+        "각 노드는 루트를 제외하고 정확히 한 번 자식으로 등장합니다."
+      ],
+      "examples": [
+        {
+          "input": "5\n2 3\n4 0\n0 5\n0 0\n0 0",
+          "output": "3",
+          "note": "루트에서 4번 또는 5번까지 세 레벨입니다."
+        },
+        {
+          "input": "1\n0 0",
+          "output": "1",
+          "note": "루트 하나의 높이는 1입니다."
+        }
+      ],
+      "terms": [
+        "binary-tree",
+        "root",
+        "parent",
+        "child",
+        "leaf",
+        "tree-height"
+      ]
+    }
+  },
+  {
+    "id": "binary-search-tree",
+    "title": "이진 탐색 트리",
+    "english": "Binary search tree",
+    "category": "자료구조",
+    "status": "ready",
+    "duration": 48,
+    "summary": "각 노드의 허용 값 범위를 내려 보내 탐색 트리 규칙을 검증합니다.",
+    "prerequisite": [
+      "이진 트리",
+      "이진 탐색"
+    ],
+    "checkpoints": [
+      "왼쪽은 작게",
+      "오른쪽은 크게",
+      "서브트리 범위",
+      "중복 키 금지"
+    ],
+    "scenes": [
+      {
+        "title": "루트 범위",
+        "caption": "루트는 처음에 모든 정수 범위 안에 있습니다.",
+        "visual": "search"
+      },
+      {
+        "title": "왼쪽 경계",
+        "caption": "왼쪽 자식은 부모 값보다 작은 범위만 허용됩니다.",
+        "visual": "search"
+      },
+      {
+        "title": "오른쪽 경계",
+        "caption": "오른쪽 자식은 부모 값보다 큰 범위만 허용됩니다.",
+        "visual": "search"
+      },
+      {
+        "title": "범위를 함께 전달",
+        "caption": "조상에서 받은 아래·위 경계도 자식에게 이어집니다.",
+        "visual": "search"
+      },
+      {
+        "title": "위반 즉시 종료",
+        "caption": "어느 노드든 열린 범위를 벗어나면 BST가 아닙니다.",
+        "visual": "search"
+      },
+      {
+        "title": "노드당 한 번",
+        "caption": "시간 O(n), 명시적 스택 공간 O(n)입니다.",
+        "visual": "search"
+      }
+    ],
+    "transcript": [
+      "이진 탐색 트리는 모든 왼쪽 서브트리 값이 노드보다 작고 오른쪽은 큽니다.",
+      "직접 부모만 비교하면 먼 조상의 경계를 놓칠 수 있습니다.",
+      "각 노드에 허용되는 최소·최대 열린 범위를 함께 전달해야 합니다.",
+      "이 문제는 중복 키를 허용하지 않으므로 경계와 같은 값도 실패입니다.",
+      "각 노드를 한 번 검사해 시간 O(n), 순회 스택은 최악 O(n)입니다.",
+      "정렬된 탐색 규칙이 유지되는 트리인지 확인할 때 사용합니다."
+    ],
+    "problem": {
+      "title": "탐색 트리 튜닝 검사",
+      "statement": "1번이 루트인 이진 트리가 주어집니다. 모든 노드의 키가 왼쪽 서브트리의 모든 키보다 크고 오른쪽 서브트리의 모든 키보다 작으면 YES, 아니면 NO를 출력하세요. 키 중복은 허용하지 않습니다.",
+      "input": "첫 줄에 n, 다음 n줄에 i번 노드의 키, 왼쪽 자식, 오른쪽 자식 번호가 주어집니다. 자식이 없으면 0입니다.",
+      "output": "올바른 이진 탐색 트리이면 YES, 아니면 NO를 출력합니다.",
+      "constraints": [
+        "1 ≤ n ≤ 450",
+        "-1,000,000,000 ≤ 키 ≤ 1,000,000,000",
+        "입력 연결은 1번을 루트로 하는 올바른 이진 트리입니다."
+      ],
+      "examples": [
+        {
+          "input": "3\n2 2 3\n1 0 0\n4 0 0",
+          "output": "YES",
+          "note": "왼쪽 1은 2보다 작고 오른쪽 4는 큽니다."
+        },
+        {
+          "input": "3\n5 2 3\n2 0 0\n4 0 0",
+          "output": "NO",
+          "note": "4는 루트 5의 오른쪽 서브트리에 올 수 없습니다."
+        }
+      ],
+      "terms": [
+        "binary-search-tree",
+        "binary-tree",
+        "subtree",
+        "invariant",
+        "boundary-case",
+        "sorted"
+      ]
+    }
+  },
+  {
+    "id": "dijkstra",
+    "title": "다익스트라",
+    "english": "Dijkstra",
+    "category": "그래프",
+    "status": "ready",
+    "duration": 48,
+    "summary": "가장 가까운 정점을 확정하며 음이 아닌 가중치 그래프의 최단 거리를 구합니다.",
+    "prerequisite": [
+      "그래프",
+      "최소 힙"
+    ],
+    "checkpoints": [
+      "거리 초기화",
+      "최소 거리 추출",
+      "간선 완화",
+      "오래된 큐 항목 무시"
+    ],
+    "scenes": [
+      {
+        "title": "시작 거리는 0",
+        "caption": "시작 정점만 0, 나머지는 무한대로 둡니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "가장 가까운 후보",
+        "caption": "우선순위 큐에서 거리가 가장 작은 정점을 꺼냅니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "오래된 기록 건너뛰기",
+        "caption": "이미 더 짧은 거리가 있으면 큐 항목을 무시합니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "간선을 완화",
+        "caption": "현재 거리와 간선 가중치 합이 더 작으면 갱신합니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "새 후보 넣기",
+        "caption": "갱신된 정점과 거리를 우선순위 큐에 추가합니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "음이 아닌 가중치",
+        "caption": "시간 O((V+E)log V), 공간 O(V+E)입니다.",
+        "visual": "bfs"
+      }
+    ],
+    "transcript": [
+      "다익스트라는 음이 아닌 가중치 그래프에서 한 시작점의 최단 거리를 구합니다.",
+      "거리 배열은 현재까지 발견한 가장 짧은 비용을 저장합니다.",
+      "우선순위 큐는 가장 가까운 후보 정점을 먼저 꺼냅니다.",
+      "큐에 남은 오래된 거리와 현재 거리 배열이 다르면 건너뛰어야 합니다.",
+      "인접 리스트와 힙을 쓰면 시간 O((V+E) log V), 공간 O(V+E)입니다.",
+      "음수 간선이 있으면 최단 거리 확정 논리가 깨지므로 사용하면 안 됩니다."
+    ],
+    "problem": {
+      "title": "최단 비트 경로",
+      "statement": "방향 그래프와 음이 아닌 간선 비용이 주어집니다. 시작 정점 s에서 모든 정점까지의 최단 거리를 출력하세요. 도달할 수 없는 정점은 INF로 출력합니다.",
+      "input": "첫 줄에 n, m, s, 다음 m줄에 u v w가 주어집니다. u에서 v로 비용 w의 간선입니다.",
+      "output": "1번부터 n번까지의 최단 거리를 공백으로 출력합니다.",
+      "constraints": [
+        "1 ≤ n ≤ 600",
+        "0 ≤ m ≤ 500",
+        "1 ≤ s, u, v ≤ n",
+        "0 ≤ w ≤ 1,000,000",
+        "최단 거리는 64비트 부호 있는 정수 범위입니다."
+      ],
+      "examples": [
+        {
+          "input": "5 6 1\n1 2 2\n1 3 8\n2 3 1\n2 4 5\n3 4 1\n4 5 3",
+          "output": "0 2 3 4 7",
+          "note": "더 짧은 간선을 차례로 완화합니다."
+        },
+        {
+          "input": "3 1 2\n2 3 4",
+          "output": "INF 0 4",
+          "note": "1번은 시작점에서 도달할 수 없습니다."
+        }
+      ],
+      "terms": [
+        "dijkstra",
+        "weighted-graph",
+        "relaxation",
+        "priority-queue",
+        "shortest-path",
+        "nonnegative-weight"
+      ]
+    }
+  },
+  {
+    "id": "topological-sort",
+    "title": "위상 정렬",
+    "english": "Topological sort",
+    "category": "그래프",
+    "status": "ready",
+    "duration": 48,
+    "summary": "진입 차수가 0인 작업부터 꺼내 의존성을 지키는 가장 작은 순서를 만듭니다.",
+    "prerequisite": [
+      "방향 그래프",
+      "최소 힙"
+    ],
+    "checkpoints": [
+      "진입 차수",
+      "0인 정점 준비",
+      "간선 제거",
+      "DAG 확인"
+    ],
+    "scenes": [
+      {
+        "title": "의존성 세기",
+        "caption": "각 정점으로 들어오는 간선 수를 진입 차수에 저장합니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "바로 할 수 있는 작업",
+        "caption": "진입 차수 0인 정점을 최소 힙에 넣습니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "가장 작은 번호 선택",
+        "caption": "힙에서 번호가 가장 작은 작업을 꺼내 출력합니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "다음 작업 열기",
+        "caption": "나가는 간선을 지우듯 이웃의 진입 차수를 줄입니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "0이 되면 추가",
+        "caption": "새로 준비된 정점을 힙에 넣습니다.",
+        "visual": "bfs"
+      },
+      {
+        "title": "모든 정점 처리",
+        "caption": "시간 O((V+E)log V), 공간 O(V+E)입니다.",
+        "visual": "bfs"
+      }
+    ],
+    "transcript": [
+      "위상 정렬은 방향 비순환 그래프의 모든 의존성을 지키는 순서를 만듭니다.",
+      "진입 차수는 아직 끝나지 않은 선행 작업의 수입니다.",
+      "진입 차수 0인 정점 중 가장 작은 번호를 힙에서 선택합니다.",
+      "정점을 처리하면 나가는 간선의 도착 정점 진입 차수를 하나 줄입니다.",
+      "힙 사용 시 시간 O((V+E) log V), 인접 리스트 공간 O(V+E)입니다.",
+      "처리한 정점 수가 n보다 작으면 순환이 있지만 이 문제의 입력은 DAG입니다."
+    ],
+    "problem": {
+      "title": "공연 준비 순서",
+      "statement": "n개 작업의 선행 관계 a b는 a를 마친 뒤 b를 할 수 있다는 뜻입니다. 모든 관계를 지키는 순서 중 번호 배열이 사전순으로 가장 작은 순서를 출력하세요.",
+      "input": "첫 줄에 n과 m, 다음 m줄에 a와 b가 주어집니다.",
+      "output": "사전순으로 가장 작은 위상 정렬 결과를 공백으로 출력합니다.",
+      "constraints": [
+        "1 ≤ n ≤ 1,000",
+        "0 ≤ m ≤ 800",
+        "입력 그래프는 DAG입니다.",
+        "같은 간선은 중복해서 주어지지 않습니다."
+      ],
+      "examples": [
+        {
+          "input": "4 3\n1 3\n2 3\n3 4",
+          "output": "1 2 3 4",
+          "note": "가능한 작업 중 작은 번호를 먼저 선택합니다."
+        },
+        {
+          "input": "3 0",
+          "output": "1 2 3",
+          "note": "관계가 없으면 번호순이 가장 작습니다."
+        }
+      ],
+      "terms": [
+        "topological-sort",
+        "dag",
+        "indegree",
+        "dependency",
+        "priority-queue",
+        "graph"
+      ]
+    }
+  },
+  {
+    "id": "knapsack-dp",
+    "title": "배낭 동적 계획법",
+    "english": "0/1 Knapsack DP",
+    "category": "DP",
+    "status": "ready",
+    "duration": 48,
+    "summary": "각 물건을 한 번만 선택하며 용량별 최대 가치를 뒤에서부터 갱신합니다.",
+    "prerequisite": [
+      "기초 동적 계획법",
+      "배열"
+    ],
+    "checkpoints": [
+      "상태 정의",
+      "선택/미선택",
+      "역방향 갱신",
+      "용량 경계"
+    ],
+    "scenes": [
+      {
+        "title": "용량별 가치",
+        "caption": "dp[c]는 용량 c 이하에서 얻는 최대 가치입니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "물건 하나 보기",
+        "caption": "현재 무게와 가치를 선택할지 비교합니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "선택하지 않기",
+        "caption": "기존 dp[c]를 그대로 유지할 수 있습니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "선택하기",
+        "caption": "dp[c-weight]에 현재 가치를 더한 후보를 만듭니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "뒤에서 앞으로",
+        "caption": "같은 물건을 두 번 쓰지 않도록 용량을 역순으로 갱신합니다.",
+        "visual": "dp"
+      },
+      {
+        "title": "표 한 줄로",
+        "caption": "시간 O(nW), 공간 O(W)입니다.",
+        "visual": "dp"
+      }
+    ],
+    "transcript": [
+      "0/1 배낭은 각 물건을 선택하거나 선택하지 않는 두 경우를 비교합니다.",
+      "dp[c]는 제한 용량 c에서 얻을 수 있는 최대 가치입니다.",
+      "현재 물건을 고르면 이전 용량 c-weight의 최적값에 가치를 더합니다.",
+      "용량을 앞에서부터 갱신하면 같은 물건을 이번 단계에서 다시 사용할 수 있어 잘못됩니다.",
+      "시간 복잡도는 O(nW), 한 줄 배열을 쓰면 공간 복잡도는 O(W)입니다.",
+      "작은 정수 용량 아래에서 서로 독립적인 항목을 한 번씩 고를 때 사용합니다."
+    ],
+    "problem": {
+      "title": "한정된 트랙 장비",
+      "statement": "n개 장비는 각각 무게와 가치를 가지며 각 장비는 최대 한 번 선택할 수 있습니다. 총 무게가 W를 넘지 않게 골라 얻을 수 있는 최대 가치를 출력하세요.",
+      "input": "첫 줄에 n과 W, 다음 n줄에 무게 w와 가치 v가 주어집니다.",
+      "output": "가능한 최대 가치 합을 출력합니다.",
+      "constraints": [
+        "1 ≤ n ≤ 100",
+        "0 ≤ W ≤ 10,000",
+        "1 ≤ w ≤ 10,000",
+        "0 ≤ v ≤ 1,000,000",
+        "정답은 64비트 부호 있는 정수 범위입니다."
+      ],
+      "examples": [
+        {
+          "input": "4 7\n6 13\n4 8\n3 6\n5 12",
+          "output": "14",
+          "note": "무게 4와 3인 장비를 선택합니다."
+        },
+        {
+          "input": "2 0\n1 10\n2 20",
+          "output": "0",
+          "note": "용량이 0이면 아무것도 담을 수 없습니다."
+        }
+      ],
+      "terms": [
+        "knapsack",
+        "dynamic-programming",
+        "state",
+        "recurrence",
+        "capacity",
+        "zero-one-choice"
+      ]
     }
   }
 ]

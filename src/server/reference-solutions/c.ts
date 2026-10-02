@@ -1,6 +1,8 @@
 import type { ReferenceSolutionSet } from "./types.ts";
+import { expandedCSolutions } from "./expanded/c.ts";
 
 export const cSolutions = {
+  ...expandedCSolutions,
   stack: String.raw`#include <stdio.h>
 #include <string.h>
 
